@@ -4,11 +4,16 @@ import {
   BottomTabBarProps,
   createBottomTabNavigator
 } from "@react-navigation/bottom-tabs";
+import { TouchableOpacity, View } from "react-native";
+import { IconProp } from "@fortawesome/fontawesome-svg-core";
+import colors from "../ui/styles/colors";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 //Screens
 import Home from "../ui/screens/Home";
 import UserProfile from "../ui/screens/UserProfile";
 import SearchMovie from "../ui/screens/SearchMovie";
+import Login from "../ui/screens/Login";
 
 // Routes
 import NavigatorConstant from "./NavigatorConstant";
@@ -20,11 +25,6 @@ import {
   faUser
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
-import { TouchableOpacity, View } from "react-native";
-import { IconProp } from "@fortawesome/fontawesome-svg-core";
-import colors from "../ui/styles/colors";
-
-const Tab = createBottomTabNavigator();
 
 const BottomTab = ({ state, navigation }: BottomTabBarProps) => {
   const getIconByRouteName = (routeName: string): IconProp => {
@@ -119,22 +119,41 @@ const BottomTab = ({ state, navigation }: BottomTabBarProps) => {
   );
 };
 
+const Tab = createBottomTabNavigator();
+
+const TabNavigator = () => {
+  return (
+    <Tab.Navigator
+      tabBar={props => <BottomTab {...props} />}
+      screenOptions={{ headerShown: false }}
+      initialRouteName={NavigatorConstant.Home}>
+      <Tab.Screen name={NavigatorConstant.Home} component={Home} />
+      <Tab.Screen
+        name={NavigatorConstant.SearchMovie}
+        component={SearchMovie}
+      />
+      <Tab.Screen
+        name={NavigatorConstant.UserProfile}
+        component={UserProfile}
+      />
+    </Tab.Navigator>
+  );
+};
+
+const Stack = createNativeStackNavigator();
+
 const RootNavigator = () => {
   return (
     <NavigationContainer>
-      <Tab.Navigator
-        tabBar={props => <BottomTab {...props} />}
-        screenOptions={{ headerShown: false }}>
-        <Tab.Screen name={NavigatorConstant.Home} component={Home} />
-        <Tab.Screen
-          name={NavigatorConstant.SearchMovie}
-          component={SearchMovie}
+      <Stack.Navigator
+        screenOptions={{ headerShown: false }}
+        initialRouteName={NavigatorConstant.Login}>
+        <Stack.Screen
+          name={NavigatorConstant.LoggedIn}
+          component={TabNavigator}
         />
-        <Tab.Screen
-          name={NavigatorConstant.UserProfile}
-          component={UserProfile}
-        />
-      </Tab.Navigator>
+        <Stack.Screen name={NavigatorConstant.Login} component={Login} />
+      </Stack.Navigator>
     </NavigationContainer>
   );
 };
