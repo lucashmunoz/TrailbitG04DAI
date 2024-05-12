@@ -21,11 +21,13 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { TouchableOpacity, View } from "react-native";
+import { IconProp } from "@fortawesome/fontawesome-svg-core";
+import colors from "../ui/styles/colors";
 
 const Tab = createBottomTabNavigator();
 
-const BottomTab = ({ state, descriptors, navigation }: BottomTabBarProps) => {
-  const getIconByRouteName = (routeName: string) => {
+const BottomTab = ({ state, navigation }: BottomTabBarProps) => {
+  const getIconByRouteName = (routeName: string): IconProp => {
     switch (routeName) {
       case NavigatorConstant.SearchMovie:
         return faMagnifyingGlass;
@@ -37,13 +39,24 @@ const BottomTab = ({ state, descriptors, navigation }: BottomTabBarProps) => {
     }
   };
 
+  const getRouteLabelByRouteName = (routeName: string): string => {
+    switch (routeName) {
+      case NavigatorConstant.SearchMovie:
+        return "Página de búsqueda de película";
+      case NavigatorConstant.UserProfile:
+        return "Página de perfil de usuario";
+      case NavigatorConstant.Home:
+      default:
+        return "Página de inicio";
+    }
+  };
+
   return (
     <View style={{ flexDirection: "row", height: 68 }}>
       {state.routes.map((route, index) => {
         const isFocused = state.index === index;
 
         const { name: routeName } = route;
-        const icon = getIconByRouteName(routeName);
 
         const onPress = () => {
           const event = navigation.emit({
@@ -69,19 +82,22 @@ const BottomTab = ({ state, descriptors, navigation }: BottomTabBarProps) => {
           <TouchableOpacity
             key={routeName}
             activeOpacity={0.9}
+            accessibilityRole="button"
+            accessibilityState={isFocused ? { selected: true } : {}}
+            accessibilityLabel={getRouteLabelByRouteName(routeName)}
             onPress={onPress}
             onLongPress={onLongPress}
             style={{
               flex: 1,
-              backgroundColor: "#1e1e1e",
+              backgroundColor: colors.navBar,
               justifyContent: "center",
               alignItems: "center",
               opacity: 0.9
             }}>
             <View>
               <FontAwesomeIcon
-                icon={icon}
-                style={{ color: "#fcfcfc" }}
+                icon={getIconByRouteName(routeName)}
+                style={{ color: colors.neutral50 }}
                 size={24}
               />
               {isFocused && (
@@ -89,7 +105,7 @@ const BottomTab = ({ state, descriptors, navigation }: BottomTabBarProps) => {
                   style={{
                     height: 4,
                     width: 24,
-                    backgroundColor: "#5B2DDB",
+                    backgroundColor: colors.primary500,
                     marginTop: 8,
                     borderRadius: 2
                   }}
