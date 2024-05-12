@@ -1,12 +1,8 @@
 import React from "react";
-import {SafeAreaView, Text} from "react-native";
+import RootNavigator from "../navigation/RootNavigator";
 
 function App(): React.JSX.Element {
-  return (
-    <SafeAreaView>
-      <Text>Trailbit</Text>
-    </SafeAreaView>
-  );
+  return <RootNavigator />;
 }
 
 export default App;
