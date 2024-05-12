@@ -1,5 +1,5 @@
 import React from "react";
-import {NavigationContainer} from "@react-navigation/native";
+import { NavigationContainer } from "@react-navigation/native";
 import {
   BottomTabBarProps,
   createBottomTabNavigator
@@ -19,12 +19,12 @@ import {
   faMagnifyingGlass,
   faUser
 } from "@fortawesome/free-solid-svg-icons";
-import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
-import {TouchableOpacity, View} from "react-native";
+import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
+import { TouchableOpacity, View } from "react-native";
 
 const Tab = createBottomTabNavigator();
 
-const BottomTab = ({state, descriptors, navigation}: BottomTabBarProps) => {
+const BottomTab = ({ state, descriptors, navigation }: BottomTabBarProps) => {
   const getIconByRouteName = (routeName: string) => {
     switch (routeName) {
       case NavigatorConstant.SearchMovie:
@@ -38,13 +38,13 @@ const BottomTab = ({state, descriptors, navigation}: BottomTabBarProps) => {
   };
 
   return (
-    <View style={{flexDirection: "row", height: 68}}>
+    <View style={{ flexDirection: "row", height: 68 }}>
       {state.routes.map((route, index) => {
-        const {options} = descriptors[route.key];
+        const { options } = descriptors[route.key];
 
         const isFocused = state.index === index;
 
-        const {name: routeName} = route;
+        const { name: routeName } = route;
         const icon = getIconByRouteName(routeName);
 
         const onPress = () => {
@@ -83,7 +83,7 @@ const BottomTab = ({state, descriptors, navigation}: BottomTabBarProps) => {
             <View>
               <FontAwesomeIcon
                 icon={icon}
-                style={{color: "#fcfcfc"}}
+                style={{ color: "#fcfcfc" }}
                 size={24}
               />
               {isFocused && (

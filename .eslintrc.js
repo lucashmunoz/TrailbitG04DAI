@@ -1,5 +1,5 @@
 module.exports = {
-    root: true,
-    plugins: ["prettier"],
-    extends: ["prettier"]
+  root: true,
+  plugins: ["prettier"],
+  extends: ["prettier"]
 };
