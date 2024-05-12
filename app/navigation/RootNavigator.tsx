@@ -40,8 +40,6 @@ const BottomTab = ({ state, descriptors, navigation }: BottomTabBarProps) => {
   return (
     <View style={{ flexDirection: "row", height: 68 }}>
       {state.routes.map((route, index) => {
-        const { options } = descriptors[route.key];
-
         const isFocused = state.index === index;
 
         const { name: routeName } = route;
@@ -108,7 +106,9 @@ const BottomTab = ({ state, descriptors, navigation }: BottomTabBarProps) => {
 const RootNavigator = () => {
   return (
     <NavigationContainer>
-      <Tab.Navigator tabBar={props => <BottomTab {...props} />}>
+      <Tab.Navigator
+        tabBar={props => <BottomTab {...props} />}
+        screenOptions={{ headerShown: false }}>
         <Tab.Screen name={NavigatorConstant.Home} component={Home} />
         <Tab.Screen
           name={NavigatorConstant.SearchMovie}
