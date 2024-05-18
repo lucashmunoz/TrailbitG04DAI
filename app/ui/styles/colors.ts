@@ -15,6 +15,7 @@ const colors = {
   neutral700: "#52547a",
   neutral800: "#3c3e5d",
   neutral900: "#000328",
-  navBar: "#101010"
+  navBar: "#101010",
+  transparent: "#00000000"
 };
 export default colors;
