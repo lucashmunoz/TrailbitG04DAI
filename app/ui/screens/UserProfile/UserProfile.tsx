@@ -31,17 +31,20 @@ const UserProfile = (): React.JSX.Element => {
             }}>
             <TextField
               name="Nickname"
+              placeholder="Nickname"
               value={nickname}
               onChangeText={setNickname}
             />
             <TextField
               name="Nombre"
+              placeholder="Nombre"
               value={nombre}
               onChangeText={setNombre}
               editable={false}
             />
             <TextField
               name="Email"
+              placeholder="Email"
               value={email}
               onChangeText={setEmail}
               editable={false}

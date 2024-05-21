@@ -27,7 +27,7 @@ const DeleteAccountModal = ({ isOpen, setIsOpen }: DeleteAccountModalProps) => {
             ¿Está seguro que desea eliminar su cuenta?
           </Text>
           <Text style={styles.regularText}>
-            Esta accion no se puede deshacer.
+            Esta acción no se puede deshacer.
           </Text>
           <View style={styles.actionsContainer}>
             <Button type="secondary" title="Cancelar" onPress={closeModal} />

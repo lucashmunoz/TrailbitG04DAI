@@ -1,10 +1,14 @@
 import React from "react";
 import { StyleSheet, Text, TextInput, View } from "react-native";
+import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import colors from "../styles/colors";
+import { IconProp } from "@fortawesome/fontawesome-svg-core";
 
 interface TextFieldProps {
   /** Nombre del Input. Será el texto que se leerá arriba del mismo */
-  name: string;
+  name?: string;
+  /** Placeholder del Input. Será el texto que se leerá dentro del mismo cuando no haya nada ingresado */
+  placeholder: string;
   /** Text value del Input */
   value: string;
   /** Callback que se ejecuta en el onChangeText del Input */
@@ -16,31 +20,38 @@ interface TextFieldProps {
   editable?: boolean;
   /** Mensaje de error del Input. Si se provee también se aplican los estilos de error */
   error?: string;
+  /** Ícono posicionado a la derecha dentro del input. Debe ser de FontAwesome */
+  icon?: IconProp;
 }
 
 const TextField = ({
   name,
+  placeholder,
   value,
   onChangeText,
   editable = true,
-  error
+  error,
+  icon
 }: TextFieldProps): React.JSX.Element => {
   return (
     <View style={styles.container}>
-      <Text style={styles.name}>{name}</Text>
-      <TextInput
+      {name && <Text style={styles.name}>{name}</Text>}
+      <View
         style={[
-          styles.defaultInput,
+          styles.inputSection,
           !editable && styles.disabledInput,
           Boolean(error) && styles.errorInput
-        ]}
-        placeholder={name}
-        value={value}
-        onChangeText={onChangeText}
-        editable={editable}
-        selectTextOnFocus={editable}
-        placeholderTextColor={colors.neutral400}
-      />
+        ]}>
+        <TextInput
+          placeholder={placeholder}
+          value={value}
+          onChangeText={onChangeText}
+          editable={editable}
+          selectTextOnFocus={editable}
+          placeholderTextColor={colors.neutral400}
+        />
+        {icon && <FontAwesomeIcon icon={icon} style={styles.icon} size={16} />}
+      </View>
       {error && <Text style={styles.error}>{error}</Text>}
     </View>
   );
@@ -51,14 +62,18 @@ const styles = StyleSheet.create({
     justifyContent: "center"
   },
   name: { color: colors.neutral50 },
-  defaultInput: {
-    marginTop: 4,
-    height: 40,
-    width: "100%",
-    color: colors.neutral50,
+  inputSection: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
     borderWidth: 1,
     borderColor: colors.neutral50,
-    borderRadius: 4
+    borderRadius: 4,
+    paddingHorizontal: 8,
+
+    marginTop: 4,
+    height: 40,
+    color: colors.neutral50
   },
   disabledInput: {
     backgroundColor: colors.neutral500
@@ -69,7 +84,8 @@ const styles = StyleSheet.create({
   },
   error: {
     color: colors.error
-  }
+  },
+  icon: { color: colors.neutral50 }
 });
 
 export default TextField;
