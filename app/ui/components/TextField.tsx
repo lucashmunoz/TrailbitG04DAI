@@ -38,11 +38,16 @@ const TextField = ({
       {name && <Text style={styles.name}>{name}</Text>}
       <View
         style={[
-          styles.inputSection,
-          !editable && styles.disabledInput,
-          Boolean(error) && styles.errorInput
+          styles.defaultInputContainer,
+          !editable && styles.disabledInputContainer,
+          Boolean(error) && styles.errorInputContainer
         ]}>
         <TextInput
+          style={[
+            styles.defaultInput,
+            !editable && styles.disabledInput,
+            Boolean(error) && styles.errorInput
+          ]}
           placeholder={placeholder}
           value={value}
           onChangeText={onChangeText}
@@ -62,24 +67,32 @@ const styles = StyleSheet.create({
     justifyContent: "center"
   },
   name: { color: colors.neutral50 },
-  inputSection: {
+  defaultInputContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
     borderWidth: 1,
+    color: colors.error,
     borderColor: colors.neutral50,
     borderRadius: 4,
     paddingHorizontal: 8,
-
     marginTop: 4,
-    height: 40,
+    height: 40
+  },
+  disabledInputContainer: {
+    backgroundColor: colors.neutral500
+  },
+  errorInputContainer: {
+    borderColor: colors.error,
+    color: colors.error
+  },
+  defaultInput: {
     color: colors.neutral50
   },
   disabledInput: {
-    backgroundColor: colors.neutral500
+    color: colors.neutral50
   },
   errorInput: {
-    borderColor: colors.error,
     color: colors.error
   },
   error: {
