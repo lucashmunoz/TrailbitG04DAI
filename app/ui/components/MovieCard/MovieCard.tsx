@@ -5,6 +5,7 @@ import { faAngleRight } from "@fortawesome/free-solid-svg-icons";
 import { Movie } from "../../types/movie";
 import colors from "../../styles/colors";
 import MovieData from "./MovieData";
+import { IMAGES } from "../../../assets/images";
 
 interface MovieCardProps {
   movie: Movie;
@@ -13,10 +14,12 @@ interface MovieCardProps {
 const MovieCard = ({ movie }: MovieCardProps) => {
   const { posterPath } = movie;
 
+  const movieImage = posterPath ? { uri: posterPath } : IMAGES.NO_IMAGE;
+
   return (
     <View style={styles.container}>
       <View style={styles.imageContainer}>
-        <Image source={{ uri: posterPath }} style={styles.image} />
+        <Image source={movieImage} style={styles.image} />
       </View>
 
       <View style={styles.dataContainer}>
@@ -41,6 +44,8 @@ const styles = StyleSheet.create({
     height: undefined
   },
   image: {
+    width: 140,
+    height: undefined,
     aspectRatio: 16 / 9
   },
   dataContainer: { flex: 1 },

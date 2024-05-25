@@ -10,20 +10,22 @@ interface MovieDataProps {
 }
 
 const MovieData = ({ movie }: MovieDataProps) => {
-  const { title, release_date, vote_average, vote_count } = movie;
+  const { title, releaseDate, voteAverage, voteCount } = movie;
 
-  const releaseYear = release_date.substring(0, 4);
+  const releaseYear = releaseDate?.substring(0, 4);
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>{title}</Text>
       <View style={styles.row}>
         <View style={styles.voteContainer}>
-          <Text style={styles.vote}>{vote_average} </Text>
+          <Text style={styles.vote}>{voteAverage} </Text>
           <FontAwesomeIcon icon={faStar} style={styles.icon} size={14} />
-          <Text style={styles.vote}> ({vote_count})</Text>
+          {Boolean(voteCount) && (
+            <Text style={styles.vote}> ({voteCount})</Text>
+          )}
         </View>
-        <Text style={styles.releaseYear}>{releaseYear}</Text>
+        {releaseYear && <Text style={styles.releaseYear}>{releaseYear}</Text>}
       </View>
     </View>
   );
@@ -41,14 +43,6 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: "semibold",
     flexWrap: "wrap",
-    alignItems: "flex-start"
-  },
-  overview: {
-    color: colors.neutral50,
-    fontSize: 10,
-    height: 16,
-    fontWeight: "light",
-    overflow: "hidden",
     alignItems: "flex-start"
   },
   row: {

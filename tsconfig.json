@@ -1,4 +1,7 @@
 {
   "extends": "@react-native/typescript-config/tsconfig.json",
-  "include": ["app/assets", "custom.d.ts"]
+  "include": ["app/assets", "custom.d.ts"],
+  "compilerOptions": {
+    "baseUrl": "./app"
+  }
 }

@@ -3,7 +3,9 @@ import {
   StyleSheet,
   GestureResponderEvent,
   TouchableOpacity,
-  Text
+  Text,
+  StyleProp,
+  ViewStyle
 } from "react-native";
 import colors from "../styles/colors";
 
@@ -26,6 +28,8 @@ interface ButtonProps {
   onPress: (event: GestureResponderEvent) => void;
   /** Label del Button en caso de que no tener un title.  */
   accessibilityLabel?: string;
+  /** Permite a el componente que consuma el button asignar estilos */
+  style?: StyleProp<ViewStyle>;
 }
 
 const Button = ({
@@ -34,11 +38,12 @@ const Button = ({
   icon,
   disabled = false,
   onPress,
-  accessibilityLabel
+  accessibilityLabel,
+  style = {}
 }: ButtonProps): React.JSX.Element => {
   return (
     <TouchableOpacity
-      style={[styles.button, styles[type]]}
+      style={[style, styles.button, styles[type]]}
       accessibilityLabel={accessibilityLabel}
       disabled={disabled}
       onPress={onPress}>
