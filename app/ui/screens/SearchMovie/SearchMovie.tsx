@@ -59,7 +59,7 @@ const SearchMovie = (): React.JSX.Element => {
         })
       );
     }
-  }, [debouncedSearchValue]);
+  }, [debouncedSearchValue, rateOrderState, dateOrderState]);
 
   useEffect(() => {
     if (error.length !== 0) {
