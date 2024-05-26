@@ -35,7 +35,7 @@ export type ToastHandle = {
 interface ToastProps {
   /**
    * Duración en ms del toast.
-   * Si no se provee el toast solamente podrá cerrarse a través del método `.close()`
+   * Si no se provee, el toast solamente podrá cerrarse a través del método `.close()`
    * */
   duration?: number;
 }

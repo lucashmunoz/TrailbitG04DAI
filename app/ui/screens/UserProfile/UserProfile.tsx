@@ -83,7 +83,7 @@ const UserProfile = (): React.JSX.Element => {
         isOpen={deleteAccountModalOpen}
         setIsOpen={setDeleteAccountModalOpen}
       />
-      <Toast ref={userDataSavedToastRef} duration={4000} />
+      <Toast ref={userDataSavedToastRef} duration={3500} />
     </SafeAreaView>
   );
 };

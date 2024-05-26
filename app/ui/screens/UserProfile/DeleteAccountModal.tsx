@@ -30,7 +30,12 @@ const DeleteAccountModal = ({ isOpen, setIsOpen }: DeleteAccountModalProps) => {
             Esta acción no se puede deshacer.
           </Text>
           <View style={styles.actionsContainer}>
-            <Button type="secondary" title="Cancelar" onPress={closeModal} />
+            <Button
+              type="secondary"
+              title="Cancelar"
+              onPress={closeModal}
+              style={styles.actionButton}
+            />
             <Button
               type="danger"
               title="Eliminar cuenta"
@@ -73,8 +78,10 @@ const styles = StyleSheet.create({
   actionsContainer: {
     width: "100%",
     flexDirection: "row",
-    justifyContent: "space-between"
-  }
+    justifyContent: "space-between",
+    gap: 8
+  },
+  actionButton: { flex: 1 }
 });
 
 export default DeleteAccountModal;
