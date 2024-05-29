@@ -1,79 +1,73 @@
-This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
+# Trailbit
 
-# Getting Started
+Trailbit es una aplicación móvil revolucionaria desarrollada para MoviePlay, una empresa recientemente establecida en Argentina y especializada en la industria cinematográfica. La aplicación permite a los usuarios ver y recomendar películas, prometiendo transformar el mercado. Desarrollada con un backend robusto y desplegada en la nube, Trailbit busca mejorar la experiencia de ver películas para todos los usuarios.
 
->**Note**: Make sure you have completed the [React Native - Environment Setup](https://reactnative.dev/docs/environment-setup) instructions till "Creating a new application" step, before proceeding.
+## Requisitos Previos
 
-## Step 1: Start the Metro Server
+Antes de comenzar, asegúrate de tener instalado lo siguiente:
 
-First, you will need to start **Metro**, the JavaScript _bundler_ that ships _with_ React Native.
+- Node.js (preferiblemente versión LTS)
+- npm (viene incluido con Node.js) o yarn
+- Git
 
-To start Metro, run the following command from the _root_ of your React Native project:
+### Opcional
 
-```bash
-# using npm
-npm start
+- Para correr en Android:
+  - Android Studio con Android SDK instalado
+  - Un emulador de Android configurado o un dispositivo Android conectado
 
-# OR using Yarn
-yarn start
-```
+- Para correr en iOS:
+  - Un dispositivo con macOS y Xcode instalado
+  - CocoaPods (sudo gem install cocoapods)
 
-## Step 2: Start your Application
+## Configuración Inicial
 
-Let Metro Bundler run in its _own_ terminal. Open a _new_ terminal from the _root_ of your React Native project. Run the following command to start your _Android_ or _iOS_ app:
+1. **Clona el repositorio:**
 
-### For Android
+   ```bash
+   git clone https://github.com/tu-usuario/nombre-del-repo.git](https://github.com/lucashmunoz/TrailbitG04DAI.git
+   cd trailbitg04dai
+   ```
+   
+2. **Instalar dependencias:**
 
-```bash
-# using npm
-npm run android
+   ```bash
+   npm install
+   # o
+   yarn install
+   ```
+3. **Ejecutar la Aplicacion:**
 
-# OR using Yarn
-yarn android
-```
+   - Android: (Asegúrate de que un emulador de Android esté en ejecución o conecta un dispositivo Android.)
+      1. Iniciar Metro:
+         ```bash
+         npx react-native start
+         ```
+      2. En una nueva terminal, compilar y ejecutar la aplicación en el emulador o dispositivo:
+         ```bash
+         npx react-native run-android
+         ```
+   - IOS: (Asegúrate de que un simulador de iOS esté en ejecución.)
+      1. Instalar dependencias nativas de iOS:
+         ```bash
+         cd ios
+         pod install
+         cd ..
+         ```
+      2. Iniciar Metro (el servidor de desarrollo):
+         ```bash
+         npx react-native start
+         ```
+      3. En una nueva terminal, compilar y ejecutar la aplicación en el simulador de iOS:
+         ```bash
+         npx react-native run-ios
+         ```
+   
+## Integrantes del Equipo 04
 
-### For iOS
+- Lucas Hernan Muñoz lucamunoz@uade.edu.ar 1141508
+- Alejandro Susmelj asusmelj@uade.edu.ar 1139793
+- Felipe Costa cfelipe@uade.edu.ar 1135873
+- Ignacio Cesarani icesarani@uade.edu.ar 1137115
+- Cristian Merenda cmerenda@uade.edu.ar 1110652
 
-```bash
-# using npm
-npm run ios
-
-# OR using Yarn
-yarn ios
-```
-
-If everything is set up _correctly_, you should see your new app running in your _Android Emulator_ or _iOS Simulator_ shortly provided you have set up your emulator/simulator correctly.
-
-This is one way to run your app — you can also run it directly from within Android Studio and Xcode respectively.
-
-## Step 3: Modifying your App
-
-Now that you have successfully run the app, let's modify it.
-
-1. Open `App.tsx` in your text editor of choice and edit some lines.
-2. For **Android**: Press the <kbd>R</kbd> key twice or select **"Reload"** from the **Developer Menu** (<kbd>Ctrl</kbd> + <kbd>M</kbd> (on Window and Linux) or <kbd>Cmd ⌘</kbd> + <kbd>M</kbd> (on macOS)) to see your changes!
-
-   For **iOS**: Hit <kbd>Cmd ⌘</kbd> + <kbd>R</kbd> in your iOS Simulator to reload the app and see your changes!
-
-## Congratulations! :tada:
-
-You've successfully run and modified your React Native App. :partying_face:
-
-### Now what?
-
-- If you want to add this new React Native code to an existing application, check out the [Integration guide](https://reactnative.dev/docs/integration-with-existing-apps).
-- If you're curious to learn more about React Native, check out the [Introduction to React Native](https://reactnative.dev/docs/getting-started).
-
-# Troubleshooting
-
-If you can't get this to work, see the [Troubleshooting](https://reactnative.dev/docs/troubleshooting) page.
-
-# Learn More
-
-To learn more about React Native, take a look at the following resources:
-
-- [React Native Website](https://reactnative.dev) - learn more about React Native.
-- [Getting Started](https://reactnative.dev/docs/environment-setup) - an **overview** of React Native and how setup your environment.
-- [Learn the Basics](https://reactnative.dev/docs/getting-started) - a **guided tour** of the React Native **basics**.
-- [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
-- [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.
