@@ -1,3 +1,5 @@
+![Trailbit Logo](./app/assets/images/trailbit_banner.png)
+
 # Trailbit
 
 Trailbit es una aplicación móvil revolucionaria desarrollada para MoviePlay, una empresa recientemente establecida en Argentina y especializada en la industria cinematográfica. La aplicación permite a los usuarios ver y recomendar películas, prometiendo transformar el mercado. Desarrollada con un backend robusto y desplegada en la nube, Trailbit busca mejorar la experiencia de ver películas para todos los usuarios.
@@ -70,8 +72,4 @@ Antes de comenzar, asegúrate de tener instalado lo siguiente:
          ```bash
          npx react-native run-ios
          ```
-## Informacion adicional
-
-- Si encuentras algún problema durante la instalación o ejecución de la aplicación, consulta la documentación oficial de React Native en Documentación de React Native o comunícate con los miembros de tu grupo.
-
-- Para más información sobre cómo contribuir, consulta CONTRIBUTING.md.
+         
