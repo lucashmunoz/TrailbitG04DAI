@@ -1,5 +1,5 @@
 #import "AppDelegate.h"
-
+#import "RNBootSplash.h"
 #import <React/RCTBundleURLProvider.h>
 
 @implementation AppDelegate
@@ -28,4 +28,18 @@
 #endif
 }
 
+- (void)customizeRootView:(RCTRootView *)rootView {
+  [RNBootSplash initWithStoryboard:@"BootSplash" rootView:rootView]; // ⬅️ initialize the splash screen
+}
+
+// OR
+
+// ⬇️ Add this before file @end (for react-native < 0.74)
+- (UIView *)createRootViewWithBridge:(RCTBridge *)bridge
+                          moduleName:(NSString *)moduleName
+                           initProps:(NSDictionary *)initProps {
+  UIView *rootView = [super createRootViewWithBridge:bridge moduleName:moduleName initProps:initProps];
+  [RNBootSplash initWithStoryboard:@"BootSplash" rootView:rootView]; // ⬅️ initialize the splash screen
+  return rootView;
+}
 @end
