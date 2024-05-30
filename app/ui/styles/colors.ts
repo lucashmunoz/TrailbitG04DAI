@@ -14,7 +14,7 @@ const colors = {
   neutral600: "#696c96",
   neutral700: "#52547a",
   neutral800: "#3c3e5d",
-  neutral900: "#000328",
+  neutral900: "#000214",
   navBar: "#101010",
   transparent: "#00000000"
 };

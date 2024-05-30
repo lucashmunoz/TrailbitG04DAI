@@ -1,24 +1,43 @@
 import React from "react";
-import { SafeAreaView } from "react-native";
-import colors from "../../styles/colors";
+import { StyleSheet } from "react-native";
 import Logo from "./Logo";
 import GoogleSignInButton from "./GoogleSignInButton";
+import colors from "../../styles/colors";
+import LinearGradient from 'react-native-linear-gradient';
+
+const gradientStart = { x: 1, y: 1 };
+const gradientEnd = { x: 1, y: 0 };
+
+const gradientColors = [
+  colors.primary700,
+  colors.primary500,
+  colors.primary500,
+  colors.primary700,
+];
 
 const Login = (): React.JSX.Element => {
   return (
-    <SafeAreaView
-      style={{
-        backgroundColor: colors.neutral900,
-        flex: 1,
-        flexDirection: "column",
-        justifyContent: "center",
-        alignItems: "center",
-        gap: 180
-      }}>
+    <LinearGradient
+      start={gradientStart}
+      end={gradientEnd}
+      colors={gradientColors}
+      style={styles.container}
+    >
       <Logo />
       <GoogleSignInButton />
-    </SafeAreaView>
+
+    </LinearGradient>
   );
 };
 
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 100,
+  },
+});
+
 export default Login;
+

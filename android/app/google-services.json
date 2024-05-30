@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "468635318531",
+    "project_id": "traibit-g04",
+    "storage_bucket": "traibit-g04.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:468635318531:android:81d980e4d4e546ede21136",
+        "android_client_info": {
+          "package_name": "com.trailbitg04dai"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "468635318531-eb0i8165q5sjka2krb40bu1hbfpusttk.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.trailbitg04dai",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "468635318531-tp03vu4veri9u14okj2r2rruaoahk09q.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBuUs8DlJ_87BlDRwmKCTq-uiHWfm7VYHs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "468635318531-tp03vu4veri9u14okj2r2rruaoahk09q.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
