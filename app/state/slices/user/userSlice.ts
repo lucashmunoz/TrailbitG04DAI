@@ -45,10 +45,14 @@ export const userSlice = createSlice({
     },
     clearUserData(state) {
       state = initialState;
+    },
+    clearUserDataLoading(state) {
+      state.loadingData = false;
     }
   },
   selectors: {
     selectUserId: state => state.userId,
+    selectUserData: state => state.userProfileData,
     selectUserDataLoadingState: state => state.loadingData,
     selectUserAuthLoadingState: state => state.loadingAuth,
     selectUserAuthState: state => state.isAuthenticated,
@@ -100,10 +104,12 @@ export const {
   clearUserData,
   saveUserId,
   setUserAuthLoading,
-  clearUserAuthLoading
+  clearUserAuthLoading,
+  clearUserDataLoading
 } = userSlice.actions;
 export const {
   selectUserId,
+  selectUserData,
   selectUserDataLoadingState,
   selectUserApiError,
   selectUserAuthLoadingState,

@@ -1,5 +1,5 @@
 import React from "react";
-import { Image, Text, View, StyleSheet } from "react-native";
+import { Image, View, StyleSheet } from "react-native";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faAngleRight } from "@fortawesome/free-solid-svg-icons";
 import { Movie } from "../../types/movie";
