@@ -1,3 +1,5 @@
 export const endpoints = {
-  movies: "/api/v1/movies"
+  auth: "/api/v1/auth/login",
+  movies: "/api/v1/movies",
+  users: "/api/v1/users"
 } as const;

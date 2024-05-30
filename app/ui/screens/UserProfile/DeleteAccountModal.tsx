@@ -2,17 +2,39 @@ import React, { Dispatch, SetStateAction } from "react";
 import { View, Text, Modal, StyleSheet } from "react-native";
 import colors from "../../styles/colors";
 import Button from "../../components/Button";
+import axios from "axios";
 
 interface DeleteAccountModalProps {
   /** Boolean para mostrar u ocultar el modal, elevado al parent */
   isOpen: boolean;
-  /** Callback para setear el valor de `isOpen`  */
+  /** Callback para setear el valor de `isOpen` */
   setIsOpen: Dispatch<SetStateAction<boolean>>;
+  /** Callback para cerrar la sesion */
+  handleSignOut: () => void;
 }
 
-const DeleteAccountModal = ({ isOpen, setIsOpen }: DeleteAccountModalProps) => {
+const DeleteAccountModal = ({
+  isOpen,
+  setIsOpen,
+  handleSignOut
+}: DeleteAccountModalProps) => {
   const closeModal = () => {
     setIsOpen(false);
+  };
+
+  const handleDeleteAccount = async () => {
+    try {
+      const response = await axios.delete(
+        `https://desarrollodeaplicaciones.onrender.com/api/v1/users/${5}`
+      );
+      closeModal();
+      console.log(response);
+      if (response.status == 204) {
+        handleSignOut();
+      }
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
@@ -39,8 +61,7 @@ const DeleteAccountModal = ({ isOpen, setIsOpen }: DeleteAccountModalProps) => {
             <Button
               type="danger"
               title="Eliminar cuenta"
-              /* TODO: momentaneamente cerrando el modal */
-              onPress={closeModal}
+              onPress={handleDeleteAccount}
             />
           </View>
         </View>
