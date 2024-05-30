@@ -43,7 +43,7 @@ const Button = ({
 }: ButtonProps): React.JSX.Element => {
   return (
     <TouchableOpacity
-      style={[style, styles.button, styles[type]]}
+      style={[style, styles.button, styles[type], disabled && styles.disabled]}
       accessibilityLabel={accessibilityLabel}
       disabled={disabled}
       onPress={onPress}>
@@ -69,6 +69,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: colors.neutral50
   },
+  disabled: { backgroundColor: colors.neutral800 },
   danger: { backgroundColor: colors.error },
   title: {
     color: colors.neutral50,

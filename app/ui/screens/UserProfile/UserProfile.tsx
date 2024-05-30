@@ -8,6 +8,7 @@ import ProfilePicture from "./ProfilePicture";
 import DeleteAccountModal from "./DeleteAccountModal";
 import { GoogleSignin } from "@react-native-google-signin/google-signin";
 import { ParamListBase, useNavigation } from "@react-navigation/native";
+import { launchImageLibrary } from "react-native-image-picker";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import NavigatorConstant from "../../../navigation/NavigatorConstant";
 import { useAppDispatch, useAppSelector } from "../../../state/store";
@@ -15,6 +16,7 @@ import { fetchUserData } from "../../../state/slices/user/asyncThunks";
 import {
   clearUserData,
   selectUserAuthState,
+  selectUserData,
   selectUserDataLoadingState
 } from "../../../state/slices/user/userSlice";
 import LoadingIndicator from "../../components/LoadingIndicator";
@@ -32,34 +34,58 @@ const UserProfile = (): React.JSX.Element => {
 
   const isAuthenticated = useAppSelector(selectUserAuthState);
   const isUserDataLoading = useAppSelector(selectUserDataLoadingState);
+  const { firstName, lastName, nickName, email, profilePicture } =
+    useAppSelector(selectUserData);
 
   const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
 
-  const [nickname, setNickname] = useState("Nickname");
-  const [nombre, setNombre] = useState("Nombre Completo");
-  const [email, setEmail] = useState("test@example.com");
-
+  const [nicknameInput, setNicknameInput] = useState(nickName);
+  const [profilePictureInput, setProfilePictureInput] =
+    useState(profilePicture);
   const [deleteAccountModalOpen, setDeleteAccountModalOpen] = useState(false);
 
   const userDataSavedToastRef = useRef<ToastHandle>(null);
 
-  const navigateToLogin = () => {
-    navigation.navigate(NavigatorConstant.Login);
-    navigation.reset({
-      index: 0,
-      routes: [{ name: NavigatorConstant.Login }]
+  const handleChangeImage = async () => {
+    const result = await launchImageLibrary({
+      mediaType: "photo",
+      includeBase64: true
     });
+    if (result.assets?.[0]?.base64) {
+      setProfilePictureInput(result.assets?.[0]?.base64);
+    }
   };
 
   const handleSignOut = async () => {
     await handleGoogleSignOut();
     dispatch(clearUserData());
-    navigateToLogin();
   };
 
+  // Fecth de los datos de usuario
   useEffect(() => {
     dispatch(fetchUserData());
   }, []);
+
+  // Set del nickname y la foto de perfil una vez que es devuelto por la api
+  useEffect(() => {
+    setNicknameInput(nickName);
+    setProfilePictureInput(profilePicture);
+  }, [nickName, profilePicture]);
+
+  // Cuando se cierra sesi{on / elimina la cuenta, ir a la pantalla de login
+  useEffect(() => {
+    if (!isAuthenticated) {
+      navigation.navigate(NavigatorConstant.Login);
+      navigation.reset({
+        index: 0,
+        routes: [{ name: NavigatorConstant.Login }]
+      });
+    }
+  }, [isAuthenticated]);
+
+  const fullName = `${firstName} ${lastName}`;
+  const isSaveChangesDisabled =
+    nickName === nicknameInput && profilePicture === profilePictureInput;
 
   return (
     <SafeAreaView style={styles.userProfileContainer}>
@@ -69,7 +95,10 @@ const UserProfile = (): React.JSX.Element => {
             <LoadingIndicator />
           ) : (
             <>
-              <ProfilePicture />
+              <ProfilePicture
+                profilePicture={profilePictureInput}
+                handleChangeImage={handleChangeImage}
+              />
 
               {/* Formulario */}
               <View
@@ -81,21 +110,19 @@ const UserProfile = (): React.JSX.Element => {
                 <TextField
                   name="Nickname"
                   placeholder="Nickname"
-                  value={nickname}
-                  onChangeText={setNickname}
+                  value={nicknameInput}
+                  onChangeText={setNicknameInput}
                 />
                 <TextField
                   name="Nombre"
                   placeholder="Nombre"
-                  value={nombre}
-                  onChangeText={setNombre}
+                  value={fullName}
                   editable={false}
                 />
                 <TextField
                   name="Email"
                   placeholder="Email"
                   value={email}
-                  onChangeText={setEmail}
                   editable={false}
                 />
                 <View
@@ -104,6 +131,7 @@ const UserProfile = (): React.JSX.Element => {
                   }}>
                   <Button
                     type="primary"
+                    disabled={isSaveChangesDisabled}
                     onPress={() => {
                       userDataSavedToastRef?.current?.success(
                         "Datos de usuario modificados con éxito."
@@ -148,7 +176,9 @@ const styles = StyleSheet.create({
   userProfileContainer: {
     backgroundColor: colors.neutral900,
     flex: 1,
-    padding: 32,
+    paddingTop: 60,
+    paddingBottom: 32,
+    paddingHorizontal: 32,
     alignItems: "center"
   },
   scrollContainer: {

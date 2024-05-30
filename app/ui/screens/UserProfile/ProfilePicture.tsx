@@ -1,17 +1,38 @@
 import React from "react";
-import { View, StyleSheet } from "react-native";
+import { Image, View, StyleSheet, TouchableOpacity } from "react-native";
 import colors from "../../styles/colors";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
-import { faUser } from "@fortawesome/free-solid-svg-icons";
+import { faPenToSquare, faUser } from "@fortawesome/free-solid-svg-icons";
 
-const ProfilePicture = (): React.JSX.Element => {
+interface ProfilePictureProps {
+  profilePicture: string;
+  handleChangeImage: () => void;
+}
+
+const ProfilePicture = ({
+  profilePicture,
+  handleChangeImage
+}: ProfilePictureProps): React.JSX.Element => {
   return (
     <View style={styles.container}>
-      <FontAwesomeIcon
-        icon={faUser}
-        style={{ color: colors.neutral50 }}
-        size={56}
-      />
+      {profilePicture ? (
+        <View style={styles.imageContainer}>
+          <Image source={{ uri: profilePicture }} style={styles.image} />
+          <TouchableOpacity onPress={handleChangeImage}>
+            <FontAwesomeIcon
+              icon={faPenToSquare}
+              style={styles.editIcon}
+              size={24}
+            />
+          </TouchableOpacity>
+        </View>
+      ) : (
+        <FontAwesomeIcon
+          icon={faUser}
+          style={{ color: colors.neutral50 }}
+          size={56}
+        />
+      )}
     </View>
   );
 };
@@ -25,6 +46,19 @@ const styles = StyleSheet.create({
     borderRadius: 100 / 2,
     justifyContent: "center",
     alignItems: "center"
+  },
+  imageContainer: {},
+  image: {
+    width: 100,
+    height: undefined,
+    aspectRatio: 1,
+    borderRadius: 150 / 2
+  },
+  editIcon: {
+    position: "absolute",
+    bottom: 0,
+    right: 0,
+    color: colors.neutral50
   }
 });
 
