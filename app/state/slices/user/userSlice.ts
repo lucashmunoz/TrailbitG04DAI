@@ -2,22 +2,26 @@ import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import {
   authenticateUser,
   deleteUserAccount,
-  fetchUserData
+  fetchUserData,
+  updateUserProfile
 } from "./asyncThunks";
 import { UserProfileData } from "../../../ui/types/user";
 
 interface UserState {
   loadingData: boolean;
   loadingAuth: boolean;
+  updatingUserLoading: boolean;
   userId: number;
   userProfileData: UserProfileData;
   isAuthenticated: boolean;
+  isUserUpdated: boolean;
   error: string;
 }
 
 const initialState: UserState = {
   loadingData: false,
   loadingAuth: false,
+  updatingUserLoading: false,
   userId: 0,
   userProfileData: {
     firstName: "",
@@ -27,6 +31,7 @@ const initialState: UserState = {
     profilePicture: ""
   },
   isAuthenticated: false,
+  isUserUpdated: false,
   error: ""
 };
 
@@ -43,8 +48,11 @@ export const userSlice = createSlice({
     clearUserAuthLoading(state) {
       state.loadingAuth = false;
     },
-    clearUserData(state) {
-      state = initialState;
+    clearUserData() {
+      return { ...initialState };
+    },
+    clearUserUpdatedState(state) {
+      state.isUserUpdated = false;
     },
     clearUserDataLoading(state) {
       state.loadingData = false;
@@ -55,7 +63,9 @@ export const userSlice = createSlice({
     selectUserData: state => state.userProfileData,
     selectUserDataLoadingState: state => state.loadingData,
     selectUserAuthLoadingState: state => state.loadingAuth,
+    selectUpdatingUserLoadingState: state => state.updatingUserLoading,
     selectUserAuthState: state => state.isAuthenticated,
+    selectUserUpdatedState: state => state.isUserUpdated,
     selectUserApiError: state => state.error
   },
   extraReducers: builder => {
@@ -88,11 +98,26 @@ export const userSlice = createSlice({
       state.loadingData = false;
       state.error = response.error.message || "error";
     });
+    builder.addCase(updateUserProfile.pending, state => {
+      state.updatingUserLoading = true;
+      state.isUserUpdated = false;
+      state.error = "";
+    });
+    builder.addCase(updateUserProfile.fulfilled, state => {
+      state.updatingUserLoading = false;
+      state.isUserUpdated = true;
+      state.error = "";
+    });
+    builder.addCase(updateUserProfile.rejected, (state, response) => {
+      state.updatingUserLoading = false;
+      state.isUserUpdated = false;
+      state.error = response.error.message || "error";
+    });
     builder.addCase(deleteUserAccount.pending, state => {
       state.error = "";
     });
-    builder.addCase(deleteUserAccount.fulfilled, (state, response) => {
-      state = initialState;
+    builder.addCase(deleteUserAccount.fulfilled, () => {
+      return { ...initialState };
     });
     builder.addCase(deleteUserAccount.rejected, (state, response) => {
       state.error = response.error.message || "error";
@@ -105,6 +130,7 @@ export const {
   saveUserId,
   setUserAuthLoading,
   clearUserAuthLoading,
+  clearUserUpdatedState,
   clearUserDataLoading
 } = userSlice.actions;
 export const {
@@ -113,6 +139,8 @@ export const {
   selectUserDataLoadingState,
   selectUserApiError,
   selectUserAuthLoadingState,
+  selectUserUpdatedState,
+  selectUpdatingUserLoadingState,
   selectUserAuthState
 } = userSlice.selectors;
 

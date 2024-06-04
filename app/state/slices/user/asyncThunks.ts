@@ -70,6 +70,38 @@ export const fetchUserData = createAsyncThunk<
   }
 });
 
+interface UpdateUserPayload {
+  nickName?: string;
+  profilePicture?: string;
+}
+
+export const updateUserProfile = createAsyncThunk(
+  "auth/updateUserProfile",
+  async (
+    { nickName, profilePicture }: UpdateUserPayload,
+    { getState, rejectWithValue }
+  ) => {
+    const { user } = getState() as RootState;
+    const userId = user.userId;
+
+    try {
+      const updateUserAccountUrl = `https://desarrollodeaplicaciones.onrender.com${endpoints.users}`;
+
+      const payload = {
+        id: userId,
+        ...(profilePicture && { image: profilePicture }),
+        ...(nickName && { nickName })
+      };
+
+      await axios.put(updateUserAccountUrl, payload);
+    } catch (error) {
+      return rejectWithValue({
+        error: error
+      });
+    }
+  }
+);
+
 export const deleteUserAccount = createAsyncThunk<
   {},
   void,
