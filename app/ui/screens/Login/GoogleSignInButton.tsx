@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Image, Pressable, StyleSheet, View } from "react-native";
+import { Image, Pressable, StyleSheet, View, Text } from "react-native";
 import { ParamListBase, useNavigation } from "@react-navigation/native";
 import NavigatorConstant from "../../../navigation/NavigatorConstant";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
@@ -38,13 +38,13 @@ const GoogleSignInButton = (): React.JSX.Element => {
         showPlayServicesUpdateDialog: true
       });
 
-      // Get the users ID token
+      // Se obtiene el token de google signin
       const { idToken } = await GoogleSignin.signIn();
 
-      // Create a Google credential with the token
+      // Se generan las credenciales a partir del token
       const googleCredential = auth.GoogleAuthProvider.credential(idToken);
 
-      // Sign-in the user with the credential
+      // Se loguea al usuario a partir de las credenciales
       await auth().signInWithCredential(googleCredential);
 
       await dispatch(authenticateUser({ idToken: idToken || "" }));
@@ -70,9 +70,14 @@ const GoogleSignInButton = (): React.JSX.Element => {
       {isUserAuthLoading ? (
         <LoadingIndicator color={colors.neutral900} size={60} />
       ) : (
-        <Pressable onPress={handleGoogleSignIn}>
-          <Image source={IMAGES.SIGNIN} style={styles.imagen} />
-        </Pressable>
+        <>
+          <Pressable onPress={handleGoogleSignIn}>
+            <View style={styles.buttonContainer}>
+              <Image source={IMAGES.GOOGLE_ICON} style={styles.icon} />
+              <Text style={styles.buttonText}>Acceder con Google</Text>
+            </View>
+          </Pressable>
+        </>
       )}
     </View>
   );
@@ -80,10 +85,31 @@ const GoogleSignInButton = (): React.JSX.Element => {
 
 const styles = StyleSheet.create({
   container: {
-    height: 200
+    height: 200,
+    alignItems: "center",
+    justifyContent: "center"
   },
-  imagen: {
-    resizeMode: "center"
+  buttonContainer: {
+    backgroundColor: colors.neutral900,
+    paddingVertical: 12,
+    paddingHorizontal: 24,
+    borderRadius: 32,
+    gap: 12,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    borderWidth: 1,
+    borderColor: colors.neutral300
+  },
+  buttonText: {
+    color: colors.neutral50,
+    textAlign: "center",
+    fontWeight: "semibold",
+    fontSize: 20
+  },
+  icon: {
+    width: 20,
+    aspectRatio: 1
   }
 });
 

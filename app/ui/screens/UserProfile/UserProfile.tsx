@@ -12,12 +12,18 @@ import { launchImageLibrary } from "react-native-image-picker";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import NavigatorConstant from "../../../navigation/NavigatorConstant";
 import { useAppDispatch, useAppSelector } from "../../../state/store";
-import { fetchUserData } from "../../../state/slices/user/asyncThunks";
+import {
+  fetchUserData,
+  updateUserProfile
+} from "../../../state/slices/user/asyncThunks";
 import {
   clearUserData,
+  clearUserUpdatedState,
+  selectUpdatingUserLoadingState,
   selectUserAuthState,
   selectUserData,
-  selectUserDataLoadingState
+  selectUserDataLoadingState,
+  selectUserUpdatedState
 } from "../../../state/slices/user/userSlice";
 import LoadingIndicator from "../../components/LoadingIndicator";
 
@@ -36,6 +42,8 @@ const UserProfile = (): React.JSX.Element => {
   const isUserDataLoading = useAppSelector(selectUserDataLoadingState);
   const { firstName, lastName, nickName, email, profilePicture } =
     useAppSelector(selectUserData);
+  const isUserBeingUppdated = useAppSelector(selectUpdatingUserLoadingState);
+  const isUserDataUpdated = useAppSelector(selectUserUpdatedState);
 
   const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
 
@@ -56,6 +64,15 @@ const UserProfile = (): React.JSX.Element => {
     }
   };
 
+  const handleSaveChanges = async () => {
+    await dispatch(
+      updateUserProfile({
+        nickName: nicknameInput,
+        profilePicture: profilePictureInput
+      })
+    );
+  };
+
   const handleSignOut = async () => {
     await handleGoogleSignOut();
     dispatch(clearUserData());
@@ -66,13 +83,24 @@ const UserProfile = (): React.JSX.Element => {
     dispatch(fetchUserData());
   }, []);
 
+  // Cuando los datos de usuario son modificados éxito, mostrar el Toast
+  useEffect(() => {
+    if (isUserDataUpdated) {
+      userDataSavedToastRef?.current?.success(
+        "Datos de usuario modificados con éxito."
+      );
+      dispatch(fetchUserData());
+      dispatch(clearUserUpdatedState());
+    }
+  }, [isUserDataUpdated]);
+
   // Set del nickname y la foto de perfil una vez que es devuelto por la api
   useEffect(() => {
     setNicknameInput(nickName);
     setProfilePictureInput(profilePicture);
   }, [nickName, profilePicture]);
 
-  // Cuando se cierra sesi{on / elimina la cuenta, ir a la pantalla de login
+  // Cuando se cierra sesión / elimina la cuenta, ir a la pantalla de login
   useEffect(() => {
     if (!isAuthenticated) {
       navigation.navigate(NavigatorConstant.Login);
@@ -83,17 +111,21 @@ const UserProfile = (): React.JSX.Element => {
     }
   }, [isAuthenticated]);
 
-  const fullName = `${firstName} ${lastName}`;
+  const fullName = `${firstName} ${lastName || ""}`;
   const isSaveChangesDisabled =
     nickName === nicknameInput && profilePicture === profilePictureInput;
 
+  const showLoader = isUserDataLoading || isUserBeingUppdated;
+
   return (
     <SafeAreaView style={styles.userProfileContainer}>
-      <ScrollView style={styles.scrollContainer}>
-        <View style={styles.formContainer}>
-          {isUserDataLoading ? (
-            <LoadingIndicator />
-          ) : (
+      {showLoader ? (
+        <View style={styles.loaderContainer}>
+          <LoadingIndicator />
+        </View>
+      ) : (
+        <ScrollView style={styles.scrollContainer}>
+          <View style={styles.formContainer}>
             <>
               <ProfilePicture
                 profilePicture={profilePictureInput}
@@ -132,11 +164,7 @@ const UserProfile = (): React.JSX.Element => {
                   <Button
                     type="primary"
                     disabled={isSaveChangesDisabled}
-                    onPress={() => {
-                      userDataSavedToastRef?.current?.success(
-                        "Datos de usuario modificados con éxito."
-                      );
-                    }}
+                    onPress={handleSaveChanges}
                     title="Guardar cambios"
                   />
                 </View>
@@ -158,9 +186,9 @@ const UserProfile = (): React.JSX.Element => {
                 />
               </View>
             </>
-          )}
-        </View>
-      </ScrollView>
+          </View>
+        </ScrollView>
+      )}
 
       <DeleteAccountModal
         isOpen={deleteAccountModalOpen}
@@ -184,6 +212,11 @@ const styles = StyleSheet.create({
   scrollContainer: {
     flex: 1,
     width: "100%"
+  },
+  loaderContainer: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center"
   },
   formContainer: { flex: 1, width: "100%", alignItems: "center" },
   dangerButtonsContainer: { gap: 32, width: "100%" }

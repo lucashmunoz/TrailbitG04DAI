@@ -21,7 +21,7 @@ const SearchMovie = (): React.JSX.Element => {
   const { loading, movies, error } = useAppSelector(state => state.movies);
 
   const [searchValue, setSearchValue] = useState("");
-  // Debounce para no llamar a la api hasta que el usuario frene de escribir
+  // Debounce para no llamar a la api hasta que el usuario deje de escribir
   const [debouncedSearchValue] = useDebounce(searchValue, 500, {
     maxWait: 2000
   });

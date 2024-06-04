@@ -3,6 +3,8 @@ import { View, Text, Modal, StyleSheet } from "react-native";
 import colors from "../../styles/colors";
 import Button from "../../components/Button";
 import axios from "axios";
+import { useAppDispatch } from "../../../state/store";
+import { deleteUserAccount } from "../../../state/slices/user/asyncThunks";
 
 interface DeleteAccountModalProps {
   /** Boolean para mostrar u ocultar el modal, elevado al parent */
@@ -18,20 +20,17 @@ const DeleteAccountModal = ({
   setIsOpen,
   handleSignOut
 }: DeleteAccountModalProps) => {
+  const dispatch = useAppDispatch();
+
   const closeModal = () => {
     setIsOpen(false);
   };
 
   const handleDeleteAccount = async () => {
     try {
-      const response = await axios.delete(
-        `https://desarrollodeaplicaciones.onrender.com/api/v1/users/${5}`
-      );
+      await dispatch(deleteUserAccount());
+      handleSignOut();
       closeModal();
-      console.log(response);
-      if (response.status == 204) {
-        handleSignOut();
-      }
     } catch (error) {
       console.error(error);
     }
