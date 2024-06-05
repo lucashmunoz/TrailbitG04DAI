@@ -70,7 +70,9 @@ const Toast = forwardRef<ToastHandle, ToastProps>(
        * Limpiando el timer en caso de que se intente cerrar repetidas veces.
        * Ej. por una combinacion de duration + close()
        */
-      clearTimeout(timerId);
+      if (timerId) {
+        clearTimeout(timerId);
+      }
       timerId = setTimeout(() => {
         Animated.timing(animatedValue, {
           toValue: 0,
@@ -104,7 +106,7 @@ const Toast = forwardRef<ToastHandle, ToastProps>(
 
     useEffect(() => {
       () => clearTimeout(timerId);
-    });
+    }, []);
 
     return (
       <Animated.View
