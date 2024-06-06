@@ -48,6 +48,7 @@ const UserProfile = (): React.JSX.Element => {
   const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
 
   const [nicknameInput, setNicknameInput] = useState(nickName);
+  const [nicknameInputError, setNicknameInputError] = useState("");
   const [profilePictureInput, setProfilePictureInput] =
     useState(profilePicture);
   const [deleteAccountModalOpen, setDeleteAccountModalOpen] = useState(false);
@@ -62,6 +63,19 @@ const UserProfile = (): React.JSX.Element => {
     if (result.assets?.[0]?.base64) {
       setProfilePictureInput(result.assets?.[0]?.base64);
     }
+  };
+
+  const handleNicknameChange = (newNickname: string) => {
+    setNicknameInput(newNickname);
+
+    const nicknameAllowedCharacters = new RegExp(/^[a-zA-Z0-9]*$/);
+    if (!nicknameAllowedCharacters.test(newNickname)) {
+      setNicknameInputError(
+        "El nickname solo puede contener letras o números."
+      );
+      return;
+    }
+    setNicknameInputError("");
   };
 
   const handleSaveChanges = async () => {
@@ -112,8 +126,11 @@ const UserProfile = (): React.JSX.Element => {
   }, [isAuthenticated]);
 
   const fullName = `${firstName} ${lastName || ""}`;
+
   const isSaveChangesDisabled =
-    nickName === nicknameInput && profilePicture === profilePictureInput;
+    nickName === nicknameInput &&
+    profilePicture === profilePictureInput &&
+    nicknameInputError.length !== 0;
 
   const showLoader = isUserDataLoading || isUserBeingUppdated;
 
@@ -143,7 +160,8 @@ const UserProfile = (): React.JSX.Element => {
                   name="Nickname"
                   placeholder="Nickname"
                   value={nicknameInput}
-                  onChangeText={setNicknameInput}
+                  onChangeText={handleNicknameChange}
+                  error={nicknameInputError}
                 />
                 <TextField
                   name="Nombre"
