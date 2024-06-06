@@ -60,6 +60,7 @@ const UserProfile = (): React.JSX.Element => {
       mediaType: "photo",
       includeBase64: true
     });
+
     if (result.assets?.[0]?.base64) {
       setProfilePictureInput(result.assets?.[0]?.base64);
     }
@@ -128,8 +129,7 @@ const UserProfile = (): React.JSX.Element => {
   const fullName = `${firstName} ${lastName || ""}`;
 
   const isSaveChangesDisabled =
-    nickName === nicknameInput &&
-    profilePicture === profilePictureInput &&
+    (nickName === nicknameInput && profilePicture === profilePictureInput) ||
     nicknameInputError.length !== 0;
 
   const showLoader = isUserDataLoading || isUserBeingUppdated;

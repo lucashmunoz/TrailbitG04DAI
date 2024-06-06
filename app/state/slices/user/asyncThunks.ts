@@ -87,9 +87,13 @@ export const updateUserProfile = createAsyncThunk(
     try {
       const updateUserAccountUrl = `https://desarrollodeaplicaciones.onrender.com${endpoints.users}`;
 
+      const image = profilePicture?.includes("http")
+        ? profilePicture
+        : `data:image/jpeg;base64,${profilePicture}`;
+
       const payload = {
         id: userId,
-        ...(profilePicture && { image: profilePicture }),
+        ...(profilePicture && { image }),
         ...(nickName && { nickName })
       };
 

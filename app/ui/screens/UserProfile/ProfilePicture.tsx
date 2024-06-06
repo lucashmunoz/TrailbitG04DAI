@@ -13,11 +13,15 @@ const ProfilePicture = ({
   profilePicture,
   handleChangeImage
 }: ProfilePictureProps): React.JSX.Element => {
+  const imagePath = profilePicture.includes("http")
+    ? profilePicture
+    : `data:image/png;base64,${profilePicture}`;
+
   return (
     <View style={styles.container}>
       {profilePicture ? (
         <View style={styles.imageContainer}>
-          <Image source={{ uri: profilePicture }} style={styles.image} />
+          <Image source={{ uri: imagePath }} style={styles.image} />
           <TouchableOpacity onPress={handleChangeImage}>
             <FontAwesomeIcon
               icon={faPenToSquare}
