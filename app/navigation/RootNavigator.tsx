@@ -14,6 +14,7 @@ import Home from "../ui/screens/Home";
 import UserProfile from "../ui/screens/UserProfile";
 import SearchMovie from "../ui/screens/SearchMovie";
 import Login from "../ui/screens/Login";
+import MovieDetail from "../ui/screens/MovieDetails"
 
 // Routes
 import NavigatorConstant from "./NavigatorConstant";
@@ -153,6 +154,7 @@ const RootNavigator = () => {
           component={TabNavigator}
         />
         <Stack.Screen name={NavigatorConstant.Login} component={Login} />
+        <Stack.Screen name={NavigatorConstant.MovieDetails} component={MovieDetail} />
       </Stack.Navigator>
     </NavigationContainer>
   );
