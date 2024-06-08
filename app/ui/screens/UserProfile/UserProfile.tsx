@@ -26,6 +26,7 @@ import {
   selectUserUpdatedState
 } from "../../../state/slices/user/userSlice";
 import LoadingIndicator from "../../components/LoadingIndicator";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const handleGoogleSignOut = async () => {
   try {
@@ -90,6 +91,8 @@ const UserProfile = (): React.JSX.Element => {
 
   const handleSignOut = async () => {
     await handleGoogleSignOut();
+    await AsyncStorage.setItem("accessToken", "");
+    await AsyncStorage.setItem("refreshToken", "");
     dispatch(clearUserData());
   };
 

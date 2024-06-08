@@ -1,5 +1,6 @@
 const NavigatorConstant = {
   Splash: "Splash",
+  SessionPersistence: "SessionPersistence",
   Login: "Login",
   LoggedIn: "LoggedIn",
   Home: "Home",

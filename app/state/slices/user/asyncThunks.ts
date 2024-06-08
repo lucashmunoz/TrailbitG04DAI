@@ -10,6 +10,8 @@ interface AuthenticateUserPayload {
 
 interface AuthenticateUserResponse {
   userId: string;
+  accessToken: string;
+  refreshToken: string;
 }
 
 export const authenticateUser = createAsyncThunk(
@@ -24,8 +26,48 @@ export const authenticateUser = createAsyncThunk(
         }
       );
 
-      const { userId } = apiResponse?.data;
-      return parseInt(userId);
+      const { userId, accessToken, refreshToken } = apiResponse.data;
+      return { userId, accessToken, refreshToken };
+    } catch (error) {
+      return rejectWithValue({
+        error: error
+      });
+    }
+  }
+);
+
+interface RefreshUserTokenPayload {
+  refreshToken: string;
+}
+
+interface RefreshUserTokenResponse {
+  userId: string;
+  accessToken: string;
+  refreshToken: string;
+}
+
+export const refreshUserToken = createAsyncThunk(
+  "auth/refreshUserToken",
+  async (
+    { refreshToken: token }: RefreshUserTokenPayload,
+    { rejectWithValue }
+  ) => {
+    try {
+      const refreshUserTokenUrl = `https://desarrollodeaplicaciones.onrender.com${endpoints.refreshToken}`;
+      const apiResponse = await axios.post<RefreshUserTokenResponse>(
+        refreshUserTokenUrl,
+        {},
+        {
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`
+          }
+        }
+      );
+
+      const { userId, accessToken, refreshToken } = apiResponse.data;
+      return { userId, accessToken, refreshToken };
     } catch (error) {
       return rejectWithValue({
         error: error

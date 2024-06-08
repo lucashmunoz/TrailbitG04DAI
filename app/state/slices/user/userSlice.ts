@@ -3,6 +3,7 @@ import {
   authenticateUser,
   deleteUserAccount,
   fetchUserData,
+  refreshUserToken,
   updateUserProfile
 } from "./asyncThunks";
 import { UserProfileData } from "../../../ui/types/user";
@@ -12,6 +13,7 @@ interface UserState {
   loadingAuth: boolean;
   updatingUserLoading: boolean;
   userId: number;
+  tokens: { accessToken: string; refreshToken: string };
   userProfileData: UserProfileData;
   isAuthenticated: boolean;
   isUserUpdated: boolean;
@@ -23,6 +25,7 @@ const initialState: UserState = {
   loadingAuth: false,
   updatingUserLoading: false,
   userId: 0,
+  tokens: { accessToken: "", refreshToken: "" },
   userProfileData: {
     firstName: "",
     lastName: "",
@@ -60,6 +63,7 @@ export const userSlice = createSlice({
   },
   selectors: {
     selectUserId: state => state.userId,
+    selectUserTokens: state => state.tokens,
     selectUserData: state => state.userProfileData,
     selectUserDataLoadingState: state => state.loadingData,
     selectUserAuthLoadingState: state => state.loadingAuth,
@@ -76,12 +80,41 @@ export const userSlice = createSlice({
     });
     builder.addCase(authenticateUser.fulfilled, (state, response) => {
       state.loadingAuth = false;
-      state.userId = response.payload;
+      state.userId = parseInt(response.payload.userId);
+      state.tokens = {
+        accessToken: response.payload.accessToken,
+        refreshToken: response.payload.refreshToken
+      };
       state.isAuthenticated = true;
       state.error = "";
     });
     builder.addCase(authenticateUser.rejected, (state, response) => {
       state.loadingAuth = false;
+      state.isAuthenticated = false;
+      state.error = response.error.message || "error";
+    });
+    builder.addCase(refreshUserToken.pending, state => {
+      state.tokens = {
+        accessToken: "",
+        refreshToken: ""
+      };
+      state.error = "";
+    });
+    builder.addCase(refreshUserToken.fulfilled, (state, response) => {
+      state.loadingAuth = false;
+      state.tokens = {
+        accessToken: response.payload.accessToken,
+        refreshToken: response.payload.refreshToken
+      };
+      state.userId = parseInt(response.payload.userId);
+      state.isAuthenticated = true;
+      state.error = "";
+    });
+    builder.addCase(refreshUserToken.rejected, (state, response) => {
+      state.tokens = {
+        accessToken: "",
+        refreshToken: ""
+      };
       state.isAuthenticated = false;
       state.error = response.error.message || "error";
     });
@@ -135,6 +168,7 @@ export const {
 } = userSlice.actions;
 export const {
   selectUserId,
+  selectUserTokens,
   selectUserData,
   selectUserDataLoadingState,
   selectUserApiError,
