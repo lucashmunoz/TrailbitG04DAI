@@ -16,9 +16,9 @@ interface MovieCardProps {
 
 const MovieCard = ({ movie }: MovieCardProps) => {
   const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
-  const { posterPath } = movie;
+  const { backdropPath } = movie;
 
-  const movieImage = posterPath ? { uri: posterPath } : IMAGES.NO_IMAGE;
+  const movieImage = backdropPath ? { uri: backdropPath } : IMAGES.NO_IMAGE;
 
   return (
     <TouchableOpacity
