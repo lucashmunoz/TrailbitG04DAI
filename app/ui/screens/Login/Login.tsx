@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet } from "react-native";
+import { StatusBar, StyleSheet } from "react-native";
 import Logo from "./Logo";
 import GoogleSignInButton from "./GoogleSignInButton";
 import colors from "../../styles/colors";
@@ -22,6 +22,7 @@ const Login = (): React.JSX.Element => {
       end={gradientEnd}
       colors={gradientColors}
       style={styles.container}>
+      <StatusBar backgroundColor={colors.primary700} />
       <Logo />
       <GoogleSignInButton />
     </LinearGradient>

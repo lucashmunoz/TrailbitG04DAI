@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { StyleSheet } from "react-native";
+import { StatusBar, StyleSheet } from "react-native";
 import LinearGradient from "react-native-linear-gradient";
 import LoadingIndicator from "../components/LoadingIndicator";
 import colors from "../styles/colors";
@@ -62,6 +62,7 @@ const SessionPersistence = () => {
       end={gradientEnd}
       colors={gradientColors}
       style={styles.container}>
+      <StatusBar backgroundColor={colors.primary700} />
       <LoadingIndicator color={colors.neutral900} size={60} />
     </LinearGradient>
   );

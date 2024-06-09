@@ -1,5 +1,12 @@
 import React, { useEffect, useRef, useState } from "react";
-import { SafeAreaView, Text, View, ScrollView, StyleSheet } from "react-native";
+import {
+  SafeAreaView,
+  Text,
+  View,
+  ScrollView,
+  StyleSheet,
+  StatusBar
+} from "react-native";
 import { useDebounce } from "use-debounce";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import colors from "../../styles/colors";
@@ -71,6 +78,7 @@ const SearchMovie = (): React.JSX.Element => {
 
   return (
     <SafeAreaView style={styles.searchMovieContainer}>
+      <StatusBar backgroundColor={colors.neutral900} />
       <View style={styles.inputSearchContainer}>
         <TextField
           placeholder="Buscar película por nombre o actor"

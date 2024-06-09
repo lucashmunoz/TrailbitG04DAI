@@ -1,10 +1,11 @@
 import React from "react";
-import { SafeAreaView, Text, StyleSheet } from "react-native";
+import { SafeAreaView, Text, StyleSheet, StatusBar } from "react-native";
 import colors from "../styles/colors";
 
 const Home = (): React.JSX.Element => {
   return (
     <SafeAreaView style={styles.homeContainer}>
+      <StatusBar backgroundColor={colors.neutral900} />
       <Text style={styles.text}>Home Page</Text>
       <Text style={styles.text}>Coming soon...</Text>
     </SafeAreaView>
