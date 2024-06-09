@@ -1,5 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
+import api from "../../../networking/api";
 import { endpoints } from "../../../networking/endpoints";
 import { Movies } from "../../../ui/types/movie";
 import { ToggleOrderButtonState } from "../../../ui/components/ToggleOrder";
@@ -21,8 +21,8 @@ export const fetchPopularMovies = createAsyncThunk(
   "auth/fetchPopularMovies",
   async (_, { rejectWithValue }) => {
     try {
-      const popularMoviesUrl = `https://desarrollodeaplicaciones.onrender.com${endpoints.movies}?popularMovies=true`;
-      const apiResponse = await axios.get<MovieApiResponse[]>(popularMoviesUrl);
+      const popularMoviesUrl = `${endpoints.movies}?popularMovies=true`;
+      const apiResponse = await api.get<MovieApiResponse[]>(popularMoviesUrl);
 
       return apiResponse?.data.map(movie => {
         const { poster_path, release_date, vote_average, vote_count } = movie;
@@ -80,10 +80,8 @@ export const fetchMoviesBySearch = createAsyncThunk(
           : ""
       }`;
 
-      const moviesBySearchUrl = `https://desarrollodeaplicaciones.onrender.com${endpoints.movies}?value=${searchValue}${apiQualificationOrder}${apiDateOrder}`;
-      const apiResponse = await axios.get<MovieApiResponse[]>(
-        moviesBySearchUrl
-      );
+      const moviesBySearchUrl = `${endpoints.movies}?value=${searchValue}${apiQualificationOrder}${apiDateOrder}`;
+      const apiResponse = await api.get<MovieApiResponse[]>(moviesBySearchUrl);
 
       return apiResponse?.data.map(movie => {
         const { poster_path, release_date, vote_average, vote_count } = movie;

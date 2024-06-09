@@ -12,19 +12,16 @@ import {
   clearUserAuthLoading,
   selectUserAuthLoadingState,
   selectUserAuthState,
-  selectUserTokens,
   setUserAuthLoading
 } from "../../../state/slices/user/userSlice";
 import LoadingIndicator from "../../components/LoadingIndicator";
 import colors from "../../styles/colors";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const GoogleSignInButton = (): React.JSX.Element => {
   const dispatch = useAppDispatch();
 
   const isAuthenticated = useAppSelector(selectUserAuthState);
   const isUserAuthLoading = useAppSelector(selectUserAuthLoadingState);
-  const { accessToken, refreshToken } = useAppSelector(selectUserTokens);
 
   const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
 
@@ -60,15 +57,6 @@ const GoogleSignInButton = (): React.JSX.Element => {
   // Cuando el user sea correctamente autenticado, ir a la pantalla de home
   useEffect(() => {
     if (isAuthenticated) {
-      const storeData = async () => {
-        try {
-          await AsyncStorage.setItem("accessToken", accessToken);
-          await AsyncStorage.setItem("refreshToken", refreshToken);
-        } catch (e) {
-          // saving error
-        }
-      };
-      storeData();
       navigation.navigate(NavigatorConstant.LoggedIn);
       navigation.reset({
         index: 0,
