@@ -3,11 +3,7 @@ import axios from "axios";
 import { endpoints } from "./endpoints";
 import { handleGoogleSignOut } from "../googleHelpers";
 
-/*
- * Para realizar pruebas sin el token de autorización:
- * BASE_URL = "https://desarrollodeaplicaciones.onrender.com";
- */
-export const BASE_URL = "https://desarrollodeaplicaciones-1.onrender.com";
+export const BASE_URL = "https://desarrollodeaplicaciones.onrender.com";
 
 axios.defaults.baseURL = BASE_URL;
 axios.defaults.timeout = 600000;

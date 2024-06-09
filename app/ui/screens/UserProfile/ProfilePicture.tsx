@@ -13,7 +13,7 @@ const ProfilePicture = ({
   profilePicture,
   handleChangeImage
 }: ProfilePictureProps): React.JSX.Element => {
-  const imagePath = profilePicture.includes("http")
+  const imagePath = profilePicture.includes("https")
     ? profilePicture
     : `data:image/png;base64,${profilePicture}`;
 
