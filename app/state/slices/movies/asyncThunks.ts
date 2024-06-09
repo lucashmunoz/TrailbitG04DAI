@@ -25,10 +25,17 @@ export const fetchPopularMovies = createAsyncThunk(
       const apiResponse = await api.get<MovieApiResponse[]>(popularMoviesUrl);
 
       return apiResponse?.data.map(movie => {
-        const { poster_path, release_date, vote_average, vote_count } = movie;
+        const {
+          poster_path,
+          backdrop_path,
+          release_date,
+          vote_average,
+          vote_count
+        } = movie;
         return {
           ...movie,
           posterPath: poster_path,
+          backdropPath: backdrop_path,
           releaseDate: release_date,
           voteAverage: vote_average,
           voteCount: vote_count
@@ -84,10 +91,17 @@ export const fetchMoviesBySearch = createAsyncThunk(
       const apiResponse = await api.get<MovieApiResponse[]>(moviesBySearchUrl);
 
       return apiResponse?.data.map(movie => {
-        const { poster_path, release_date, vote_average, vote_count } = movie;
+        const {
+          poster_path,
+          backdrop_path,
+          release_date,
+          vote_average,
+          vote_count
+        } = movie;
         return {
           ...movie,
           posterPath: poster_path,
+          backdropPath: backdrop_path,
           releaseDate: release_date,
           voteAverage: vote_average,
           voteCount: vote_count
