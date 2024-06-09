@@ -3,7 +3,7 @@ import {
   authenticateUser,
   deleteUserAccount,
   fetchUserData,
-  refreshUserToken,
+  fetchPersistedUserToken,
   updateUserProfile
 } from "./asyncThunks";
 import { UserProfileData } from "../../../ui/types/user";
@@ -21,7 +21,7 @@ interface UserState {
 }
 
 const initialState: UserState = {
-  loadingData: false,
+  loadingData: true,
   loadingAuth: false,
   updatingUserLoading: false,
   userId: 0,
@@ -63,7 +63,6 @@ export const userSlice = createSlice({
   },
   selectors: {
     selectUserId: state => state.userId,
-    selectUserTokens: state => state.tokens,
     selectUserData: state => state.userProfileData,
     selectUserDataLoadingState: state => state.loadingData,
     selectUserAuthLoadingState: state => state.loadingAuth,
@@ -93,14 +92,14 @@ export const userSlice = createSlice({
       state.isAuthenticated = false;
       state.error = response.error.message || "error";
     });
-    builder.addCase(refreshUserToken.pending, state => {
+    builder.addCase(fetchPersistedUserToken.pending, state => {
       state.tokens = {
         accessToken: "",
         refreshToken: ""
       };
       state.error = "";
     });
-    builder.addCase(refreshUserToken.fulfilled, (state, response) => {
+    builder.addCase(fetchPersistedUserToken.fulfilled, (state, response) => {
       state.loadingAuth = false;
       state.tokens = {
         accessToken: response.payload.accessToken,
@@ -110,7 +109,7 @@ export const userSlice = createSlice({
       state.isAuthenticated = true;
       state.error = "";
     });
-    builder.addCase(refreshUserToken.rejected, (state, response) => {
+    builder.addCase(fetchPersistedUserToken.rejected, (state, response) => {
       state.tokens = {
         accessToken: "",
         refreshToken: ""
@@ -168,7 +167,6 @@ export const {
 } = userSlice.actions;
 export const {
   selectUserId,
-  selectUserTokens,
   selectUserData,
   selectUserDataLoadingState,
   selectUserApiError,

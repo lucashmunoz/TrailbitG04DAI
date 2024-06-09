@@ -5,7 +5,7 @@ import LoadingIndicator from "../components/LoadingIndicator";
 import colors from "../styles/colors";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useAppDispatch, useAppSelector } from "../../state/store";
-import { refreshUserToken } from "../../state/slices/user/asyncThunks";
+import { fetchPersistedUserToken } from "../../state/slices/user/asyncThunks";
 import { ParamListBase, useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { selectUserApiError } from "../../state/slices/user/userSlice";
@@ -38,7 +38,7 @@ const SessionPersistence = () => {
     try {
       const refreshToken = await AsyncStorage.getItem("refreshToken");
       if (refreshToken) {
-        await dispatch(refreshUserToken({ refreshToken }));
+        await dispatch(fetchPersistedUserToken({ refreshToken }));
       }
       navigateToLoginPage();
     } catch (e) {
