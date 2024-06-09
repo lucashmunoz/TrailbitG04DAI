@@ -1,6 +1,7 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 import { endpoints } from "./endpoints";
+import { handleGoogleSignOut } from "../googleHelpers";
 
 /*
  * Para realizar pruebas sin el token de autorización:
@@ -69,6 +70,8 @@ const createAxiosResponseInterceptor = () => {
           /**
            * TODO: redirigir a login
            */
+
+          handleGoogleSignOut();
 
           return Promise.reject(error2);
         })

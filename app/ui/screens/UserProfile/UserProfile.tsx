@@ -1,12 +1,17 @@
 import React, { useState, useRef, useEffect } from "react";
-import { SafeAreaView, View, ScrollView, StyleSheet } from "react-native";
+import {
+  SafeAreaView,
+  View,
+  ScrollView,
+  StyleSheet,
+  StatusBar
+} from "react-native";
 import colors from "../../styles/colors";
 import TextField from "../../components/TextField";
 import Button from "../../components/Button";
 import Toast, { ToastHandle } from "../../components/Toast";
 import ProfilePicture from "./ProfilePicture";
 import DeleteAccountModal from "./DeleteAccountModal";
-import { GoogleSignin } from "@react-native-google-signin/google-signin";
 import { ParamListBase, useNavigation } from "@react-navigation/native";
 import { launchImageLibrary } from "react-native-image-picker";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
@@ -27,14 +32,7 @@ import {
 } from "../../../state/slices/user/userSlice";
 import LoadingIndicator from "../../components/LoadingIndicator";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-
-const handleGoogleSignOut = async () => {
-  try {
-    await GoogleSignin.signOut();
-  } catch (error) {
-    console.error(error);
-  }
-};
+import { handleGoogleSignOut } from "../../../googleHelpers";
 
 const UserProfile = (): React.JSX.Element => {
   const dispatch = useAppDispatch();
@@ -139,6 +137,7 @@ const UserProfile = (): React.JSX.Element => {
 
   return (
     <SafeAreaView style={styles.userProfileContainer}>
+      <StatusBar backgroundColor={colors.neutral900} />
       {showLoader ? (
         <View style={styles.loaderContainer}>
           <LoadingIndicator />

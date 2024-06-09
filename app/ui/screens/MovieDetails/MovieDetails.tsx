@@ -1,5 +1,11 @@
 import React from "react";
-import { SafeAreaView, Text, StyleSheet, TouchableOpacity } from "react-native";
+import {
+  SafeAreaView,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  StatusBar
+} from "react-native";
 import colors from "../../styles/colors";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faChevronLeft } from "@fortawesome/free-solid-svg-icons";
@@ -15,6 +21,7 @@ const Moviedetails = (): React.JSX.Element => {
 
   return (
     <SafeAreaView style={styles.movieDetailsContainer}>
+      <StatusBar backgroundColor={colors.neutral900} />
       <TouchableOpacity
         style={styles.backButtonContainer}
         onPress={handleBackButton}>
