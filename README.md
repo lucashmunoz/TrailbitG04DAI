@@ -66,4 +66,4 @@ Antes de comenzar, asegúrate de tener instalado lo siguiente:
          ```
 ## Changelog y Controlador de versiones
 
-- URL al Changelog: [!CHANGELOG](./README.md)
+- URL al Changelog: [CHANGELOG](./CHANGELOG.md)
