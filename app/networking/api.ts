@@ -52,8 +52,7 @@ const createAxiosResponseInterceptor = () => {
           await AsyncStorage.setItem("accessToken", accessToken);
           await AsyncStorage.setItem("refreshToken", refreshToken);
 
-          error.response.config.headers["Authorization"] =
-            "Bearer " + accessToken;
+          error.response.config.headers["Authorization"] = "Bearer xxxxx";
 
           // Se vuelve a realizar la petición, con el token nuevo
           return axios(error.response.config);
@@ -66,6 +65,8 @@ const createAxiosResponseInterceptor = () => {
           /**
            * TODO: redirigir a login
            */
+          console.log("voy a hacer el axios get");
+          axios.get("Login");
 
           handleGoogleSignOut();
 
