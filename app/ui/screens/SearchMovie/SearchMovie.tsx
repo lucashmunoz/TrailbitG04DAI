@@ -1,5 +1,4 @@
 import React, { useEffect, useRef, useState } from "react";
-import "react-native-get-random-values";
 import {
   SafeAreaView,
   Text,
@@ -36,6 +35,9 @@ const SearchMovie = (): React.JSX.Element => {
   const typeOfResponse = useAppSelector(selectTypeOfResponse);
   const moviesBySearch = useAppSelector(selectMoviesBySearch);
   const popularMovies = useAppSelector(selectPopularMovies);
+  const [orderDateEnabled, setOrderDateEnabled] = useState(true);
+  const [orderCalificationEnabled, setOrderCalificationEnabled] =
+    useState(true);
 
   const [searchValue, setSearchValue] = useState("");
   const [debouncedSearchValue] = useDebounce(searchValue, 500, {
@@ -112,6 +114,20 @@ const SearchMovie = (): React.JSX.Element => {
     }
   };
 
+  useEffect(() => {
+    console.log(typeOfResponse);
+    console.log(noResults);
+    if (typeOfResponse === "popular" || noResults) {
+      setOrderCalificationEnabled(true);
+      setOrderDateEnabled(true);
+    } else {
+      setOrderCalificationEnabled(false);
+      setOrderDateEnabled(false);
+    }
+
+    console.log(orderCalificationEnabled, orderDateEnabled);
+  }, [typeOfResponse, noResults]);
+
   return (
     <SafeAreaView style={styles.searchMovieContainer}>
       <StatusBar backgroundColor={colors.neutral900} />
@@ -128,6 +144,7 @@ const SearchMovie = (): React.JSX.Element => {
         <ToggleOrderButton
           text="Calificación"
           state={rateOrderState}
+          disabled={orderCalificationEnabled}
           onPress={() => {
             setRateOrderState(getNewToggleState(rateOrderState));
           }}
@@ -136,6 +153,7 @@ const SearchMovie = (): React.JSX.Element => {
         <ToggleOrderButton
           text="Fecha Publicación"
           state={dateOrderState}
+          disabled={orderDateEnabled}
           onPress={() => {
             setDateOrderState(getNewToggleState(dateOrderState));
           }}
