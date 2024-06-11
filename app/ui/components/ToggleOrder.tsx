@@ -45,6 +45,7 @@ const ToggleOrderButton = ({
   disabled = false
 }: ToggleOrderButtonProps) => {
   const OrderIcon = () => {
+    if (disabled === true) state = "none";
     switch (state) {
       case "asc":
         return ArrowUpIcon;
@@ -63,7 +64,9 @@ const ToggleOrderButton = ({
         state === "none" && styles.noOrderContainer,
         disabled && styles.disabledContainer
       ]}
-      onPress={onPress}>
+      onPress={disabled ? undefined : onPress}
+      disabled={disabled} // Esta prop se asegura de que el botón no sea clickeable
+    >
       <Text style={styles.text}>{text}</Text>
       {OrderIcon()}
     </TouchableOpacity>
