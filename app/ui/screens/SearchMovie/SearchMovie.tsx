@@ -93,7 +93,7 @@ const SearchMovie = (): React.JSX.Element => {
     fetchMovies({ page: 1 });
     setPaginationLoader(false);
     setSearchPage(1);
-  }, [debouncedSearchValue]);
+  }, [debouncedSearchValue, rateOrderState, dateOrderState]);
 
   useEffect(() => {
     if (error.length !== 0) {
@@ -115,8 +115,6 @@ const SearchMovie = (): React.JSX.Element => {
   };
 
   useEffect(() => {
-    console.log(typeOfResponse);
-    console.log(noResults);
     if (typeOfResponse === "popular" || noResults) {
       setOrderCalificationEnabled(true);
       setOrderDateEnabled(true);
@@ -124,8 +122,6 @@ const SearchMovie = (): React.JSX.Element => {
       setOrderCalificationEnabled(false);
       setOrderDateEnabled(false);
     }
-
-    console.log(orderCalificationEnabled, orderDateEnabled);
   }, [typeOfResponse, noResults]);
 
   return (
