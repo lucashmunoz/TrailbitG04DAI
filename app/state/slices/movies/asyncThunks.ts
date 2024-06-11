@@ -17,14 +17,20 @@ interface MovieApiResponse {
   vote_count: number;
 }
 
+interface FetchMoviesPopularPayload {
+  page: number;
+}
+
 export const fetchPopularMovies = createAsyncThunk(
   "auth/fetchPopularMovies",
-  async (_, { rejectWithValue }) => {
+  async ({ page = 1 }: FetchMoviesPopularPayload, { rejectWithValue }) => {
     try {
-      const popularMoviesUrl = `${endpoints.movies}?popularMovies=true`;
-      const apiResponse = await api.get<MovieApiResponse[]>(popularMoviesUrl);
+      const fetchPopularMoviesUrl = `${endpoints.movies}?popularMovies=true&page=${page}`;
+      const apiResponse = await api.get<MovieApiResponse[]>(
+        fetchPopularMoviesUrl
+      );
 
-      return apiResponse?.data.map(movie => {
+      const movies = apiResponse?.data.map(movie => {
         const {
           poster_path,
           backdrop_path,
@@ -41,6 +47,11 @@ export const fetchPopularMovies = createAsyncThunk(
           voteCount: vote_count
         };
       }) as Movies;
+
+      return {
+        movies,
+        page
+      };
     } catch (error) {
       return rejectWithValue({
         error: error
@@ -53,12 +64,18 @@ interface FetchMoviesBySearchPayload {
   searchValue: string;
   rateOrderState: ToggleOrderButtonState;
   dateOrderState: ToggleOrderButtonState;
+  page: number;
 }
 
 export const fetchMoviesBySearch = createAsyncThunk(
   "auth/fetchMoviesBySearch",
   async (
-    { searchValue, rateOrderState, dateOrderState }: FetchMoviesBySearchPayload,
+    {
+      searchValue,
+      rateOrderState,
+      dateOrderState,
+      page = 1
+    }: FetchMoviesBySearchPayload,
     { rejectWithValue }
   ) => {
     try {
@@ -87,10 +104,10 @@ export const fetchMoviesBySearch = createAsyncThunk(
           : ""
       }`;
 
-      const moviesBySearchUrl = `${endpoints.movies}?value=${searchValue}${apiQualificationOrder}${apiDateOrder}`;
+      const moviesBySearchUrl = `${endpoints.movies}?value=${searchValue}${apiQualificationOrder}${apiDateOrder}&page=${page}`;
       const apiResponse = await api.get<MovieApiResponse[]>(moviesBySearchUrl);
 
-      return apiResponse?.data.map(movie => {
+      const movies = apiResponse?.data.map(movie => {
         const {
           poster_path,
           backdrop_path,
@@ -107,6 +124,11 @@ export const fetchMoviesBySearch = createAsyncThunk(
           voteCount: vote_count
         };
       }) as Movies;
+
+      return {
+        movies,
+        page
+      };
     } catch (error) {
       return rejectWithValue({
         error: error

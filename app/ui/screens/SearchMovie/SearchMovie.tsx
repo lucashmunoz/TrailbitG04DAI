@@ -1,11 +1,13 @@
 import React, { useEffect, useRef, useState } from "react";
+import "react-native-get-random-values";
 import {
   SafeAreaView,
   Text,
   View,
-  ScrollView,
   StyleSheet,
-  StatusBar
+  StatusBar,
+  ActivityIndicator,
+  FlatList
 } from "react-native";
 import { useDebounce } from "use-debounce";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
@@ -27,7 +29,6 @@ import {
   selectMoviesBySearch,
   selectPopularMovies
 } from "../../../state/slices/movies/moviesSlice";
-import { Movies } from "../../types/movie";
 
 const SearchMovie = (): React.JSX.Element => {
   const dispatch = useAppDispatch();
@@ -37,10 +38,12 @@ const SearchMovie = (): React.JSX.Element => {
   const popularMovies = useAppSelector(selectPopularMovies);
 
   const [searchValue, setSearchValue] = useState("");
-  // Debounce para no llamar a la api hasta que el usuario deje de escribir
   const [debouncedSearchValue] = useDebounce(searchValue, 500, {
     maxWait: 2000
   });
+
+  const [searchPage, setSearchPage] = useState(1); // Inicializamos searchPage en 1
+  const [paginationLoader, setPaginationLoader] = useState(false);
 
   const [rateOrderState, setRateOrderState] =
     useState<ToggleOrderButtonState>("none");
@@ -49,7 +52,7 @@ const SearchMovie = (): React.JSX.Element => {
 
   const fetchMoviesErrorToastRef = useRef<ToastHandle>(null);
 
-  const noSearchProvided = debouncedSearchValue.length === 0;
+  const noSearchProvided = searchValue.length === 0;
 
   const getNewToggleState = (oldState: ToggleOrderButtonState) => {
     switch (oldState) {
@@ -66,33 +69,29 @@ const SearchMovie = (): React.JSX.Element => {
   const noResults =
     debouncedSearchValue.length !== 0 && moviesBySearch.length === 0;
 
-  const displayMovies = () => {
-    let movies: Movies = [];
-    if (typeOfResponse === "popular" || noResults) {
-      movies = popularMovies;
-    } else {
-      movies = moviesBySearch;
-    }
+  const movies =
+    typeOfResponse === "popular" || noResults ? popularMovies : moviesBySearch;
 
-    return movies.map(movie => {
-      const { id } = movie;
-      return <MovieCard key={id} movie={movie} />;
-    });
-  };
-
-  useEffect(() => {
+  const fetchMovies = ({ page = searchPage }: { page?: number }) => {
     if (debouncedSearchValue.length === 0) {
-      dispatch(fetchPopularMovies());
+      dispatch(fetchPopularMovies({ page }));
     } else {
       dispatch(
         fetchMoviesBySearch({
           searchValue: debouncedSearchValue,
           rateOrderState,
-          dateOrderState
+          dateOrderState,
+          page
         })
       );
     }
-  }, [debouncedSearchValue, rateOrderState, dateOrderState]);
+  };
+
+  useEffect(() => {
+    fetchMovies({ page: 1 });
+    setPaginationLoader(false);
+    setSearchPage(1);
+  }, [debouncedSearchValue]);
 
   useEffect(() => {
     if (error.length !== 0) {
@@ -101,6 +100,17 @@ const SearchMovie = (): React.JSX.Element => {
       );
     }
   }, [error]);
+
+  const handleScroll = ({ nativeEvent }) => {
+    const { layoutMeasurement, contentOffset, contentSize } = nativeEvent;
+    if (layoutMeasurement.height + contentOffset.y >= contentSize.height - 20) {
+      if (!loading) {
+        setSearchPage(prev => prev + 1);
+        setPaginationLoader(true);
+        fetchMovies({ page: searchPage + 1 });
+      }
+    }
+  };
 
   return (
     <SafeAreaView style={styles.searchMovieContainer}>
@@ -132,10 +142,10 @@ const SearchMovie = (): React.JSX.Element => {
         />
       </View>
 
-      {loading ? (
+      {loading && !paginationLoader ? (
         <LoadingIndicator />
       ) : (
-        <ScrollView style={styles.scrollMoviesContainer}>
+        <>
           {noResults && (
             <Text style={styles.noResultsText}>
               ¡Ups! No encontramos películas con esa búsqueda.
@@ -146,8 +156,20 @@ const SearchMovie = (): React.JSX.Element => {
             <Text style={styles.popularMoviesTitle}>Más populares</Text>
           )}
 
-          <View style={styles.moviesViewContainer}>{displayMovies()}</View>
-        </ScrollView>
+          <View style={styles.moviesViewContainer}>
+            <FlatList
+              onScroll={handleScroll}
+              onMomentumScrollEnd={handleScroll}
+              scrollEventThrottle={50}
+              data={movies}
+              renderItem={({ item }) => <MovieCard movie={item} />}
+              keyExtractor={movie => movie.id.toString()}
+            />
+          </View>
+          {loading && paginationLoader && (
+            <ActivityIndicator size="large" color={colors.neutral50} />
+          )}
+        </>
       )}
 
       <Toast ref={fetchMoviesErrorToastRef} duration={3500} />
@@ -189,7 +211,9 @@ const styles = StyleSheet.create({
     width: "100%"
   },
   moviesViewContainer: {
-    gap: 20
+    flexDirection: "row",
+    flex: 1,
+    width: "100%"
   },
   noResultsText: {
     color: colors.neutral50,
@@ -197,7 +221,8 @@ const styles = StyleSheet.create({
     fontWeight: "semibold",
     width: "100%",
     textAlign: "left",
-    paddingBottom: 10
+    gap: 20,
+    paddingBottom: 20
   }
 });
 
