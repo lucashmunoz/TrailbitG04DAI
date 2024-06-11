@@ -33,8 +33,13 @@ export const moviesSlice = createSlice({
       state.error = "";
     });
     builder.addCase(fetchPopularMovies.fulfilled, (state, response) => {
+      const page = response.payload.page;
+
       state.loading = false;
-      state.popularMovies = response.payload;
+      state.popularMovies =
+        page === 1
+          ? response.payload.movies
+          : [...state.popularMovies, ...response.payload.movies];
       state.typeOfResponse = "popular";
       state.error = "";
     });
@@ -47,8 +52,13 @@ export const moviesSlice = createSlice({
       state.error = "";
     });
     builder.addCase(fetchMoviesBySearch.fulfilled, (state, response) => {
+      const page = response.payload.page;
+
       state.loading = false;
-      state.moviesBySearch = response.payload;
+      state.moviesBySearch =
+        page === 1
+          ? response.payload.movies
+          : [...state.moviesBySearch, ...response.payload.movies];
       state.typeOfResponse = "input";
       state.error = "";
     });

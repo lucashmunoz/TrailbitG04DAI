@@ -43,8 +43,12 @@ const MovieCard = ({ movie }: MovieCardProps) => {
 const styles = StyleSheet.create({
   container: {
     width: "100%",
+    flex: 1,
+    gap: 16,
+    height: 90,
     flexDirection: "row",
-    gap: 16
+    alignItems: "center",
+    paddingTop: 16
   },
   imageContainer: {
     width: 140,
