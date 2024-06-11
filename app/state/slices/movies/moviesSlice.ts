@@ -4,13 +4,17 @@ import { Movie } from "../../../ui/types/movie";
 
 interface MoviesState {
   loading: boolean;
-  movies: Movie[];
+  moviesBySearch: Movie[];
+  popularMovies: Movie[];
+  typeOfResponse: "popular" | "input";
   error: string;
 }
 
 const initialState: MoviesState = {
-  loading: false,
-  movies: [],
+  loading: true,
+  moviesBySearch: [],
+  popularMovies: [],
+  typeOfResponse: "popular",
   error: ""
 };
 
@@ -18,6 +22,11 @@ export const moviesSlice = createSlice({
   name: "movies",
   initialState: initialState,
   reducers: {},
+  selectors: {
+    selectTypeOfResponse: state => state.typeOfResponse,
+    selectMoviesBySearch: state => state.moviesBySearch,
+    selectPopularMovies: state => state.popularMovies
+  },
   extraReducers: builder => {
     builder.addCase(fetchPopularMovies.pending, state => {
       state.loading = true;
@@ -25,7 +34,8 @@ export const moviesSlice = createSlice({
     });
     builder.addCase(fetchPopularMovies.fulfilled, (state, response) => {
       state.loading = false;
-      state.movies = response.payload;
+      state.popularMovies = response.payload;
+      state.typeOfResponse = "popular";
       state.error = "";
     });
     builder.addCase(fetchPopularMovies.rejected, (state, response) => {
@@ -38,7 +48,8 @@ export const moviesSlice = createSlice({
     });
     builder.addCase(fetchMoviesBySearch.fulfilled, (state, response) => {
       state.loading = false;
-      state.movies = response.payload;
+      state.moviesBySearch = response.payload;
+      state.typeOfResponse = "input";
       state.error = "";
     });
     builder.addCase(fetchMoviesBySearch.rejected, (state, response) => {
@@ -47,5 +58,11 @@ export const moviesSlice = createSlice({
     });
   }
 });
+
+export const {
+  selectTypeOfResponse,
+  selectMoviesBySearch,
+  selectPopularMovies
+} = moviesSlice.selectors;
 
 export default moviesSlice;

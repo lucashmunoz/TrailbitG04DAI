@@ -165,6 +165,7 @@ export const {
   clearUserUpdatedState,
   clearUserDataLoading
 } = userSlice.actions;
+
 export const {
   selectUserId,
   selectUserData,

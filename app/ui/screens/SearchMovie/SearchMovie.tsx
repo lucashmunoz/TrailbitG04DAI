@@ -22,10 +22,19 @@ import ToggleOrderButton, {
   ToggleOrderButtonState
 } from "../../components/ToggleOrder";
 import Toast, { ToastHandle } from "../../components/Toast";
+import {
+  selectTypeOfResponse,
+  selectMoviesBySearch,
+  selectPopularMovies
+} from "../../../state/slices/movies/moviesSlice";
+import { Movies } from "../../types/movie";
 
 const SearchMovie = (): React.JSX.Element => {
   const dispatch = useAppDispatch();
-  const { loading, movies, error } = useAppSelector(state => state.movies);
+  const { loading, error } = useAppSelector(state => state.movies);
+  const typeOfResponse = useAppSelector(selectTypeOfResponse);
+  const moviesBySearch = useAppSelector(selectMoviesBySearch);
+  const popularMovies = useAppSelector(selectPopularMovies);
 
   const [searchValue, setSearchValue] = useState("");
   // Debounce para no llamar a la api hasta que el usuario deje de escribir
@@ -40,7 +49,7 @@ const SearchMovie = (): React.JSX.Element => {
 
   const fetchMoviesErrorToastRef = useRef<ToastHandle>(null);
 
-  const noSearchProvided = searchValue.length === 0;
+  const noSearchProvided = debouncedSearchValue.length === 0;
 
   const getNewToggleState = (oldState: ToggleOrderButtonState) => {
     switch (oldState) {
@@ -52,6 +61,23 @@ const SearchMovie = (): React.JSX.Element => {
       default:
         return "asc";
     }
+  };
+
+  const noResults =
+    debouncedSearchValue.length !== 0 && moviesBySearch.length === 0;
+
+  const displayMovies = () => {
+    let movies: Movies = [];
+    if (typeOfResponse === "popular" || noResults) {
+      movies = popularMovies;
+    } else {
+      movies = moviesBySearch;
+    }
+
+    return movies.map(movie => {
+      const { id } = movie;
+      return <MovieCard key={id} movie={movie} />;
+    });
   };
 
   useEffect(() => {
@@ -106,20 +132,21 @@ const SearchMovie = (): React.JSX.Element => {
         />
       </View>
 
-      {noSearchProvided && (
-        <Text style={styles.popularMoviesTitle}>Más populares</Text>
-      )}
-
       {loading ? (
         <LoadingIndicator />
       ) : (
         <ScrollView style={styles.scrollMoviesContainer}>
-          <View style={styles.moviesViewContainer}>
-            {movies.map(movie => {
-              const { id } = movie;
-              return <MovieCard key={id} movie={movie} />;
-            })}
-          </View>
+          {noResults && (
+            <Text style={styles.noResultsText}>
+              ¡Ups! No encontramos películas con esa búsqueda.
+            </Text>
+          )}
+
+          {(noSearchProvided || noResults) && (
+            <Text style={styles.popularMoviesTitle}>Más populares</Text>
+          )}
+
+          <View style={styles.moviesViewContainer}>{displayMovies()}</View>
         </ScrollView>
       )}
 
@@ -154,7 +181,8 @@ const styles = StyleSheet.create({
     fontSize: 22,
     fontWeight: "semibold",
     width: "100%",
-    textAlign: "left"
+    textAlign: "left",
+    paddingBottom: 10
   },
   scrollMoviesContainer: {
     flex: 1,
@@ -162,6 +190,14 @@ const styles = StyleSheet.create({
   },
   moviesViewContainer: {
     gap: 20
+  },
+  noResultsText: {
+    color: colors.neutral50,
+    fontSize: 18,
+    fontWeight: "semibold",
+    width: "100%",
+    textAlign: "left",
+    paddingBottom: 10
   }
 });
 
