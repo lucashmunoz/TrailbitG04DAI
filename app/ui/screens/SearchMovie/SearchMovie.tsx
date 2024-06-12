@@ -195,7 +195,7 @@ const styles = StyleSheet.create({
   searchMovieContainer: {
     backgroundColor: colors.neutral900,
     flex: 1,
-    gap: 20,
+    gap: 12,
     paddingHorizontal: 24,
     paddingTop: 64,
     paddingBottom: 16,
@@ -217,8 +217,7 @@ const styles = StyleSheet.create({
     fontSize: 22,
     fontWeight: "semibold",
     width: "100%",
-    textAlign: "left",
-    paddingBottom: 10
+    textAlign: "left"
   },
   scrollMoviesContainer: {
     flex: 1,
@@ -236,7 +235,7 @@ const styles = StyleSheet.create({
     width: "100%",
     textAlign: "left",
     gap: 20,
-    paddingBottom: 20
+    paddingTop: 8
   }
 });
 
