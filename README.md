@@ -49,13 +49,9 @@ Antes de comenzar, asegúrate de tener instalado lo siguiente:
 3. **Ejecutar la Aplicacion:**
 
    - Android: (Asegúrate de que un emulador de Android esté en ejecución o conecta un dispositivo Android.)
-      1. Iniciar Metro:
+      1. En una nueva terminal, compilar y ejecutar la aplicación en el emulador o dispositivo:
          ```bash
-         npx react-native start
-         ```
-      2. En una nueva terminal, compilar y ejecutar la aplicación en el emulador o dispositivo:
-         ```bash
-         npx react-native run-android
+         npm run android
          ```
    - IOS: (Asegúrate de que un simulador de iOS esté en ejecución.)
       1. Instalar dependencias nativas de iOS:
@@ -64,12 +60,10 @@ Antes de comenzar, asegúrate de tener instalado lo siguiente:
          pod install
          cd ..
          ```
-      2. Iniciar Metro (el servidor de desarrollo):
+      2. En una nueva terminal, compilar y ejecutar la aplicación en el simulador de iOS:
          ```bash
-         npx react-native start
+         npx run ios
          ```
-      3. En una nueva terminal, compilar y ejecutar la aplicación en el simulador de iOS:
-         ```bash
-         npx react-native run-ios
-         ```
-         
+## Changelog y Controlador de versiones
+
+- URL al Changelog: [CHANGELOG](./CHANGELOG.md)
