@@ -67,7 +67,7 @@ const ToggleOrderButton = ({
       onPress={disabled ? undefined : onPress}
       disabled={disabled} // Esta prop se asegura de que el botón no sea clickeable
     >
-      <Text style={styles.text}>{text}</Text>
+      <Text style={[styles.text, disabled && styles.disabledText]}>{text}</Text>
       {OrderIcon()}
     </TouchableOpacity>
   );
@@ -94,6 +94,9 @@ const styles = StyleSheet.create({
   text: {
     color: colors.neutral50,
     textAlign: "center"
+  },
+  disabledText: {
+    color: colors.neutral500
   }
 });
 

@@ -140,7 +140,7 @@ const UserProfile = (): React.JSX.Element => {
       <StatusBar backgroundColor={colors.neutral900} />
       {showLoader ? (
         <View style={styles.loaderContainer}>
-          <LoadingIndicator />
+          <LoadingIndicator color={colors.neutral50} />
         </View>
       ) : (
         <ScrollView style={styles.scrollContainer}>

@@ -59,12 +59,12 @@ const SearchMovie = (): React.JSX.Element => {
   const getNewToggleState = (oldState: ToggleOrderButtonState) => {
     switch (oldState) {
       case "asc":
-        return "desc";
-      case "desc":
         return "none";
+      case "desc":
+        return "asc";
       case "none":
       default:
-        return "asc";
+        return "desc";
     }
   };
 
@@ -157,7 +157,7 @@ const SearchMovie = (): React.JSX.Element => {
       </View>
 
       {loading && !paginationLoader ? (
-        <LoadingIndicator />
+        <LoadingIndicator color={colors.neutral50} />
       ) : (
         <>
           {noResults && (
