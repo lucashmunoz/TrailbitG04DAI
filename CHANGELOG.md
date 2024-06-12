@@ -1,7 +1,7 @@
 ## 0.1.0 (Junio 13, 2024)
 
 - Creación y modificación del icono de la app
-- Implementación de la vista Splash
+- Implementación del Splash Screen
 - Inicio de sesión con Google Sign-In
 - Pantalla de búsqueda de películas
 - Sección del perfil de usuario
