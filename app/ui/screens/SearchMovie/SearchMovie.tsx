@@ -35,9 +35,7 @@ const SearchMovie = (): React.JSX.Element => {
   const typeOfResponse = useAppSelector(selectTypeOfResponse);
   const moviesBySearch = useAppSelector(selectMoviesBySearch);
   const popularMovies = useAppSelector(selectPopularMovies);
-  const [orderDateEnabled, setOrderDateEnabled] = useState(true);
-  const [orderCalificationEnabled, setOrderCalificationEnabled] =
-    useState(true);
+  const [isOrderDisabled, setIsOrderDisabled] = useState(true);
 
   const [searchValue, setSearchValue] = useState("");
   const [debouncedSearchValue] = useDebounce(searchValue, 500, {
@@ -82,6 +80,7 @@ const SearchMovie = (): React.JSX.Element => {
 
   const fetchMovies = ({ page = searchPage }: { page?: number }) => {
     if (debouncedSearchValue.length === 0) {
+      setIsOrderDisabled(true);
       dispatch(fetchPopularMovies({ page }));
     } else {
       dispatch(
@@ -100,6 +99,11 @@ const SearchMovie = (): React.JSX.Element => {
     setPaginationLoader(false);
     setSearchPage(1);
   }, [debouncedSearchValue, debouncedRateOrderState, debouncedDateOrderState]);
+
+  useEffect(() => {
+    setRateOrderState("none");
+    setDateOrderState("none");
+  }, [debouncedSearchValue]);
 
   useEffect(() => {
     if (error.length !== 0) {
@@ -122,11 +126,9 @@ const SearchMovie = (): React.JSX.Element => {
 
   useEffect(() => {
     if (typeOfResponse === "popular" || noResults) {
-      setOrderCalificationEnabled(true);
-      setOrderDateEnabled(true);
+      setIsOrderDisabled(true);
     } else {
-      setOrderCalificationEnabled(false);
-      setOrderDateEnabled(false);
+      setIsOrderDisabled(false);
     }
   }, [typeOfResponse, noResults]);
 
@@ -146,7 +148,7 @@ const SearchMovie = (): React.JSX.Element => {
         <ToggleOrderButton
           text="Calificación"
           state={rateOrderState}
-          disabled={orderCalificationEnabled}
+          disabled={isOrderDisabled}
           onPress={() => {
             setRateOrderState(getNewToggleState(rateOrderState));
           }}
@@ -155,7 +157,7 @@ const SearchMovie = (): React.JSX.Element => {
         <ToggleOrderButton
           text="Fecha Publicación"
           state={dateOrderState}
-          disabled={orderDateEnabled}
+          disabled={isOrderDisabled}
           onPress={() => {
             setDateOrderState(getNewToggleState(dateOrderState));
           }}
@@ -183,7 +185,7 @@ const SearchMovie = (): React.JSX.Element => {
               data={movies}
               estimatedItemSize={120}
               renderItem={({ item }) => <MovieCard movie={item} />}
-              keyExtractor={movie => movie.id.toString()}
+              keyExtractor={(movie, index) => `${movie.id} - ${index}`}
             />
           </View>
           {loading && paginationLoader && (
