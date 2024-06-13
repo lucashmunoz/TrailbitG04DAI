@@ -5,10 +5,10 @@ import {
   View,
   StyleSheet,
   StatusBar,
-  ActivityIndicator,
-  FlatList
+  ActivityIndicator
 } from "react-native";
 import { useDebounce } from "use-debounce";
+import { FlashList } from "@shopify/flash-list";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import colors from "../../styles/colors";
 import TextField from "../../components/TextField";
@@ -177,11 +177,11 @@ const SearchMovie = (): React.JSX.Element => {
           )}
 
           <View style={styles.moviesViewContainer}>
-            <FlatList
-              onScroll={handleScroll}
+            <FlashList
               onMomentumScrollEnd={handleScroll}
               scrollEventThrottle={50}
               data={movies}
+              estimatedItemSize={120}
               renderItem={({ item }) => <MovieCard movie={item} />}
               keyExtractor={movie => movie.id.toString()}
             />
