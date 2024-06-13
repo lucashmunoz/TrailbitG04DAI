@@ -49,8 +49,14 @@ const SearchMovie = (): React.JSX.Element => {
 
   const [rateOrderState, setRateOrderState] =
     useState<ToggleOrderButtonState>("none");
+  const [debouncedRateOrderState] = useDebounce(rateOrderState, 500, {
+    maxWait: 2000
+  });
   const [dateOrderState, setDateOrderState] =
     useState<ToggleOrderButtonState>("none");
+  const [debouncedDateOrderState] = useDebounce(dateOrderState, 500, {
+    maxWait: 2000
+  });
 
   const fetchMoviesErrorToastRef = useRef<ToastHandle>(null);
 
@@ -81,8 +87,8 @@ const SearchMovie = (): React.JSX.Element => {
       dispatch(
         fetchMoviesBySearch({
           searchValue: debouncedSearchValue,
-          rateOrderState,
-          dateOrderState,
+          rateOrderState: debouncedRateOrderState,
+          dateOrderState: debouncedDateOrderState,
           page
         })
       );
@@ -93,7 +99,7 @@ const SearchMovie = (): React.JSX.Element => {
     fetchMovies({ page: 1 });
     setPaginationLoader(false);
     setSearchPage(1);
-  }, [debouncedSearchValue, rateOrderState, dateOrderState]);
+  }, [debouncedSearchValue, debouncedRateOrderState, debouncedDateOrderState]);
 
   useEffect(() => {
     if (error.length !== 0) {
