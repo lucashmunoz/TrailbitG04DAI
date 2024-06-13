@@ -68,7 +68,7 @@ const UserProfile = (): React.JSX.Element => {
   const handleNicknameChange = (newNickname: string) => {
     setNicknameInput(newNickname);
 
-    const nicknameAllowedCharacters = new RegExp(/^[a-zA-Z0-9]*$/);
+    const nicknameAllowedCharacters = new RegExp(/^[a-zA-Z0-9ñÑ]*$/);
     if (!nicknameAllowedCharacters.test(newNickname)) {
       setNicknameInputError(
         "El nickname solo puede contener letras o números."
