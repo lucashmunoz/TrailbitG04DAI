@@ -23,6 +23,7 @@ Antes de comenzar, asegúrate de tener instalado lo siguiente:
 ### Opcional
 
 - Para correr en Android:
+
   - Android Studio con Android SDK instalado
   - Un emulador de Android configurado o un dispositivo Android conectado
 
@@ -38,7 +39,7 @@ Antes de comenzar, asegúrate de tener instalado lo siguiente:
    git clone https://github.com/lucashmunoz/TrailbitG04DAI.git
    cd trailbitg04dai
    ```
-   
+
 2. **Instalar dependencias:**
 
    ```bash
@@ -46,24 +47,26 @@ Antes de comenzar, asegúrate de tener instalado lo siguiente:
    # o
    yarn install
    ```
+
 3. **Ejecutar la Aplicacion:**
 
-   - Android: (Asegúrate de que un emulador de Android esté en ejecución o conecta un dispositivo Android.)
-      1. En una nueva terminal, compilar y ejecutar la aplicación en el emulador o dispositivo:
-         ```bash
-         npm run android
-         ```
+   - Android: (Asegúrate de que un emulador de Android esté en ejecución o conecta un dispositivo Android)
+     1. En una nueva terminal, compilar y ejecutar la aplicación en el emulador o dispositivo:
+        ```bash
+        npm run android
+        ```
    - IOS: (Asegúrate de que un simulador de iOS esté en ejecución.)
-      1. Instalar dependencias nativas de iOS:
-         ```bash
-         cd ios
-         pod install
-         cd ..
-         ```
-      2. En una nueva terminal, compilar y ejecutar la aplicación en el simulador de iOS:
-         ```bash
-         npx run ios
-         ```
+     1. Instalar dependencias nativas de iOS:
+        ```bash
+        cd ios
+        pod install
+        cd ..
+        ```
+     2. En una nueva terminal, compilar y ejecutar la aplicación en el simulador de iOS:
+        ```bash
+        npx run ios
+        ```
+
 ## Changelog y Controlador de versiones
 
-- URL al Changelog: [CHANGELOG](./CHANGELOG.md)
+- [CHANGELOG](./CHANGELOG.md)
