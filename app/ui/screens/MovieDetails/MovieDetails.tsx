@@ -31,7 +31,7 @@ const Moviedetails = (): React.JSX.Element => {
           size={24}
         />
       </TouchableOpacity>
-      <Text style={styles.text}>Movie Details Page</Text>
+      <Text style={styles.text}>Moviels Page</Text>
       <Text style={styles.text}>Coming soon...</Text>
     </SafeAreaView>
   );
