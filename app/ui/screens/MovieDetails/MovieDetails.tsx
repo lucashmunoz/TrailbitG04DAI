@@ -6,7 +6,8 @@ import {
   Image,
   StyleSheet,
   TouchableOpacity,
-  StatusBar
+  StatusBar,
+  FlatList
 } from "react-native";
 import colors from "../../styles/colors";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
@@ -19,6 +20,8 @@ import { selectMovieById } from "../../../state/slices/movieDetail/movieSlice";
 import { IMAGES } from "../../../assets/images";
 import LoadingIndicator from "../../components/LoadingIndicator";
 import Button from "../../components/Button";
+import { FlashList } from "@shopify/flash-list";
+import CastCard from "../../components/CastCard/CastCard";
 
 interface MovieDetailParams {
   route: { params: { movieId: number } };
@@ -57,6 +60,8 @@ const MovieDetails = ({ route }: MovieDetailParams): React.JSX.Element => {
   const movieBackdropImage = movieById.backdrop_path
     ? { uri: movieById.backdrop_path }
     : IMAGES.NO_IMAGE;
+
+  const casting = [movieById.director, ...movieById.cast];
   return (
     <SafeAreaView style={styles.movieDetailsContainer}>
       <StatusBar backgroundColor={colors.neutral900} />
@@ -108,10 +113,26 @@ const MovieDetails = ({ route }: MovieDetailParams): React.JSX.Element => {
                 </View>
               </View>
             </View>
-            <Button type="secondary" title="Play" onPress={() => {}} />
+            <View style={styles.playButton}>
+              <Button type="primary" title="PLAY" onPress={() => {}} />
+            </View>
             <View style={styles.movieSecondaryData}>
               <Text style={styles.overview}>{movieById.overview}</Text>
               <Text style={styles.valorationWording}>¿Como lo valorarías?</Text>
+            </View>
+
+            <View style={styles.casting}>
+              <Text style={styles.castWording}>Equipo</Text>
+              <View style={styles.moviesViewContainer}>
+                <FlatList
+                  style={styles.moviesViewContainer}
+                  horizontal
+                  scrollEventThrottle={50}
+                  data={casting}
+                  renderItem={({ item }) => <CastCard cast={item} />}
+                  keyExtractor={(movie, index) => `${movie.id} - ${index}`}
+                />
+              </View>
             </View>
           </View>
         </View>
@@ -121,6 +142,28 @@ const MovieDetails = ({ route }: MovieDetailParams): React.JSX.Element => {
 };
 
 const styles = StyleSheet.create({
+  moviesViewContainer: {
+    flexDirection: "row",
+    display: "flex",
+    gap: 10
+  },
+  casting: {
+    display: "flex",
+    flexDirection: "column",
+    width: "100%"
+  },
+  castWording: {
+    position: "absolute",
+    left: 0,
+    color: colors.neutral50,
+    fontSize: 18,
+    fontWeight: "bold",
+    flexWrap: "wrap"
+  },
+
+  playButton: {
+    width: "100%"
+  },
   movieDetailsContainer: {
     backgroundColor: colors.neutral900,
     display: "flex",
@@ -131,7 +174,8 @@ const styles = StyleSheet.create({
   },
 
   actions: {
-    width: "100%"
+    width: "100%",
+    display: "flex"
   },
 
   trailerButton: {},
@@ -141,15 +185,17 @@ const styles = StyleSheet.create({
     aspectRatio: 16 / 9
   },
   movieSecondaryData: {
-    display: "flex"
+    display: "flex",
+    flexDirection: "column"
   },
 
   container: {
     display: "flex",
-    flexDirection: "column"
+    flexDirection: "column",
+    width: "100%"
   },
   description: {
-    flex: 1,
+    display: "flex",
     width: "100%",
     alignItems: "center",
     justifyContent: "center",
@@ -159,19 +205,22 @@ const styles = StyleSheet.create({
   },
 
   valorationWording: {
-    fontSize: 14,
-    fontWeight: "semibold"
+    color: colors.neutral50,
+    fontSize: 23,
+    fontWeight: "semibold",
+    flexWrap: "wrap"
   },
 
   overview: {
+    color: colors.neutral50,
     fontSize: 14,
-    fontWeight: "semibold"
+    flexWrap: "wrap"
   },
 
   movieDataContainer: {
     flex: 1,
     flexDirection: "column",
-    gap: 1
+    gap: 10
   },
 
   backButtonContainer: {
@@ -181,22 +230,20 @@ const styles = StyleSheet.create({
   },
   backIcon: { color: colors.neutral50 },
   text: { color: colors.neutral50, fontSize: 32 },
-  imageContainer: {
-    height: undefined
-  },
+
   image: {
     height: 220,
     aspectRatio: 2 / 3
   },
   movieContainer: {
-    flex: 1,
+    display: "flex",
     flexDirection: "row",
     width: "100%",
     gap: 16
   },
   movieDetails: {
     width: "100%",
-    flex: 1,
+    display: "flex",
     gap: 6,
     flexDirection: "column"
   },
@@ -216,10 +263,10 @@ const styles = StyleSheet.create({
   genres: {
     color: colors.neutral50,
     fontSize: 14,
-    height: "auto"
+    display: "flex"
   },
   movieExtraData: {
-    flex: 1,
+    display: "flex",
     flexDirection: "row",
     justifyContent: "space-between"
   },

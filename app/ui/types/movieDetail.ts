@@ -37,7 +37,7 @@ interface Video {
   key: string;
 }
 
-interface Cast {
+export interface Cast {
   id: string;
   name: string;
   character: string;
