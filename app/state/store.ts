@@ -2,11 +2,13 @@ import { configureStore } from "@reduxjs/toolkit";
 import moviesSlice from "./slices/movies/moviesSlice";
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 import userSlice from "./slices/user/userSlice";
+import movieSlice from "./slices/movieDetail/movieSlice";
 
 const store = configureStore({
   reducer: {
     movies: moviesSlice.reducer,
-    user: userSlice.reducer
+    user: userSlice.reducer,
+    movie: movieSlice.reducer
   },
   middleware: getDefaultMiddleware => getDefaultMiddleware()
 });
