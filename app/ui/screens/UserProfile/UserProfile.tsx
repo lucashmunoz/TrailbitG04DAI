@@ -68,6 +68,11 @@ const UserProfile = (): React.JSX.Element => {
   const handleNicknameChange = (newNickname: string) => {
     setNicknameInput(newNickname);
 
+    if (newNickname.length === 0) {
+      setNicknameInputError("Se debe proporcionar un nickname.");
+      return;
+    }
+
     const nicknameAllowedCharacters = new RegExp(/^[a-zA-Z0-9ñÑ]*$/);
     if (!nicknameAllowedCharacters.test(newNickname)) {
       setNicknameInputError(
