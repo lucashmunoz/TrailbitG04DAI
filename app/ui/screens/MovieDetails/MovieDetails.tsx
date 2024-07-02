@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   SafeAreaView,
   Text,
@@ -7,11 +7,12 @@ import {
   StyleSheet,
   TouchableOpacity,
   StatusBar,
-  FlatList
+  FlatList,
+  Pressable
 } from "react-native";
 import colors from "../../styles/colors";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
-import { faChevronLeft } from "@fortawesome/free-solid-svg-icons";
+import { faChevronLeft, faStar } from "@fortawesome/free-solid-svg-icons";
 import { ParamListBase, useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useAppDispatch, useAppSelector } from "../../../state/store";
@@ -20,7 +21,6 @@ import { selectMovieById } from "../../../state/slices/movieDetail/movieSlice";
 import { IMAGES } from "../../../assets/images";
 import LoadingIndicator from "../../components/LoadingIndicator";
 import Button from "../../components/Button";
-import { FlashList } from "@shopify/flash-list";
 import CastCard from "../../components/CastCard/CastCard";
 
 interface MovieDetailParams {
@@ -31,8 +31,12 @@ const MovieDetails = ({ route }: MovieDetailParams): React.JSX.Element => {
   const dispatch = useAppDispatch();
   const { loading, error } = useAppSelector(state => state.movie);
   const movieById = useAppSelector(selectMovieById);
-
+  const [vote, setVote] = useState(0);
   const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
+
+  const handleValorate = vote => {
+    setVote(vote);
+  };
 
   const handleBackButton = () => {
     navigation.goBack();
@@ -119,6 +123,45 @@ const MovieDetails = ({ route }: MovieDetailParams): React.JSX.Element => {
             <View style={styles.movieSecondaryData}>
               <Text style={styles.overview}>{movieById.overview}</Text>
               <Text style={styles.valorationWording}>¿Como lo valorarías?</Text>
+              <View style={styles.stars}>
+                <Pressable onPress={() => handleValorate(1)}>
+                  <FontAwesomeIcon
+                    icon={faStar}
+                    style={vote < 1 ? styles.star : styles.starLight}
+                    size={35}
+                  />
+                </Pressable>
+                <Pressable onPress={() => handleValorate(2)}>
+                  <FontAwesomeIcon
+                    icon={faStar}
+                    style={vote < 2 ? styles.star : styles.starLight}
+                    size={35}
+                  />
+                </Pressable>
+
+                <Pressable onPress={() => handleValorate(3)}>
+                  <FontAwesomeIcon
+                    icon={faStar}
+                    style={vote < 3 ? styles.star : styles.starLight}
+                    size={35}
+                  />
+                </Pressable>
+
+                <Pressable onPress={() => handleValorate(4)}>
+                  <FontAwesomeIcon
+                    icon={faStar}
+                    style={vote < 4 ? styles.star : styles.starLight}
+                    size={35}
+                  />
+                </Pressable>
+                <Pressable onPress={() => handleValorate(5)}>
+                  <FontAwesomeIcon
+                    icon={faStar}
+                    style={vote < 5 ? styles.star : styles.starLight}
+                    size={35}
+                  />
+                </Pressable>
+              </View>
             </View>
 
             <View style={styles.casting}>
@@ -178,6 +221,27 @@ const styles = StyleSheet.create({
     display: "flex"
   },
 
+  stars: {
+    display: "flex",
+    flexDirection: "row",
+    height: 35,
+    width: "100%",
+    justifyContent: "center",
+    gap: 13
+  },
+
+  star: {
+    height: 35,
+    width: 35,
+    color: "white"
+  },
+
+  starLight: {
+    height: 35,
+    width: 35,
+    color: "yellow"
+  },
+
   trailerButton: {},
 
   backdropImage: {
@@ -186,7 +250,8 @@ const styles = StyleSheet.create({
   },
   movieSecondaryData: {
     display: "flex",
-    flexDirection: "column"
+    flexDirection: "column",
+    gap: 12
   },
 
   container: {
