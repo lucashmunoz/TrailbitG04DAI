@@ -8,7 +8,8 @@ import {
   TouchableOpacity,
   StatusBar,
   FlatList,
-  Pressable
+  Pressable,
+  ScrollView
 } from "react-native";
 import colors from "../../styles/colors";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
@@ -81,110 +82,118 @@ const MovieDetails = ({ route }: MovieDetailParams): React.JSX.Element => {
       {loading ? (
         <LoadingIndicator color={colors.neutral50} />
       ) : (
-        <View style={styles.container}>
-          <View style={styles.actions}>
-            <Image style={styles.backdropImage} source={movieBackdropImage} />
+        <ScrollView contentContainerStyle={{ display: "flex" }}>
+          <View style={styles.container}>
+            <View style={styles.actions}>
+              <Image style={styles.backdropImage} source={movieBackdropImage} />
+            </View>
+            <View style={styles.description}>
+              <View style={styles.movieContainer}>
+                <Image source={movieImage} style={styles.image} />
+                <View style={styles.movieDataContainer}>
+                  <View style={styles.movieDetails}>
+                    <Text style={styles.title}>{movieById.title}</Text>
+                    <Text style={styles.tagline}>{movieById.tagline}</Text>
+                    <Text style={styles.genres}>
+                      {movieById.genres.map(genre => genre.name).join(", ")}
+                    </Text>
+                  </View>
+                  <View style={styles.trailerButton}>
+                    <Button
+                      type="secondary"
+                      title="Ver Trailer"
+                      onPress={() => {}}
+                    />
+                  </View>
+
+                  <View style={styles.movieExtraData}>
+                    <Text style={styles.voteCount}>
+                      {movieById.vote_average}({movieById.vote_count})
+                    </Text>
+                    <Text style={styles.duration}>
+                      {formatDuration(movieById.runtime)}
+                    </Text>
+                    <Text style={styles.releaseDate}>
+                      {movieById.release_date.slice(0, 4)}
+                    </Text>
+                  </View>
+                </View>
+              </View>
+              <View style={styles.playButton}>
+                <Button type="primary" title="PLAY" onPress={() => {}} />
+              </View>
+              <View style={styles.movieSecondaryData}>
+                <Text style={styles.overview}>{movieById.overview}</Text>
+                <Text style={styles.valorationWording}>
+                  ¿Como lo valorarías?
+                </Text>
+                <View style={styles.stars}>
+                  <Pressable onPress={() => handleValorate(1)}>
+                    <FontAwesomeIcon
+                      icon={faStar}
+                      style={vote < 1 ? styles.star : styles.starLight}
+                      size={35}
+                    />
+                  </Pressable>
+                  <Pressable onPress={() => handleValorate(2)}>
+                    <FontAwesomeIcon
+                      icon={faStar}
+                      style={vote < 2 ? styles.star : styles.starLight}
+                      size={35}
+                    />
+                  </Pressable>
+
+                  <Pressable onPress={() => handleValorate(3)}>
+                    <FontAwesomeIcon
+                      icon={faStar}
+                      style={vote < 3 ? styles.star : styles.starLight}
+                      size={35}
+                    />
+                  </Pressable>
+
+                  <Pressable onPress={() => handleValorate(4)}>
+                    <FontAwesomeIcon
+                      icon={faStar}
+                      style={vote < 4 ? styles.star : styles.starLight}
+                      size={35}
+                    />
+                  </Pressable>
+                  <Pressable onPress={() => handleValorate(5)}>
+                    <FontAwesomeIcon
+                      icon={faStar}
+                      style={vote < 5 ? styles.star : styles.starLight}
+                      size={35}
+                    />
+                  </Pressable>
+                </View>
+              </View>
+
+              <View style={styles.casting}>
+                <Text style={styles.castWording}>Equipo</Text>
+                <View style={styles.moviesViewContainer}>
+                  <FlatList
+                    style={styles.moviesViewContainer}
+                    horizontal
+                    scrollEventThrottle={50}
+                    data={casting}
+                    renderItem={({ item }) => <CastCard cast={item} />}
+                    keyExtractor={(movie, index) => `${movie.id} - ${index}`}
+                  />
+                </View>
+              </View>
+            </View>
           </View>
-          <View style={styles.description}>
-            <View style={styles.movieContainer}>
-              <Image source={movieImage} style={styles.image} />
-              <View style={styles.movieDataContainer}>
-                <View style={styles.movieDetails}>
-                  <Text style={styles.title}>{movieById.title}</Text>
-                  <Text style={styles.tagline}>{movieById.tagline}</Text>
-                  <Text style={styles.genres}>
-                    {movieById.genres.map(genre => genre.name).join(", ")}
-                  </Text>
-                </View>
-                <View style={styles.trailerButton}>
-                  <Button
-                    type="secondary"
-                    title="Ver Trailer"
-                    onPress={() => {}}
-                  />
-                </View>
-
-                <View style={styles.movieExtraData}>
-                  <Text style={styles.voteCount}>
-                    {movieById.vote_average}({movieById.vote_count})
-                  </Text>
-                  <Text style={styles.duration}>
-                    {formatDuration(movieById.runtime)}
-                  </Text>
-                  <Text style={styles.releaseDate}>
-                    {movieById.release_date.slice(0, 4)}
-                  </Text>
-                </View>
-              </View>
-            </View>
-            <View style={styles.playButton}>
-              <Button type="primary" title="PLAY" onPress={() => {}} />
-            </View>
-            <View style={styles.movieSecondaryData}>
-              <Text style={styles.overview}>{movieById.overview}</Text>
-              <Text style={styles.valorationWording}>¿Como lo valorarías?</Text>
-              <View style={styles.stars}>
-                <Pressable onPress={() => handleValorate(1)}>
-                  <FontAwesomeIcon
-                    icon={faStar}
-                    style={vote < 1 ? styles.star : styles.starLight}
-                    size={35}
-                  />
-                </Pressable>
-                <Pressable onPress={() => handleValorate(2)}>
-                  <FontAwesomeIcon
-                    icon={faStar}
-                    style={vote < 2 ? styles.star : styles.starLight}
-                    size={35}
-                  />
-                </Pressable>
-
-                <Pressable onPress={() => handleValorate(3)}>
-                  <FontAwesomeIcon
-                    icon={faStar}
-                    style={vote < 3 ? styles.star : styles.starLight}
-                    size={35}
-                  />
-                </Pressable>
-
-                <Pressable onPress={() => handleValorate(4)}>
-                  <FontAwesomeIcon
-                    icon={faStar}
-                    style={vote < 4 ? styles.star : styles.starLight}
-                    size={35}
-                  />
-                </Pressable>
-                <Pressable onPress={() => handleValorate(5)}>
-                  <FontAwesomeIcon
-                    icon={faStar}
-                    style={vote < 5 ? styles.star : styles.starLight}
-                    size={35}
-                  />
-                </Pressable>
-              </View>
-            </View>
-
-            <View style={styles.casting}>
-              <Text style={styles.castWording}>Equipo</Text>
-              <View style={styles.moviesViewContainer}>
-                <FlatList
-                  style={styles.moviesViewContainer}
-                  horizontal
-                  scrollEventThrottle={50}
-                  data={casting}
-                  renderItem={({ item }) => <CastCard cast={item} />}
-                  keyExtractor={(movie, index) => `${movie.id} - ${index}`}
-                />
-              </View>
-            </View>
-          </View>
-        </View>
+        </ScrollView>
       )}
     </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
+  scrollContainer: {
+    flex: 1,
+    width: "100%"
+  },
   moviesViewContainer: {
     flexDirection: "row",
     display: "flex",
@@ -291,7 +300,8 @@ const styles = StyleSheet.create({
   backButtonContainer: {
     position: "absolute",
     top: 64,
-    left: 32
+    left: 32,
+    zIndex: 1
   },
   backIcon: { color: colors.neutral50 },
   text: { color: colors.neutral50, fontSize: 32 },
