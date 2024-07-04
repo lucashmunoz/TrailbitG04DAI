@@ -19,6 +19,7 @@ export interface Movie {
   videos: Video[];
   cast: Cast[];
   director: Cast;
+  user_vote: number;
 }
 
 interface Image {

@@ -4,5 +4,6 @@ export const endpoints = {
   movies: "/api/v1/movies",
   users: "/api/v1/users",
   movieDetail: "/api/v1/movies/",
-  deleteFavorite: "/api/v1/favorites/"
+  favorite: "/api/v1/favorites/",
+  voteMovie: "/api/v1/movies/{movieId}/vote"
 } as const;

@@ -17,12 +17,21 @@ import { faChevronLeft, faStar } from "@fortawesome/free-solid-svg-icons";
 import { ParamListBase, useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useAppDispatch, useAppSelector } from "../../../state/store";
-import { fetchMovieDetail } from "../../../state/slices/movieDetail/asyncThunks";
-import { selectMovieById } from "../../../state/slices/movieDetail/movieSlice";
+import {
+  addVote,
+  deleteFavoriteMovie,
+  fetchMovieDetail
+} from "../../../state/slices/movieDetail/asyncThunks";
+import {
+  selectFavorite,
+  selectMovieById,
+  selectVoteUpdate
+} from "../../../state/slices/movieDetail/movieSlice";
 import { IMAGES } from "../../../assets/images";
 import LoadingIndicator from "../../components/LoadingIndicator";
 import Button from "../../components/Button";
 import CastCard from "../../components/CastCard/CastCard";
+import { selectUserId } from "../../../state/slices/user/userSlice";
 
 interface MovieDetailParams {
   route: { params: { movieId: number } };
@@ -32,11 +41,15 @@ const MovieDetails = ({ route }: MovieDetailParams): React.JSX.Element => {
   const dispatch = useAppDispatch();
   const { loading, error } = useAppSelector(state => state.movie);
   const movieById = useAppSelector(selectMovieById);
-  const [vote, setVote] = useState(0);
+  const favoriteMovie = useAppSelector(selectFavorite);
+  const voteMovie = useAppSelector(selectVoteUpdate);
+  const [vote, setVote] = useState(movieById.user_vote);
   const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
 
-  const handleValorate = vote => {
+  const handleValorate = (vote: number) => {
     setVote(vote);
+    const payload = { movieId: movieById.id, score: vote };
+    dispatch(addVote(payload));
   };
 
   const handleBackButton = () => {
@@ -108,7 +121,8 @@ const MovieDetails = ({ route }: MovieDetailParams): React.JSX.Element => {
 
                   <View style={styles.movieExtraData}>
                     <Text style={styles.voteCount}>
-                      {movieById.vote_average}({movieById.vote_count})
+                      {movieById.vote_average.toFixed(2)}({movieById.vote_count}
+                      )
                     </Text>
                     <Text style={styles.duration}>
                       {formatDuration(movieById.runtime)}
@@ -248,7 +262,7 @@ const styles = StyleSheet.create({
   starLight: {
     height: 35,
     width: 35,
-    color: "yellow"
+    color: "#ffcb45"
   },
 
   trailerButton: {},

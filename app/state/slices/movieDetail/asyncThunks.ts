@@ -16,6 +16,7 @@ interface MovieDetailApiResponse {
   vote_average: number;
   vote_count: number;
   is_favorite: boolean;
+  user_vote: number;
   images: Image[];
   genres: Genre[];
   videos: Video[];
@@ -74,6 +75,7 @@ export const fetchMovieDetail = createAsyncThunk(
         duration,
         vote_average,
         vote_count,
+        user_vote,
         is_favorite,
         images,
         genres,
@@ -99,8 +101,63 @@ export const fetchMovieDetail = createAsyncThunk(
         genres,
         videos,
         cast,
-        director
+        director,
+        user_vote
       };
+    } catch (error) {
+      return rejectWithValue({
+        error: error
+      });
+    }
+  }
+);
+
+interface FavoriteMoviePayload {
+  movieId: number;
+}
+
+export const addFavoriteMovie = createAsyncThunk(
+  "auth/addFavoriteMovie",
+  async ({ movieId }: FavoriteMoviePayload, { rejectWithValue }) => {
+    try {
+      const addFavoriteMovie = `${endpoints.favorite}${movieId}`;
+      await api.post<void>(addFavoriteMovie);
+    } catch (error) {
+      return rejectWithValue({
+        error: error
+      });
+    }
+  }
+);
+
+export const deleteFavoriteMovie = createAsyncThunk(
+  "auth/deleteFavoriteMovie",
+  async ({ movieId }: FavoriteMoviePayload, { rejectWithValue }) => {
+    try {
+      const deleteFavoriteMovie = `${endpoints.favorite}${movieId}`;
+      await api.delete<void>(deleteFavoriteMovie);
+    } catch (error) {
+      return rejectWithValue({
+        error: error
+      });
+    }
+  }
+);
+
+interface AddVoteMoviePayload {
+  movieId: number;
+  score: number;
+}
+
+export const addVote = createAsyncThunk(
+  "auth/addVote",
+  async ({ movieId, score }: AddVoteMoviePayload, { rejectWithValue }) => {
+    try {
+      const addVoteMovieEndpoint = endpoints.voteMovie.replace(
+        "{movieId}",
+        movieId.toString()
+      );
+      await api.put<void>(addVoteMovieEndpoint, { score: score });
     } catch (error) {
       return rejectWithValue({
         error: error
