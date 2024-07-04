@@ -42,7 +42,6 @@ const MovieDetails = ({ route }: MovieDetailParams): React.JSX.Element => {
   const { loading, error } = useAppSelector(state => state.movie);
   const movieById = useAppSelector(selectMovieById);
   const favoriteMovie = useAppSelector(selectFavorite);
-  const voteMovie = useAppSelector(selectVoteUpdate);
   const [vote, setVote] = useState(movieById.user_vote);
   const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
 
