@@ -13,7 +13,11 @@ import {
 } from "react-native";
 import colors from "../../styles/colors";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
-import { faChevronLeft, faStar } from "@fortawesome/free-solid-svg-icons";
+import {
+  faChevronLeft,
+  faStar,
+  faBookmark
+} from "@fortawesome/free-solid-svg-icons";
 import { ParamListBase, useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useAppDispatch, useAppSelector } from "../../../state/store";
@@ -55,6 +59,8 @@ const MovieDetails = ({ route }: MovieDetailParams): React.JSX.Element => {
     navigation.goBack();
   };
 
+  const handleFavoriteButton = () => {};
+
   const formatDuration = (duration: number) => {
     let hours = Math.trunc(duration / 60);
     let mins = duration - 60 * hours;
@@ -88,6 +94,15 @@ const MovieDetails = ({ route }: MovieDetailParams): React.JSX.Element => {
         <FontAwesomeIcon
           icon={faChevronLeft}
           style={styles.backIcon}
+          size={24}
+        />
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={styles.favoriteButtonContainer}
+        onPress={handleFavoriteButton}>
+        <FontAwesomeIcon
+          icon={faBookmark}
+          style={styles.favoriteIcon}
           size={24}
         />
       </TouchableOpacity>
@@ -309,6 +324,12 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     gap: 10
   },
+  favoriteButtonContainer: {
+    position: "absolute",
+    top: 64,
+    right: 32,
+    zIndex: 1
+  },
 
   backButtonContainer: {
     position: "absolute",
@@ -378,6 +399,9 @@ const styles = StyleSheet.create({
     fontWeight: "semibold",
     flexWrap: "wrap",
     alignItems: "flex-start"
+  },
+  favoriteIcon: {
+    color: "white"
   }
 });
 

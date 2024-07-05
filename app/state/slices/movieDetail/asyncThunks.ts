@@ -83,7 +83,6 @@ export const fetchMovieDetail = createAsyncThunk(
         cast,
         director
       } = movie;
-      console.log(movie);
       return {
         id,
         title,
