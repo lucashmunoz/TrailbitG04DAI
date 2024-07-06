@@ -36,6 +36,7 @@ import { IMAGES } from "../../../assets/images";
 import LoadingIndicator from "../../components/LoadingIndicator";
 import Button from "../../components/Button";
 import CastCard from "../../components/CastCard/CastCard";
+import FavoriteLoading from "../../components/FavoriteLoading";
 
 interface MovieDetailProps {
   route: { params: { movieId: number } };
@@ -98,17 +99,6 @@ const MovieDetails = ({ route }: MovieDetailProps): React.JSX.Element => {
           size={24}
         />
       </TouchableOpacity>
-      {!bookmarkLoading && (
-        <TouchableOpacity
-          style={styles.favoriteButtonContainer}
-          onPress={handleFavoriteButton}>
-          <FontAwesomeIcon
-            icon={is_favorite ? faBookmarkSolid : faBookmarkRegular}
-            style={styles.favoriteIcon}
-            size={24}
-          />
-        </TouchableOpacity>
-      )}
       {loading ? (
         <LoadingIndicator color={colors.neutral50} />
       ) : (
@@ -117,6 +107,21 @@ const MovieDetails = ({ route }: MovieDetailProps): React.JSX.Element => {
             <View style={styles.actions}>
               <Image style={styles.backdropImage} source={movieBackdropImage} />
             </View>
+            {!bookmarkLoading ? (
+              <TouchableOpacity
+                style={styles.favoriteButtonContainer}
+                onPress={handleFavoriteButton}>
+                <FontAwesomeIcon
+                  icon={is_favorite ? faBookmarkSolid : faBookmarkRegular}
+                  style={styles.favoriteIcon}
+                  size={24}
+                />
+              </TouchableOpacity>
+            ) : (
+              <View style={styles.favoriteLoadingContainer}>
+                <FavoriteLoading />
+              </View>
+            )}
             <View style={styles.description}>
               <View style={styles.movieContainer}>
                 <Image source={movieImage} style={styles.image} />
@@ -189,6 +194,9 @@ const MovieDetails = ({ route }: MovieDetailProps): React.JSX.Element => {
                     data={casting}
                     renderItem={({ item }) => <CastCard cast={item} />}
                     keyExtractor={(movie, index) => `${movie.id} - ${index}`}
+                    ItemSeparatorComponent={() => (
+                      <View style={{ width: 15 }} />
+                    )}
                   />
                 </View>
               </View>
@@ -203,17 +211,15 @@ const MovieDetails = ({ route }: MovieDetailProps): React.JSX.Element => {
 const styles = StyleSheet.create({
   moviesViewContainer: {
     flexDirection: "row",
-    display: "flex",
-    gap: 10
+    display: "flex"
   },
   casting: {
     display: "flex",
     flexDirection: "column",
-    width: "100%"
+    width: "100%",
+    gap: 10
   },
   castWording: {
-    position: "absolute",
-    left: 0,
     color: colors.neutral50,
     fontSize: 18,
     fontWeight: "bold",
@@ -265,7 +271,8 @@ const styles = StyleSheet.create({
   container: {
     display: "flex",
     flexDirection: "column",
-    width: "100%"
+    width: "100%",
+    position: "relative"
   },
   description: {
     display: "flex",
@@ -296,6 +303,12 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: 64,
     right: 32,
+    zIndex: 1
+  },
+  favoriteLoadingContainer: {
+    position: "absolute",
+    top: 61,
+    right: 27,
     zIndex: 1
   },
   backButtonContainer: {
