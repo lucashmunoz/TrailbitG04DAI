@@ -15,6 +15,7 @@
 		7699B88040F8A987B510C191 /* libPods-TrailbitG04DAI-TrailbitG04DAITests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 19F6CBCC0A4E27FBF8BF4A61 /* libPods-TrailbitG04DAI-TrailbitG04DAITests.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		3BBC46EA360247CA96822DF5 /* BootSplash.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C85CD72E319B4F11A2721037 /* BootSplash.storyboard */; };
+		FE41FD6ADFCB40D79C6B19AD /* Roboto-LightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E1C1641B791A4A259D144412 /* Roboto-LightItalic.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -47,6 +48,7 @@
 		89C6BE57DB24E9ADA2F236DE /* Pods-TrailbitG04DAI-TrailbitG04DAITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TrailbitG04DAI-TrailbitG04DAITests.release.xcconfig"; path = "Target Support Files/Pods-TrailbitG04DAI-TrailbitG04DAITests/Pods-TrailbitG04DAI-TrailbitG04DAITests.release.xcconfig"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		C85CD72E319B4F11A2721037 /* BootSplash.storyboard */ = {isa = PBXFileReference; name = "BootSplash.storyboard"; path = "TrailbitG04DAI/BootSplash.storyboard"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		E1C1641B791A4A259D144412 /* Roboto-LightItalic.ttf */ = {isa = PBXFileReference; name = "Roboto-LightItalic.ttf"; path = "../assets/fonts/Roboto-LightItalic.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -127,6 +129,7 @@
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				BBD78D7AC51CEA395F1C20DB /* Pods */,
+				03783D6A251A4BEAB9F73FD7 /* Resources */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -152,6 +155,15 @@
 			);
 			path = Pods;
 			sourceTree = "<group>";
+		};
+		03783D6A251A4BEAB9F73FD7 /* Resources */ = {
+			isa = "PBXGroup";
+			children = (
+				E1C1641B791A4A259D144412 /* Roboto-LightItalic.ttf */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+			path = "";
 		};
 /* End PBXGroup section */
 
@@ -249,6 +261,7 @@
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				3BBC46EA360247CA96822DF5 /* BootSplash.storyboard in Resources */,
+				FE41FD6ADFCB40D79C6B19AD /* Roboto-LightItalic.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
