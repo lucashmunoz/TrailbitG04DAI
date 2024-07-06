@@ -37,6 +37,7 @@ import LoadingIndicator from "../../components/LoadingIndicator";
 import Button from "../../components/Button";
 import CastCard from "../../components/CastCard/CastCard";
 import FavoriteLoading from "../../components/FavoriteLoading";
+import NavigatorConstant from "../../../navigation/NavigatorConstant";
 
 interface MovieDetailProps {
   route: { params: { movieId: number } };
@@ -74,9 +75,13 @@ const MovieDetails = ({ route }: MovieDetailProps): React.JSX.Element => {
     return `${hours}h ${mins}m`;
   };
 
+  const handlePlayTrailer = () => {
+    navigation.navigate(NavigatorConstant.MoviePlayer);
+  };
+
   useEffect(() => {
     fetchMovieDetails();
-  }, [dispatch]);
+  }, []);
 
   const movieImage = movieById.poster_path
     ? { uri: movieById.poster_path }
@@ -136,7 +141,7 @@ const MovieDetails = ({ route }: MovieDetailProps): React.JSX.Element => {
                   <Button
                     type="secondary"
                     title="Ver Trailer"
-                    onPress={() => {}}
+                    onPress={handlePlayTrailer}
                   />
 
                   <View style={styles.movieExtraData}>
@@ -154,7 +159,11 @@ const MovieDetails = ({ route }: MovieDetailProps): React.JSX.Element => {
                 </View>
               </View>
               <View style={styles.playButton}>
-                <Button type="primary" title="PLAY" onPress={() => {}} />
+                <Button
+                  type="primary"
+                  title="PLAY"
+                  onPress={handlePlayTrailer}
+                />
               </View>
               <View style={styles.movieSecondaryData}>
                 <Text style={styles.overview}>{movieById.overview}</Text>
@@ -163,7 +172,7 @@ const MovieDetails = ({ route }: MovieDetailProps): React.JSX.Element => {
                 </Text>
                 <View style={styles.stars}>
                   {rateLoading ? (
-                    <LoadingIndicator color={colors.neutral50} size={20} />
+                    <LoadingIndicator color={colors.neutral50} />
                   ) : (
                     [1, 2, 3, 4, 5].map(rateValue => (
                       <Pressable
