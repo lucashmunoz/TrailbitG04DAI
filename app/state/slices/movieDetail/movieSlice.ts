@@ -1,17 +1,16 @@
 import { MovieDetail } from "./../../../ui/types/movieDetail";
 import { createSlice } from "@reduxjs/toolkit";
 import {
-  addFavoriteMovie,
-  addVote,
-  deleteFavoriteMovie,
-  fetchMovieDetail
+  rateMovie,
+  fetchMovieDetail,
+  toggleFavoriteMovie
 } from "./asyncThunks";
 
 interface MovieState {
   loading: boolean;
   movieById: MovieDetail;
-  favorite: boolean;
-  voteUpdate: boolean;
+  rateLoading: boolean;
+  bookmarkLoading: boolean;
   error: string;
 }
 
@@ -44,8 +43,8 @@ const initialState: MovieState = {
       profile_path: ""
     }
   },
-  voteUpdate: false,
-  favorite: false,
+  rateLoading: false,
+  bookmarkLoading: false,
   error: ""
 };
 
@@ -55,8 +54,8 @@ export const moviesSlice = createSlice({
   reducers: {},
   selectors: {
     selectMovieById: state => state.movieById,
-    selectFavorite: state => state.favorite,
-    selectVoteUpdate: state => state.voteUpdate
+    selectRateLoading: state => state.rateLoading,
+    selectBookmarkLoading: state => state.bookmarkLoading
   },
   extraReducers: builder => {
     builder.addCase(fetchMovieDetail.pending, state => {
@@ -72,49 +71,36 @@ export const moviesSlice = createSlice({
       state.loading = false;
       state.error = response.error.message || "error";
     });
-    builder.addCase(addFavoriteMovie.pending, state => {
-      state.loading = true;
+    builder.addCase(toggleFavoriteMovie.pending, state => {
+      state.bookmarkLoading = true;
       state.error = "";
     });
-    builder.addCase(addFavoriteMovie.fulfilled, (state, response) => {
-      state.loading = false;
-      state.favorite = true;
+    builder.addCase(toggleFavoriteMovie.fulfilled, (state, response) => {
+      state.bookmarkLoading = false;
+      state.movieById.is_favorite = response.payload.newFavoriteState;
       state.error = "";
     });
-    builder.addCase(addFavoriteMovie.rejected, (state, response) => {
-      state.loading = false;
+    builder.addCase(toggleFavoriteMovie.rejected, (state, response) => {
+      state.bookmarkLoading = false;
       state.error = response.error.message || "error";
     });
-    builder.addCase(deleteFavoriteMovie.pending, state => {
-      state.loading = true;
+    builder.addCase(rateMovie.pending, state => {
+      state.rateLoading = true;
       state.error = "";
     });
-    builder.addCase(deleteFavoriteMovie.fulfilled, (state, response) => {
-      state.loading = false;
-      state.favorite = false;
+    builder.addCase(rateMovie.fulfilled, (state, response) => {
+      state.rateLoading = false;
+      state.movieById.user_vote = response.payload.newVote;
       state.error = "";
     });
-    builder.addCase(deleteFavoriteMovie.rejected, (state, response) => {
-      state.loading = false;
-      state.error = response.error.message || "error";
-    });
-    builder.addCase(addVote.pending, state => {
-      state.loading = true;
-      state.error = "";
-    });
-    builder.addCase(addVote.fulfilled, (state, response) => {
-      state.loading = false;
-      state.voteUpdate = true;
-      state.error = "";
-    });
-    builder.addCase(addVote.rejected, (state, response) => {
-      state.loading = false;
+    builder.addCase(rateMovie.rejected, (state, response) => {
+      state.rateLoading = false;
       state.error = response.error.message || "error";
     });
   }
 });
 
-export const { selectMovieById, selectFavorite, selectVoteUpdate } =
+export const { selectMovieById, selectRateLoading, selectBookmarkLoading } =
   moviesSlice.selectors;
 
 export default moviesSlice;

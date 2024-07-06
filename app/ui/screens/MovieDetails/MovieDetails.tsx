@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import {
   SafeAreaView,
   Text,
@@ -16,65 +16,66 @@ import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import {
   faChevronLeft,
   faStar,
-  faBookmark
+  faBookmark as faBookmarkSolid
 } from "@fortawesome/free-solid-svg-icons";
+import { faBookmark as faBookmarkRegular } from "@fortawesome/free-regular-svg-icons";
 import { ParamListBase, useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useAppDispatch, useAppSelector } from "../../../state/store";
 import {
-  addVote,
-  deleteFavoriteMovie,
-  fetchMovieDetail
+  rateMovie,
+  fetchMovieDetail,
+  toggleFavoriteMovie
 } from "../../../state/slices/movieDetail/asyncThunks";
 import {
-  selectFavorite,
   selectMovieById,
-  selectVoteUpdate
+  selectRateLoading,
+  selectBookmarkLoading
 } from "../../../state/slices/movieDetail/movieSlice";
 import { IMAGES } from "../../../assets/images";
 import LoadingIndicator from "../../components/LoadingIndicator";
 import Button from "../../components/Button";
 import CastCard from "../../components/CastCard/CastCard";
-import { selectUserId } from "../../../state/slices/user/userSlice";
 
-interface MovieDetailParams {
+interface MovieDetailProps {
   route: { params: { movieId: number } };
 }
 
-const MovieDetails = ({ route }: MovieDetailParams): React.JSX.Element => {
+const MovieDetails = ({ route }: MovieDetailProps): React.JSX.Element => {
   const dispatch = useAppDispatch();
-  const { loading, error } = useAppSelector(state => state.movie);
+  const { loading } = useAppSelector(state => state.movie);
   const movieById = useAppSelector(selectMovieById);
-  const favoriteMovie = useAppSelector(selectFavorite);
-  const [vote, setVote] = useState(movieById.user_vote);
+  const rateLoading = useAppSelector(selectRateLoading);
+  const bookmarkLoading = useAppSelector(selectBookmarkLoading);
   const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
 
-  const handleValorate = (vote: number) => {
-    setVote(vote);
-    const payload = { movieId: movieById.id, score: vote };
-    dispatch(addVote(payload));
+  const { id: movieId, is_favorite, user_vote } = movieById;
+
+  const fetchMovieDetails = async () => {
+    dispatch(fetchMovieDetail({ movieId: route.params.movieId }));
   };
 
-  const handleBackButton = () => {
+  const handleRateChange = async (vote: number) => {
+    dispatch(rateMovie({ movieId, score: vote }));
+  };
+
+  const handleBackButtonClick = () => {
     navigation.goBack();
   };
 
-  const handleFavoriteButton = () => {};
+  const handleFavoriteButton = () => {
+    dispatch(toggleFavoriteMovie({ movieId }));
+  };
 
   const formatDuration = (duration: number) => {
-    let hours = Math.trunc(duration / 60);
-    let mins = duration - 60 * hours;
+    const hours = Math.trunc(duration / 60);
+    const mins = duration - 60 * hours;
     return `${hours}h ${mins}m`;
   };
 
-  const fetchMovie = (movieId: { movieId: number }) => {
-    dispatch(fetchMovieDetail(movieId));
-  };
-
   useEffect(() => {
-    fetchMovie({ movieId: route.params.movieId });
-    console.log(route.params.movieId);
-  }, []);
+    fetchMovieDetails();
+  }, [dispatch]);
 
   const movieImage = movieById.poster_path
     ? { uri: movieById.poster_path }
@@ -90,22 +91,24 @@ const MovieDetails = ({ route }: MovieDetailParams): React.JSX.Element => {
       <StatusBar backgroundColor={colors.neutral900} />
       <TouchableOpacity
         style={styles.backButtonContainer}
-        onPress={handleBackButton}>
+        onPress={handleBackButtonClick}>
         <FontAwesomeIcon
           icon={faChevronLeft}
           style={styles.backIcon}
           size={24}
         />
       </TouchableOpacity>
-      <TouchableOpacity
-        style={styles.favoriteButtonContainer}
-        onPress={handleFavoriteButton}>
-        <FontAwesomeIcon
-          icon={faBookmark}
-          style={styles.favoriteIcon}
-          size={24}
-        />
-      </TouchableOpacity>
+      {!bookmarkLoading && (
+        <TouchableOpacity
+          style={styles.favoriteButtonContainer}
+          onPress={handleFavoriteButton}>
+          <FontAwesomeIcon
+            icon={is_favorite ? faBookmarkSolid : faBookmarkRegular}
+            style={styles.favoriteIcon}
+            size={24}
+          />
+        </TouchableOpacity>
+      )}
       {loading ? (
         <LoadingIndicator color={colors.neutral50} />
       ) : (
@@ -125,13 +128,11 @@ const MovieDetails = ({ route }: MovieDetailParams): React.JSX.Element => {
                       {movieById.genres.map(genre => genre.name).join(", ")}
                     </Text>
                   </View>
-                  <View style={styles.trailerButton}>
-                    <Button
-                      type="secondary"
-                      title="Ver Trailer"
-                      onPress={() => {}}
-                    />
-                  </View>
+                  <Button
+                    type="secondary"
+                    title="Ver Trailer"
+                    onPress={() => {}}
+                  />
 
                   <View style={styles.movieExtraData}>
                     <Text style={styles.voteCount}>
@@ -156,43 +157,25 @@ const MovieDetails = ({ route }: MovieDetailParams): React.JSX.Element => {
                   ¿Como lo valorarías?
                 </Text>
                 <View style={styles.stars}>
-                  <Pressable onPress={() => handleValorate(1)}>
-                    <FontAwesomeIcon
-                      icon={faStar}
-                      style={vote < 1 ? styles.star : styles.starLight}
-                      size={35}
-                    />
-                  </Pressable>
-                  <Pressable onPress={() => handleValorate(2)}>
-                    <FontAwesomeIcon
-                      icon={faStar}
-                      style={vote < 2 ? styles.star : styles.starLight}
-                      size={35}
-                    />
-                  </Pressable>
-
-                  <Pressable onPress={() => handleValorate(3)}>
-                    <FontAwesomeIcon
-                      icon={faStar}
-                      style={vote < 3 ? styles.star : styles.starLight}
-                      size={35}
-                    />
-                  </Pressable>
-
-                  <Pressable onPress={() => handleValorate(4)}>
-                    <FontAwesomeIcon
-                      icon={faStar}
-                      style={vote < 4 ? styles.star : styles.starLight}
-                      size={35}
-                    />
-                  </Pressable>
-                  <Pressable onPress={() => handleValorate(5)}>
-                    <FontAwesomeIcon
-                      icon={faStar}
-                      style={vote < 5 ? styles.star : styles.starLight}
-                      size={35}
-                    />
-                  </Pressable>
+                  {rateLoading ? (
+                    <LoadingIndicator color={colors.neutral50} size={20} />
+                  ) : (
+                    [1, 2, 3, 4, 5].map(rateValue => (
+                      <Pressable
+                        key={rateValue}
+                        onPress={() => handleRateChange(rateValue)}>
+                        <FontAwesomeIcon
+                          icon={faStar}
+                          style={
+                            user_vote < rateValue
+                              ? styles.star
+                              : styles.starLight
+                          }
+                          size={35}
+                        />
+                      </Pressable>
+                    ))
+                  )}
                 </View>
               </View>
 
@@ -218,10 +201,6 @@ const MovieDetails = ({ route }: MovieDetailParams): React.JSX.Element => {
 };
 
 const styles = StyleSheet.create({
-  scrollContainer: {
-    flex: 1,
-    width: "100%"
-  },
   moviesViewContainer: {
     flexDirection: "row",
     display: "flex",
@@ -240,7 +219,6 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     flexWrap: "wrap"
   },
-
   playButton: {
     width: "100%"
   },
@@ -252,12 +230,10 @@ const styles = StyleSheet.create({
     gap: 24,
     flexDirection: "column"
   },
-
   actions: {
     width: "100%",
     display: "flex"
   },
-
   stars: {
     display: "flex",
     flexDirection: "row",
@@ -266,21 +242,16 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     gap: 13
   },
-
   star: {
     height: 35,
     width: 35,
     color: "white"
   },
-
   starLight: {
     height: 35,
     width: 35,
     color: "#ffcb45"
   },
-
-  trailerButton: {},
-
   backdropImage: {
     width: "100%",
     aspectRatio: 16 / 9
@@ -288,9 +259,9 @@ const styles = StyleSheet.create({
   movieSecondaryData: {
     display: "flex",
     flexDirection: "column",
+    width: "100%",
     gap: 12
   },
-
   container: {
     display: "flex",
     flexDirection: "column",
@@ -305,20 +276,17 @@ const styles = StyleSheet.create({
     padding: 23,
     gap: 24
   },
-
   valorationWording: {
     color: colors.neutral50,
     fontSize: 23,
     fontWeight: "semibold",
     flexWrap: "wrap"
   },
-
   overview: {
     color: colors.neutral50,
     fontSize: 14,
     flexWrap: "wrap"
   },
-
   movieDataContainer: {
     flex: 1,
     flexDirection: "column",
@@ -330,7 +298,6 @@ const styles = StyleSheet.create({
     right: 32,
     zIndex: 1
   },
-
   backButtonContainer: {
     position: "absolute",
     top: 64,
@@ -339,7 +306,6 @@ const styles = StyleSheet.create({
   },
   backIcon: { color: colors.neutral50 },
   text: { color: colors.neutral50, fontSize: 32 },
-
   image: {
     height: 220,
     aspectRatio: 2 / 3

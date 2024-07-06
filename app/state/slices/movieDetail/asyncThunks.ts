@@ -1,6 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import api from "../../../networking/api";
 import { endpoints } from "../../../networking/endpoints";
+import { RootState } from "../../store";
 
 interface MovieDetailApiResponse {
   id: number;
@@ -62,48 +63,7 @@ export const fetchMovieDetail = createAsyncThunk(
       );
 
       const movie = apiResponse?.data;
-      const {
-        id,
-        title,
-        overview,
-        runtime,
-        tagline,
-        popularity,
-        poster_path,
-        backdrop_path,
-        release_date,
-        duration,
-        vote_average,
-        vote_count,
-        user_vote,
-        is_favorite,
-        images,
-        genres,
-        videos,
-        cast,
-        director
-      } = movie;
-      return {
-        id,
-        title,
-        overview,
-        runtime,
-        tagline,
-        popularity,
-        poster_path,
-        backdrop_path,
-        release_date,
-        duration,
-        vote_average,
-        vote_count,
-        is_favorite,
-        images,
-        genres,
-        videos,
-        cast,
-        director,
-        user_vote
-      };
+      return { ...movie };
     } catch (error) {
       return rejectWithValue({
         error: error
@@ -116,26 +76,22 @@ interface FavoriteMoviePayload {
   movieId: number;
 }
 
-export const addFavoriteMovie = createAsyncThunk(
-  "auth/addFavoriteMovie",
-  async ({ movieId }: FavoriteMoviePayload, { rejectWithValue }) => {
-    try {
-      const addFavoriteMovie = `${endpoints.favorite}${movieId}`;
-      await api.post<void>(addFavoriteMovie);
-    } catch (error) {
-      return rejectWithValue({
-        error: error
-      });
-    }
-  }
-);
-
-export const deleteFavoriteMovie = createAsyncThunk(
+export const toggleFavoriteMovie = createAsyncThunk(
   "auth/deleteFavoriteMovie",
-  async ({ movieId }: FavoriteMoviePayload, { rejectWithValue }) => {
+  async ({ movieId }: FavoriteMoviePayload, { getState, rejectWithValue }) => {
     try {
-      const deleteFavoriteMovie = `${endpoints.favorite}${movieId}`;
-      await api.delete<void>(deleteFavoriteMovie);
+      const { movie } = getState() as RootState;
+      const isFavorite = movie.movieById.is_favorite;
+
+      const togleFavoriteMovieUrl = `${endpoints.favorite}/${movieId}`;
+
+      if (isFavorite) {
+        await api.delete<void>(togleFavoriteMovieUrl);
+      } else {
+        await api.post<void>(togleFavoriteMovieUrl);
+      }
+
+      return { newFavoriteState: !isFavorite };
     } catch (error) {
       return rejectWithValue({
         error: error
@@ -149,7 +105,7 @@ interface AddVoteMoviePayload {
   score: number;
 }
 
-export const addVote = createAsyncThunk(
+export const rateMovie = createAsyncThunk(
   "auth/addVote",
   async ({ movieId, score }: AddVoteMoviePayload, { rejectWithValue }) => {
     try {
@@ -158,6 +114,7 @@ export const addVote = createAsyncThunk(
         movieId.toString()
       );
       await api.put<void>(addVoteMovieEndpoint, { score: score });
+      return { newVote: score };
     } catch (error) {
       return rejectWithValue({
         error: error
