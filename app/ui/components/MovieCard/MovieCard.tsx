@@ -22,7 +22,11 @@ const MovieCard = ({ movie }: MovieCardProps) => {
 
   return (
     <TouchableOpacity
-      onPress={() => navigation.navigate(NavigatorConstant.MovieDetails)}>
+      onPress={() =>
+        navigation.navigate(NavigatorConstant.MovieDetails, {
+          movieId: movie.id
+        })
+      }>
       <View style={styles.container}>
         <View style={styles.imageContainer}>
           <Image source={movieImage} style={styles.image} />

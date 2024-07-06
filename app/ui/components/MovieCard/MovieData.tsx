@@ -14,12 +14,14 @@ const MovieData = ({ movie }: MovieDataProps) => {
 
   const releaseYear = releaseDate?.substring(0, 4);
 
+  const roundedVoteAverage = parseFloat(voteAverage.toString()).toFixed(2);
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>{title}</Text>
       <View style={styles.row}>
         <View style={styles.voteContainer}>
-          <Text style={styles.vote}>{voteAverage} </Text>
+          <Text style={styles.vote}>{roundedVoteAverage} </Text>
           <FontAwesomeIcon icon={faStar} style={styles.icon} size={14} />
           {Boolean(voteCount) && (
             <Text style={styles.vote}> ({voteCount})</Text>

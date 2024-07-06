@@ -63,10 +63,6 @@ const createAxiosResponseInterceptor = () => {
           await AsyncStorage.setItem("accessToken", "");
           await AsyncStorage.setItem("refreshToken", "");
 
-          /**
-           * TODO: redirigir a login
-           */
-
           handleGoogleSignOut();
 
           return Promise.reject(error2);
