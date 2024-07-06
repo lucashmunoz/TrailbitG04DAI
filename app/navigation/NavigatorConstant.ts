@@ -6,7 +6,8 @@ const NavigatorConstant = {
   Home: "Home",
   SearchMovie: "SearchMovie",
   UserProfile: "UserProfile",
-  MovieDetails: "MovieDetails"
+  MovieDetails: "MovieDetails",
+  MoviePlayer: "MoviePlayer"
 } as const;
 
 export default NavigatorConstant;
