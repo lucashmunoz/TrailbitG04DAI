@@ -55,7 +55,8 @@ export const moviesSlice = createSlice({
   selectors: {
     selectMovieById: state => state.movieById,
     selectRateLoading: state => state.rateLoading,
-    selectBookmarkLoading: state => state.bookmarkLoading
+    selectBookmarkLoading: state => state.bookmarkLoading,
+    selectMovieVideos: state => state.movieById.videos
   },
   extraReducers: builder => {
     builder.addCase(fetchMovieDetail.pending, state => {
@@ -100,7 +101,11 @@ export const moviesSlice = createSlice({
   }
 });
 
-export const { selectMovieById, selectRateLoading, selectBookmarkLoading } =
-  moviesSlice.selectors;
+export const {
+  selectMovieById,
+  selectRateLoading,
+  selectBookmarkLoading,
+  selectMovieVideos
+} = moviesSlice.selectors;
 
 export default moviesSlice;

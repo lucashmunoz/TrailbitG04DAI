@@ -16,6 +16,7 @@ import SearchMovie from "../ui/screens/SearchMovie";
 import Login from "../ui/screens/Login";
 import MovieDetail from "../ui/screens/MovieDetails";
 import SessionPersistence from "../ui/screens/SessionPersistence";
+import MoviePlayer from "../ui/screens/MoviePlayer/MoviePlayer";
 
 // Routes
 import NavigatorConstant from "./NavigatorConstant";
@@ -154,14 +155,25 @@ const RootNavigator = () => {
           name={NavigatorConstant.LoggedIn}
           component={TabNavigator}
         />
-        <Stack.Screen name={NavigatorConstant.Login} component={Login} />
+        <Stack.Screen
+          name={NavigatorConstant.Login}
+          component={Login}
+          options={{ orientation: "portrait" }}
+        />
         <Stack.Screen
           name={NavigatorConstant.SessionPersistence}
           component={SessionPersistence}
+          options={{ orientation: "portrait" }}
         />
         <Stack.Screen
           name={NavigatorConstant.MovieDetails}
           component={MovieDetail}
+          options={{ orientation: "portrait" }}
+        />
+        <Stack.Screen
+          name={NavigatorConstant.MoviePlayer}
+          component={MoviePlayer}
+          options={{ orientation: "landscape" }}
         />
       </Stack.Navigator>
     </NavigationContainer>
