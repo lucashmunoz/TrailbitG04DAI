@@ -15,7 +15,7 @@ const CastCard = ({ cast }: CastDataProps) => {
       <Image source={{ uri: profile_path }} style={styles.image} />
       <View style={styles.castData}>
         <Text style={styles.name}>{name}</Text>
-        {known_for_department == "Directing" ? (
+        {known_for_department == "Director" ? (
           <Text style={styles.role}>{known_for_department}</Text>
         ) : (
           <Text style={styles.role}>{character}</Text>
