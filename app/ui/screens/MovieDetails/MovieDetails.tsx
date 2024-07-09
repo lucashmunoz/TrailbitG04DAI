@@ -16,12 +16,14 @@ import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import {
   faChevronLeft,
   faStar,
-  faBookmark as faBookmarkSolid
+  faBookmark as faBookmarkSolid,
+  faShareNodes
 } from "@fortawesome/free-solid-svg-icons";
 import { faBookmark as faBookmarkRegular } from "@fortawesome/free-regular-svg-icons";
 import { ParamListBase, useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useAppDispatch, useAppSelector } from "../../../state/store";
+import Share from "react-native-share";
 import {
   rateMovie,
   fetchMovieDetail,
@@ -51,7 +53,7 @@ const MovieDetails = ({ route }: MovieDetailProps): React.JSX.Element => {
   const bookmarkLoading = useAppSelector(selectBookmarkLoading);
   const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
 
-  const { id: movieId, is_favorite, user_vote } = movieById;
+  const { id: movieId, is_favorite, user_vote, title: movieTitle } = movieById;
 
   const fetchMovieDetails = async () => {
     dispatch(fetchMovieDetail({ movieId: route.params.movieId }));
@@ -91,6 +93,35 @@ const MovieDetails = ({ route }: MovieDetailProps): React.JSX.Element => {
     ? { uri: movieById.backdrop_path }
     : IMAGES.NO_IMAGE;
 
+  const handleShareMovie = async () => {
+    const base64MovieImage = await fetch(movieById.backdrop_path)
+      .then(response => response.blob())
+      .then(blob => {
+        const reader = new FileReader();
+        reader.readAsDataURL(blob);
+        return new Promise(res => {
+          reader.onloadend = () => {
+            res(reader.result);
+          };
+        });
+      });
+
+    try {
+      await Share.open({
+        title: `${movieTitle} en Trailbit.`,
+        message: `Encuentra "${movieTitle}" y todas tus películas favoritas en Trailbit.\n\n${movieById.overview}\n`,
+        url: (base64MovieImage as string).replace(
+          "data:application/octet-stream;base64,",
+          "data:image/png;base64,"
+        ),
+        type: "image/base64",
+        failOnCancel: false
+      });
+    } catch (error: any) {
+      error && console.log(error);
+    }
+  };
+
   const casting = [movieById.director, ...movieById.cast];
   return (
     <SafeAreaView style={styles.movieDetailsContainer}>
@@ -107,14 +138,18 @@ const MovieDetails = ({ route }: MovieDetailProps): React.JSX.Element => {
       {loading ? (
         <LoadingIndicator color={colors.neutral50} />
       ) : (
-        <ScrollView contentContainerStyle={{ display: "flex" }}>
+        <ScrollView>
           <View style={styles.container}>
             <View style={styles.actions}>
               <Image style={styles.backdropImage} source={movieBackdropImage} />
             </View>
-            {!bookmarkLoading ? (
+            {bookmarkLoading ? (
+              <View style={styles.favoriteLoadingContainer}>
+                <FavoriteLoading />
+              </View>
+            ) : (
               <TouchableOpacity
-                style={styles.favoriteButtonContainer}
+                style={styles.favoriteButton}
                 onPress={handleFavoriteButton}>
                 <FontAwesomeIcon
                   icon={is_favorite ? faBookmarkSolid : faBookmarkRegular}
@@ -122,11 +157,17 @@ const MovieDetails = ({ route }: MovieDetailProps): React.JSX.Element => {
                   size={24}
                 />
               </TouchableOpacity>
-            ) : (
-              <View style={styles.favoriteLoadingContainer}>
-                <FavoriteLoading />
-              </View>
             )}
+            <TouchableOpacity
+              style={styles.shareButton}
+              onPress={handleShareMovie}>
+              <FontAwesomeIcon
+                icon={faShareNodes}
+                style={styles.favoriteIcon}
+                size={24}
+              />
+            </TouchableOpacity>
+
             <View style={styles.description}>
               <View style={styles.movieContainer}>
                 <Image source={movieImage} style={styles.image} />
@@ -219,11 +260,9 @@ const MovieDetails = ({ route }: MovieDetailProps): React.JSX.Element => {
 
 const styles = StyleSheet.create({
   moviesViewContainer: {
-    flexDirection: "row",
-    display: "flex"
+    flexDirection: "row"
   },
   casting: {
-    display: "flex",
     flexDirection: "column",
     width: "100%",
     gap: 10
@@ -239,18 +278,16 @@ const styles = StyleSheet.create({
   },
   movieDetailsContainer: {
     backgroundColor: colors.neutral900,
-    display: "flex",
+    flex: 1,
     alignItems: "center",
     justifyContent: "center",
     gap: 24,
     flexDirection: "column"
   },
   actions: {
-    width: "100%",
-    display: "flex"
+    width: "100%"
   },
   stars: {
-    display: "flex",
     flexDirection: "row",
     height: 35,
     width: "100%",
@@ -272,19 +309,16 @@ const styles = StyleSheet.create({
     aspectRatio: 16 / 9
   },
   movieSecondaryData: {
-    display: "flex",
     flexDirection: "column",
     width: "100%",
     gap: 12
   },
   container: {
-    display: "flex",
     flexDirection: "column",
     width: "100%",
     position: "relative"
   },
   description: {
-    display: "flex",
     width: "100%",
     alignItems: "center",
     justifyContent: "center",
@@ -308,16 +342,22 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     gap: 10
   },
-  favoriteButtonContainer: {
+  favoriteLoadingContainer: {
+    position: "absolute",
+    top: 61,
+    right: 27,
+    zIndex: 1
+  },
+  favoriteButton: {
     position: "absolute",
     top: 64,
     right: 32,
     zIndex: 1
   },
-  favoriteLoadingContainer: {
+  shareButton: {
     position: "absolute",
-    top: 61,
-    right: 27,
+    top: 120,
+    right: 32,
     zIndex: 1
   },
   backButtonContainer: {
@@ -333,14 +373,13 @@ const styles = StyleSheet.create({
     aspectRatio: 2 / 3
   },
   movieContainer: {
-    display: "flex",
     flexDirection: "row",
     width: "100%",
     gap: 16
   },
   movieDetails: {
     width: "100%",
-    display: "flex",
+
     gap: 6,
     flexDirection: "column"
   },
@@ -359,11 +398,9 @@ const styles = StyleSheet.create({
   },
   genres: {
     color: colors.neutral50,
-    fontSize: 14,
-    display: "flex"
+    fontSize: 14
   },
   movieExtraData: {
-    display: "flex",
     flexDirection: "row",
     justifyContent: "space-between"
   },
