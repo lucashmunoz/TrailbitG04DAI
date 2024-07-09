@@ -154,6 +154,7 @@ const RootNavigator = () => {
         <Stack.Screen
           name={NavigatorConstant.LoggedIn}
           component={TabNavigator}
+          options={{ orientation: "portrait" }}
         />
         <Stack.Screen
           name={NavigatorConstant.Login}

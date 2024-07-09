@@ -184,12 +184,20 @@ const MovieDetails = ({ route }: MovieDetailProps): React.JSX.Element => {
                     title="Ver Trailer"
                     onPress={handlePlayTrailer}
                   />
-
                   <View style={styles.movieExtraData}>
-                    <Text style={styles.voteCount}>
-                      {movieById.vote_average.toFixed(2)}({movieById.vote_count}
-                      )
-                    </Text>
+                    <View style={styles.rateCountContainer}>
+                      <Text style={styles.voteCount}>
+                        {movieById.vote_average.toFixed(2)}
+                      </Text>
+                      <FontAwesomeIcon
+                        icon={faStar}
+                        style={styles.rateCountIcon}
+                        size={14}
+                      />
+                      <Text style={styles.voteCount}>
+                        ({movieById.vote_count})
+                      </Text>
+                    </View>
                     <Text style={styles.duration}>
                       {formatDuration(movieById.runtime)}
                     </Text>
@@ -340,7 +348,7 @@ const styles = StyleSheet.create({
   movieDataContainer: {
     flex: 1,
     flexDirection: "column",
-    gap: 10
+    justifyContent: "space-between"
   },
   favoriteLoadingContainer: {
     position: "absolute",
@@ -404,6 +412,11 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between"
   },
+  rateCountContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 2
+  },
   voteCount: {
     color: colors.neutral50,
     fontSize: 14,
@@ -411,6 +424,7 @@ const styles = StyleSheet.create({
     flexWrap: "wrap",
     alignItems: "flex-start"
   },
+  rateCountIcon: { color: colors.neutral50 },
   duration: {
     color: colors.neutral50,
     fontSize: 14,

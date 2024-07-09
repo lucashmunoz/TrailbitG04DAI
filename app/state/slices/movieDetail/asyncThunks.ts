@@ -57,7 +57,7 @@ export const fetchMovieDetail = createAsyncThunk(
   "auth/fetchMovieDetail",
   async ({ movieId }: FetchMovieDetailPayload, { rejectWithValue }) => {
     try {
-      const fetchMovieDetailUrl = `${endpoints.movieDetail}${movieId}`;
+      const fetchMovieDetailUrl = `${endpoints.movieDetail}/${movieId}`;
       const apiResponse = await api.get<MovieDetailApiResponse>(
         fetchMovieDetailUrl
       );
