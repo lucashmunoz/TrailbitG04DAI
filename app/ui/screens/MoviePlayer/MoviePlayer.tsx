@@ -65,7 +65,7 @@ const MoviePlayer = (): React.JSX.Element => {
 
 const styles = StyleSheet.create({
   playerContainer: {
-    backgroundColor: colors.neutral900,
+    backgroundColor: "#000000",
     flex: 1,
     width: "100%",
     alignItems: "center"

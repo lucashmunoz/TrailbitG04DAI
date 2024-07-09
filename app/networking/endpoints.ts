@@ -3,7 +3,7 @@ export const endpoints = {
   refreshToken: "/api/v1/auth/refresh",
   movies: "/api/v1/movies",
   users: "/api/v1/users",
-  movieDetail: "/api/v1/movies/",
+  movieDetail: "/api/v1/movies",
   favorite: "/api/v1/favorites",
   voteMovie: "/api/v1/movies/{movieId}/vote"
 } as const;
