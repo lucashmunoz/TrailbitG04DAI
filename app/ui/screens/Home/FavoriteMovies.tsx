@@ -1,8 +1,9 @@
 import React from "react";
-import { View, Text, StyleSheet, Dimensions, FlatList } from "react-native";
+import { View, Text, StyleSheet } from "react-native";
 import colors from "../../styles/colors";
 import { IMAGES } from "../../../assets/images";
 import MovieCard from "./MovieCard";
+import { FlashList } from "@shopify/flash-list";
 
 const movies = [
   { id: "1", title: "Movie 1", image: IMAGES.MOVIE_CARD_ONE },
@@ -16,12 +17,13 @@ const FavoriteMovies = (): React.JSX.Element => {
   return (
     <View style={styles.container}>
       <Text style={styles.favouritesTitle}>Favoritas</Text>
-      <FlatList
+      <FlashList
         data={movies}
         renderItem={MovieCard}
         keyExtractor={item => item.id}
         horizontal
-        showsHorizontalScrollIndicator={false}
+        estimatedItemSize={120}
+        scrollEventThrottle={50}
       />
     </View>
   );
@@ -35,8 +37,8 @@ const styles = StyleSheet.create({
     gap: 10
   },
   favouritesTitle: {
-    fontSize: 17.72,
-    fontWeight: "semibold",
+    fontSize: 18,
+    fontWeight: "bold",
     color: colors.neutral50
   }
 });

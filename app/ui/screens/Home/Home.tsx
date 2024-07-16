@@ -22,6 +22,11 @@ const Home = (): React.JSX.Element => {
             source={IMAGES.BACKGROUND_HOME}
             style={styles.backgroundImage}
           />
+
+          <Image
+            source={IMAGES.PRINCIPAL_MOVIE}
+            style={styles.principalMovieImage}
+          />
         </View>
 
         <View style={styles.moviesContainer}>
@@ -35,14 +40,31 @@ const Home = (): React.JSX.Element => {
 
 const styles = StyleSheet.create({
   homeContainer: {
-    backgroundColor: colors.neutral900
+    backgroundColor: colors.neutral900,
+    flex: 1
   },
-  principalMovieContainer: {},
-  moviesContainer: {},
+  principalMovieContainer: {
+    width: "100%",
+    height: 375,
+    overflow: "hidden",
+    alignItems: "center"
+  },
   backgroundImage: {
-    width: 420,
-    height: 350,
-    resizeMode: "cover"
+    height: 300,
+    aspectRatio: 16 / 9
+  },
+  principalMovieImage: {
+    position: "absolute",
+    height: 150,
+    top: 300 - 75,
+    overflow: "hidden",
+    width: 266
+  },
+  moviesContainer: {
+    gap: 10,
+    flex: 1,
+    paddingLeft: 16,
+    paddingTop: 16
   }
 });
 
