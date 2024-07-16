@@ -22,7 +22,7 @@ export interface Movie {
   user_vote: number;
 }
 
-interface Image {
+export interface Image {
   id: string;
   file_path: string;
 }

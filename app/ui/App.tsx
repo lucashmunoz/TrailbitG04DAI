@@ -7,6 +7,8 @@ import SplashScreen from "react-native-splash-screen";
 import { Platform, View, StyleSheet } from "react-native";
 import BootSplash from "react-native-bootsplash";
 import Toast, { ToastHandle } from "./components/Toast";
+import "react-native-gesture-handler";
+import "react-native-reanimated";
 
 function App(): React.JSX.Element {
   const netInfo = useNetInfo();
