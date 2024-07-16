@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   SafeAreaView,
   Text,
@@ -40,6 +40,8 @@ import Button from "../../components/Button";
 import CastCard from "../../components/CastCard/CastCard";
 import FavoriteLoading from "../../components/FavoriteLoading";
 import NavigatorConstant from "../../../navigation/NavigatorConstant";
+import ImageCarousel from "../../components/ImageCarousel";
+import ImageCarouselModal from "./ImageCarouselModal";
 
 interface MovieDetailProps {
   route: { params: { movieId: number } };
@@ -47,6 +49,7 @@ interface MovieDetailProps {
 
 const MovieDetails = ({ route }: MovieDetailProps): React.JSX.Element => {
   const dispatch = useAppDispatch();
+
   const { loading } = useAppSelector(state => state.movie);
   const movieById = useAppSelector(selectMovieById);
   const rateLoading = useAppSelector(selectRateLoading);
@@ -54,6 +57,7 @@ const MovieDetails = ({ route }: MovieDetailProps): React.JSX.Element => {
   const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
 
   const { id: movieId, is_favorite, user_vote, title: movieTitle } = movieById;
+  const [isImagesModalOpen, setIsImagesModalOpen] = useState(false);
 
   const fetchMovieDetails = async () => {
     dispatch(fetchMovieDetail({ movieId: route.params.movieId }));
@@ -87,10 +91,6 @@ const MovieDetails = ({ route }: MovieDetailProps): React.JSX.Element => {
 
   const movieImage = movieById.poster_path
     ? { uri: movieById.poster_path }
-    : IMAGES.NO_IMAGE;
-
-  const movieBackdropImage = movieById.backdrop_path
-    ? { uri: movieById.backdrop_path }
     : IMAGES.NO_IMAGE;
 
   const handleShareMovie = async () => {
@@ -140,9 +140,10 @@ const MovieDetails = ({ route }: MovieDetailProps): React.JSX.Element => {
       ) : (
         <ScrollView>
           <View style={styles.container}>
-            <View style={styles.actions}>
-              <Image style={styles.backdropImage} source={movieBackdropImage} />
-            </View>
+            <TouchableOpacity onPress={() => setIsImagesModalOpen(true)}>
+              <ImageCarousel images={movieById.images} />
+            </TouchableOpacity>
+
             {bookmarkLoading ? (
               <View style={styles.favoriteLoadingContainer}>
                 <FavoriteLoading />
@@ -158,6 +159,7 @@ const MovieDetails = ({ route }: MovieDetailProps): React.JSX.Element => {
                 />
               </TouchableOpacity>
             )}
+
             <TouchableOpacity
               style={styles.shareButton}
               onPress={handleShareMovie}>
@@ -262,6 +264,11 @@ const MovieDetails = ({ route }: MovieDetailProps): React.JSX.Element => {
           </View>
         </ScrollView>
       )}
+      <ImageCarouselModal
+        isOpen={isImagesModalOpen}
+        setIsOpen={setIsImagesModalOpen}
+        images={movieById.images}
+      />
     </SafeAreaView>
   );
 };
