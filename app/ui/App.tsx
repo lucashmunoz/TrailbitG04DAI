@@ -9,6 +9,7 @@ import BootSplash from "react-native-bootsplash";
 import Toast, { ToastHandle } from "./components/Toast";
 import "react-native-gesture-handler";
 import "react-native-reanimated";
+import colors from "./styles/colors";
 
 function App(): React.JSX.Element {
   const netInfo = useNetInfo();
@@ -49,8 +50,16 @@ function App(): React.JSX.Element {
 
   return (
     <Provider store={store}>
-      <View style={styles.mainContainer}>
+      <View
+        style={styles.mainContainer}
+        pointerEvents={isNoInternetToastDisplayed ? "none" : "auto"}>
         <RootNavigator />
+        <View
+          style={[
+            styles.noInternetOVerlay,
+            isNoInternetToastDisplayed && styles.showToastContainer
+          ]}
+        />
         <View style={styles.toastContainer}>
           <Toast ref={noInternetToastRef} />
         </View>
@@ -61,13 +70,29 @@ function App(): React.JSX.Element {
 
 const styles = StyleSheet.create({
   mainContainer: { flex: 1 },
+  noInternetOVerlay: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    bottom: 0,
+    right: 0,
+    opacity: 0.5,
+    height: "100%",
+    backgroundColor: colors.neutral900,
+    alignItems: "center",
+    paddingHorizontal: 16,
+    display: "none"
+  },
   toastContainer: {
+    paddingHorizontal: 16,
     position: "absolute",
     top: 0,
     left: 0,
     width: "100%",
-    alignItems: "center",
-    paddingHorizontal: 16
+    alignItems: "center"
+  },
+  showToastContainer: {
+    display: "flex"
   }
 });
 
