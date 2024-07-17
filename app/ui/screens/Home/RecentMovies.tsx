@@ -4,6 +4,7 @@ import { IMAGES } from "../../../assets/images";
 import MovieCard from "./MovieCard";
 import colors from "../../styles/colors";
 import { FlashList } from "@shopify/flash-list";
+import GenreButtons from "./GenreButtons";
 
 const movies = [
   { id: "1", title: "Movie 1", image: IMAGES.MOVIE_CARD_ONE },
@@ -29,6 +30,7 @@ const RecentMovies = (): React.JSX.Element => {
   return (
     <View style={styles.container}>
       <Text style={styles.recentsTitle}>Recientes</Text>
+      <GenreButtons />
       <FlashList
         data={movies}
         renderItem={MovieCard}
