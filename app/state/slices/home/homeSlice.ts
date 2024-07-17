@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import { fetchGenres } from "./asyncThunks";
 
 interface HomeState {
-  genres: Array<string>;
+  genres: Array<{ id: string; name: string }>;
   loading: boolean;
   error: string;
 }

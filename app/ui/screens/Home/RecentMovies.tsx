@@ -1,5 +1,7 @@
-import React from "react";
-import { View, Text, StyleSheet } from "react-native";
+import React, { useEffect } from "react";
+import { View, Text, StyleSheet, ActivityIndicator } from "react-native";
+import { useAppDispatch, useAppSelector } from "../../../state/store";
+import { fetchGenres } from "../../../state/slices/home/asyncThunks";
 import MovieCard from "./MovieCard";
 import colors from "../../styles/colors";
 import { FlashList } from "@shopify/flash-list";
@@ -57,11 +59,27 @@ const movies = [
 ];
 
 const RecentMovies = (): React.JSX.Element => {
+  const dispatch = useAppDispatch();
+  const { genres, loading, error } = useAppSelector(state => state.home);
+
+  useEffect(() => {
+    dispatch(fetchGenres());
+  }, [dispatch]);
+
+  if (loading) {
+    return <ActivityIndicator size="large" color="#0000ff" />;
+  }
+
+  if (error) {
+    return <Text style={styles.errorText}>Error: {error}</Text>;
+  }
+
   const handleScroll = ({ nativeEvent }) => {};
+
   return (
     <View style={styles.container}>
       <Text style={styles.recentsTitle}>Recientes</Text>
-      <GenreButtons />
+      <GenreButtons genres={genres} />
       <FlashList
         data={movies}
         renderItem={({ item }) => <MovieCard item={item} />}
@@ -85,6 +103,12 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: "bold",
     color: colors.neutral50
+  },
+  errorText: {
+    color: "red",
+    fontSize: 18,
+    textAlign: "center",
+    marginTop: 20
   }
 });
 
