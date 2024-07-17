@@ -1,28 +1,59 @@
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
-import { IMAGES } from "../../../assets/images";
 import MovieCard from "./MovieCard";
 import colors from "../../styles/colors";
 import { FlashList } from "@shopify/flash-list";
 import GenreButtons from "./GenreButtons";
 
 const movies = [
-  { id: "1", title: "Movie 1", image: IMAGES.MOVIE_CARD_ONE },
-  { id: "2", title: "Movie 2", image: IMAGES.MOVIE_CARD_TWO },
-  { id: "3", title: "Movie 3", image: IMAGES.MOVIE_CARD_THREE },
-  { id: "4", title: "Movie 4", image: IMAGES.MOVIE_CARD_FOUR },
-  { id: "5", title: "Movie 5", image: IMAGES.MOVIE_CARD_ONE },
-  { id: "6", title: "Movie 6", image: IMAGES.MOVIE_CARD_TWO },
-  { id: "7", title: "Movie 7", image: IMAGES.MOVIE_CARD_THREE },
-  { id: "8", title: "Movie 8", image: IMAGES.MOVIE_CARD_FOUR },
-  { id: "9", title: "Movie 1", image: IMAGES.MOVIE_CARD_ONE },
-  { id: "10", title: "Movie 2", image: IMAGES.MOVIE_CARD_TWO },
-  { id: "11", title: "Movie 3", image: IMAGES.MOVIE_CARD_THREE },
-  { id: "12", title: "Movie 4", image: IMAGES.MOVIE_CARD_FOUR },
-  { id: "13", title: "Movie 5", image: IMAGES.MOVIE_CARD_ONE },
-  { id: "14", title: "Movie 6", image: IMAGES.MOVIE_CARD_TWO },
-  { id: "15", title: "Movie 7", image: IMAGES.MOVIE_CARD_THREE },
-  { id: "16", title: "Movie 8", image: IMAGES.MOVIE_CARD_FOUR }
+  {
+    id: "1",
+    title: "Movie 1",
+    image:
+      "https://res.cloudinary.com/dtrj85lgu/image/upload/v1720543446/uk9isj3wa4yhe98ucv8q.jpg"
+  },
+  {
+    id: "2",
+    title: "Movie 2",
+    image:
+      "https://res.cloudinary.com/dtrj85lgu/image/upload/v1720543446/uk9isj3wa4yhe98ucv8q.jpg"
+  },
+  {
+    id: "3",
+    title: "Movie 3",
+    image:
+      "https://res.cloudinary.com/dtrj85lgu/image/upload/v1720543446/uk9isj3wa4yhe98ucv8q.jpg"
+  },
+  {
+    id: "4",
+    title: "Movie 4",
+    image:
+      "https://res.cloudinary.com/dtrj85lgu/image/upload/v1720543446/uk9isj3wa4yhe98ucv8q.jpg"
+  },
+  {
+    id: "5",
+    title: "Movie 5",
+    image:
+      "https://res.cloudinary.com/dtrj85lgu/image/upload/v1720543446/uk9isj3wa4yhe98ucv8q.jpg"
+  },
+  {
+    id: "6",
+    title: "Movie 6",
+    image:
+      "https://res.cloudinary.com/dtrj85lgu/image/upload/v1720543446/uk9isj3wa4yhe98ucv8q.jpg"
+  },
+  {
+    id: "7",
+    title: "Movie 7",
+    image:
+      "https://res.cloudinary.com/dtrj85lgu/image/upload/v1720543446/uk9isj3wa4yhe98ucv8q.jpg"
+  },
+  {
+    id: "8",
+    title: "Movie 8",
+    image:
+      "https://res.cloudinary.com/dtrj85lgu/image/upload/v1720543446/uk9isj3wa4yhe98ucv8q.jpg"
+  }
 ];
 
 const RecentMovies = (): React.JSX.Element => {
@@ -33,7 +64,7 @@ const RecentMovies = (): React.JSX.Element => {
       <GenreButtons />
       <FlashList
         data={movies}
-        renderItem={MovieCard}
+        renderItem={({ item }) => <MovieCard item={item} />}
         keyExtractor={item => item.id}
         numColumns={3}
         estimatedItemSize={120}

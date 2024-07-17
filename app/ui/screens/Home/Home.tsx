@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   SafeAreaView,
   StyleSheet,
@@ -11,8 +11,21 @@ import FavoriteMovies from "./FavoriteMovies";
 import RecentMovies from "./RecentMovies";
 import colors from "../../styles/colors";
 import { IMAGES } from "../../../assets/images";
+import { fetchFavoriteMovies } from "../../../state/slices/movies/asyncThunks";
+import { useAppDispatch, useAppSelector } from "../../../state/store";
+import { selectFavoriteMovies } from "../../../state/slices/movies/moviesSlice";
 
 const Home = (): React.JSX.Element => {
+  const dispatch = useAppDispatch();
+  const { loading, error } = useAppSelector(state => state.movies);
+  const favoriteMovies = useAppSelector(selectFavoriteMovies);
+
+  const movies = favoriteMovies;
+
+  useEffect(() => {
+    dispatch(fetchFavoriteMovies());
+  }, [dispatch]);
+
   return (
     <SafeAreaView style={styles.homeContainer}>
       <StatusBar backgroundColor={colors.neutral900} />
@@ -22,15 +35,15 @@ const Home = (): React.JSX.Element => {
             source={IMAGES.BACKGROUND_HOME}
             style={styles.backgroundImage}
           />
-
           <Image
             source={IMAGES.PRINCIPAL_MOVIE}
             style={styles.principalMovieImage}
           />
         </View>
-
         <View style={styles.moviesContainer}>
-          <FavoriteMovies />
+          {favoriteMovies.length > 0 && (
+            <FavoriteMovies movies={favoriteMovies} />
+          )}
           <RecentMovies />
         </View>
       </ScrollView>
@@ -56,7 +69,7 @@ const styles = StyleSheet.create({
   principalMovieImage: {
     position: "absolute",
     height: 150,
-    top: 300 - 75,
+    top: 225,
     overflow: "hidden",
     width: 266
   },

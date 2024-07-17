@@ -136,3 +136,41 @@ export const fetchMoviesBySearch = createAsyncThunk(
     }
   }
 );
+
+export const fetchFavoriteMovies = createAsyncThunk(
+  "auth/fetchFavoriteMovies",
+  async (_, { rejectWithValue }) => {
+    try {
+      const fetchFavoriteMoviesUrl = `${endpoints.favorite}`;
+      const apiResponse = await api.get<MovieApiResponse[]>(
+        fetchFavoriteMoviesUrl
+      );
+
+      const movies = apiResponse?.data.map(movie => {
+        const {
+          poster_path,
+          backdrop_path,
+          release_date,
+          vote_average,
+          vote_count
+        } = movie;
+        return {
+          ...movie,
+          posterPath: poster_path,
+          backdropPath: backdrop_path,
+          releaseDate: release_date,
+          voteAverage: vote_average,
+          voteCount: vote_count
+        };
+      }) as Movies;
+
+      return {
+        movies
+      };
+    } catch (error) {
+      return rejectWithValue({
+        error: error
+      });
+    }
+  }
+);

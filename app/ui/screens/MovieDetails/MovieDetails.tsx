@@ -42,6 +42,7 @@ import FavoriteLoading from "../../components/FavoriteLoading";
 import NavigatorConstant from "../../../navigation/NavigatorConstant";
 import ImageCarousel from "../../components/ImageCarousel";
 import ImageCarouselModal from "./ImageCarouselModal";
+import { fetchFavoriteMovies } from "../../../state/slices/movies/asyncThunks";
 
 interface MovieDetailProps {
   route: { params: { movieId: number } };
@@ -71,8 +72,9 @@ const MovieDetails = ({ route }: MovieDetailProps): React.JSX.Element => {
     navigation.goBack();
   };
 
-  const handleFavoriteButton = () => {
-    dispatch(toggleFavoriteMovie({ movieId }));
+  const handleFavoriteButton = async () => {
+    await dispatch(toggleFavoriteMovie({ movieId }));
+    dispatch(fetchFavoriteMovies());
   };
 
   const formatDuration = (duration: number) => {
