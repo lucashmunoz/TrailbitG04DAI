@@ -21,7 +21,6 @@ const { width } = Dimensions.get("window");
 
 const MovieCard: React.FC<MovieCardProps> = ({ item }) => {
   const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
-  console.log(item);
   return (
     <TouchableOpacity
       onPress={() =>

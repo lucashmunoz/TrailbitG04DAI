@@ -24,7 +24,6 @@ const Home = (): React.JSX.Element => {
 
   useEffect(() => {
     dispatch(fetchFavoriteMovies());
-    console.log(favoriteMovies);
   }, [dispatch]);
 
   return (
