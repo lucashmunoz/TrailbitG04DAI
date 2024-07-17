@@ -5,5 +5,6 @@ export const endpoints = {
   users: "/api/v1/users",
   movieDetail: "/api/v1/movies",
   favorite: "/api/v1/favorites",
-  voteMovie: "/api/v1/movies/{movieId}/vote"
+  voteMovie: "/api/v1/movies/{movieId}/vote",
+  genres: "/api/v1/movies/genres"
 } as const;
