@@ -44,6 +44,24 @@ const ImageCarouselModal = ({
       onRequestClose={closeModal}>
       <View style={styles.centeredView}>
         <View style={styles.modalView}>
+          <TouchableOpacity onPress={prevImage} style={styles.prevImage}>
+            <View style={styles.modalNav}>
+              <FontAwesomeIcon
+                icon={faAngleLeft}
+                size={35}
+                style={styles.closeModal}
+              />
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={nextImage} style={styles.nextImage}>
+            <View style={styles.modalNav}>
+              <FontAwesomeIcon
+                icon={faAngleRight}
+                size={35}
+                style={styles.closeModal}
+              />
+            </View>
+          </TouchableOpacity>
           <View style={styles.containerStateIndicator}>
             {[0, 1, 2, 3].map(index => (
               <View
@@ -61,22 +79,6 @@ const ImageCarouselModal = ({
               <FontAwesomeIcon
                 icon={faXmark}
                 size={32}
-                style={styles.closeModal}
-              />
-            </TouchableOpacity>
-          </View>
-          <View style={styles.navContainer}>
-            <TouchableOpacity onPress={prevImage} style={styles.prevImage}>
-              <FontAwesomeIcon
-                icon={faAngleLeft}
-                size={45}
-                style={styles.closeModal}
-              />
-            </TouchableOpacity>
-            <TouchableOpacity onPress={nextImage} style={styles.nextImage}>
-              <FontAwesomeIcon
-                icon={faAngleRight}
-                size={45}
                 style={styles.closeModal}
               />
             </TouchableOpacity>
@@ -128,24 +130,36 @@ const styles = StyleSheet.create({
     zIndex: 2
   },
   image: { width: "100%", aspectRatio: 16 / 9 },
-  closeModal: { color: "white" },
+  closeModal: {
+    color: "white"
+  },
+  modalNav: {
+    padding: 3,
+    width: 50,
+    height: 50,
+    borderRadius: 25, // Radio igual a la mitad del ancho/alto para hacer un círculo
+    backgroundColor: "rgba(41, 41, 41, 0.8)", // Fondo blanco semi-transparente
+    justifyContent: "center",
+    alignItems: "center"
+  },
   prevImage: {
-    position: "relative",
-    right: 0,
-    top: 90,
+    position: "absolute",
+    left: 7,
+    top: "50%",
     zIndex: 2
   },
   nextImage: {
-    position: "relative",
-    left: 0,
-    top: 90,
+    position: "absolute",
+    right: 7,
+    top: "50%",
     zIndex: 2
   },
   navContainer: {
     position: "absolute",
     width: "100%",
     flexDirection: "row",
-    justifyContent: "space-between"
+    justifyContent: "space-between",
+    padding: 8
   },
   containerStateIndicator: {
     display: "flex",
