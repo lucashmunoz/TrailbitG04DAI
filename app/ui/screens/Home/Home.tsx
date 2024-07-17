@@ -14,6 +14,7 @@ import { IMAGES } from "../../../assets/images";
 import { fetchFavoriteMovies } from "../../../state/slices/movies/asyncThunks";
 import { useAppDispatch, useAppSelector } from "../../../state/store";
 import { selectFavoriteMovies } from "../../../state/slices/movies/moviesSlice";
+import MainMovie from "./MainMovie";
 
 const Home = (): React.JSX.Element => {
   const dispatch = useAppDispatch();
@@ -30,16 +31,7 @@ const Home = (): React.JSX.Element => {
     <SafeAreaView style={styles.homeContainer}>
       <StatusBar backgroundColor={colors.neutral900} />
       <ScrollView>
-        <View style={styles.principalMovieContainer}>
-          <Image
-            source={IMAGES.BACKGROUND_HOME}
-            style={styles.backgroundImage}
-          />
-          <Image
-            source={IMAGES.PRINCIPAL_MOVIE}
-            style={styles.principalMovieImage}
-          />
-        </View>
+        <MainMovie />
         <View style={styles.moviesContainer}>
           {favoriteMovies.length > 0 && (
             <FavoriteMovies movies={favoriteMovies} />
