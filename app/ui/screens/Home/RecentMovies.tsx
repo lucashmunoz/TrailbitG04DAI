@@ -74,8 +74,8 @@ const RecentMovies = (): React.JSX.Element => {
           onEndReached={() => {
             console.log("nacho");
           }}
-          onEndReachedThreshold={0.5}
-          showsVerticalScrollIndicator
+          onEndReachedThreshold={0.3}
+          // contentContainerStyle={{ flex: 1 }}
         />
       )}
     </View>
