@@ -125,7 +125,10 @@ const MovieDetails = ({ route }: MovieDetailProps): React.JSX.Element => {
     }
   };
 
-  const casting = [movieById.director, ...movieById.cast];
+  const casting = [movieById.director, ...movieById.cast].filter(
+    cast => cast !== null
+  );
+
   return (
     <SafeAreaView style={styles.movieDetailsContainer}>
       <StatusBar backgroundColor={colors.neutral900} />
@@ -238,7 +241,7 @@ const MovieDetails = ({ route }: MovieDetailProps): React.JSX.Element => {
                   ) : (
                     [1, 2, 3, 4, 5].map(rateValue => (
                       <Pressable
-                        key={rateValue}
+                        key={`rate-${rateValue}`}
                         onPress={() => handleRateChange(rateValue)}>
                         <FontAwesomeIcon
                           icon={faStar}
