@@ -5,6 +5,8 @@ import { FlashList } from "@shopify/flash-list";
 
 interface GenreButtonsProps {
   genres: Genre[];
+  stateGenre: string;
+  setStateGenre: (id: string) => void;
 }
 
 interface Genre {
@@ -12,15 +14,17 @@ interface Genre {
   name: string;
 }
 
-const GenreButtons = ({ genres }: GenreButtonsProps): React.JSX.Element => {
-  const [selectedGenreID, setSelectedGenreID] = useState("");
-
-  const Genre = ({ genre }: { genre: Genre }) => {
-    const handlePress = (genreID: Genre["id"]) => {
-      if (selectedGenreID === genreID) {
-        setSelectedGenreID("");
+const GenreButtons = ({
+  genres,
+  stateGenre,
+  setStateGenre
+}: GenreButtonsProps): React.JSX.Element => {
+  const Genre = ({ genre }): React.JSX.Element => {
+    const handlePress = (genre: Genre) => {
+      if (stateGenre === genre.name) {
+        setStateGenre("");
       } else {
-        setSelectedGenreID(genre.id);
+        setStateGenre(genre.name);
       }
     };
 
@@ -29,16 +33,16 @@ const GenreButtons = ({ genres }: GenreButtonsProps): React.JSX.Element => {
         <TouchableOpacity
           style={[
             styles.button,
-            selectedGenreID === genre.id ? styles.clicked : styles.unclicked
+            stateGenre === genre.name ? styles.clicked : styles.unclicked
           ]}
-          onPress={() => handlePress(genre.id)}>
+          onPress={() => handlePress(genre)}>
           <Text style={styles.buttonText}>{genre.name}</Text>
         </TouchableOpacity>
       </View>
     );
   };
 
-  const selectedGenre = genres.find(genre => genre.id === selectedGenreID);
+  const selectedGenre = genres.find(genre => genre.name == stateGenre);
 
   return (
     <View style={styles.container}>
@@ -47,9 +51,9 @@ const GenreButtons = ({ genres }: GenreButtonsProps): React.JSX.Element => {
       ) : (
         <FlashList
           data={genres}
-          extraData={selectedGenreID}
+          extraData={stateGenre}
           renderItem={({ item }) => <Genre genre={item} />}
-          keyExtractor={item => item.id}
+          keyExtractor={item => item.id.toString()}
           horizontal
           estimatedItemSize={genres.length}
           showsHorizontalScrollIndicator={false}

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { View, Text, StyleSheet } from "react-native";
 import { useAppDispatch, useAppSelector } from "../../../state/store";
 import { fetchGenres } from "../../../state/slices/home/asyncThunks";
@@ -17,10 +17,12 @@ const RecentMovies = (): React.JSX.Element => {
   const { loading: recentMoviesLoading, recentMovies } = useAppSelector(
     state => state.recentMovies
   );
+  const [genreSearch, setGenreSearch] = useState("");
 
   useEffect(() => {
-    dispatch(fetchGenres()), dispatch(fetchRecentMovies({ page: 1 }));
-  }, [dispatch]);
+    dispatch(fetchGenres()),
+      dispatch(fetchRecentMovies({ page: 1, genre: genreSearch }));
+  }, [dispatch, genreSearch]);
 
   const handleScroll = ({ nativeEvent }) => {};
 
@@ -59,7 +61,11 @@ const RecentMovies = (): React.JSX.Element => {
         />
       ) : (
         <>
-          <GenreButtons genres={genres} />
+          <GenreButtons
+            genres={genres}
+            setStateGenre={setGenreSearch}
+            stateGenre={genreSearch}
+          />
           <FlashList
             data={mapData()}
             renderItem={({ item }) => <MovieCard item={item} />}
