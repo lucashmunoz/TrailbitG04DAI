@@ -9,6 +9,7 @@ import BootSplash from "react-native-bootsplash";
 import Toast, { ToastHandle } from "./components/Toast";
 import "react-native-gesture-handler";
 import "react-native-reanimated";
+import "@react-native-masked-view/masked-view";
 import colors from "./styles/colors";
 
 function App(): React.JSX.Element {

@@ -4,24 +4,21 @@ import {
   StyleSheet,
   StatusBar,
   ScrollView,
-  View,
-  Image
+  View
 } from "react-native";
 import FavoriteMovies from "./FavoriteMovies";
 import RecentMovies from "./RecentMovies";
 import colors from "../../styles/colors";
-import { IMAGES } from "../../../assets/images";
 import { fetchFavoriteMovies } from "../../../state/slices/movies/asyncThunks";
 import { useAppDispatch, useAppSelector } from "../../../state/store";
 import { selectFavoriteMovies } from "../../../state/slices/movies/moviesSlice";
+import { selectFavoriteMoviesLoading } from "../../../state/slices/movies/moviesSlice";
 import MainMovie from "./MainMovie";
 
 const Home = (): React.JSX.Element => {
   const dispatch = useAppDispatch();
-  const { loading, error } = useAppSelector(state => state.movies);
   const favoriteMovies = useAppSelector(selectFavoriteMovies);
-
-  const movies = favoriteMovies;
+  const favoriteMoviesLoading = useAppSelector(selectFavoriteMoviesLoading);
 
   useEffect(() => {
     dispatch(fetchFavoriteMovies());
@@ -33,7 +30,7 @@ const Home = (): React.JSX.Element => {
       <ScrollView>
         <MainMovie />
         <View style={styles.moviesContainer}>
-          {favoriteMovies.length > 0 && (
+          {(favoriteMovies.length > 0 || favoriteMoviesLoading) && (
             <FavoriteMovies movies={favoriteMovies} />
           )}
           <RecentMovies />

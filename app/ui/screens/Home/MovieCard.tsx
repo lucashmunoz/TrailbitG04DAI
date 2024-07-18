@@ -1,23 +1,15 @@
 import React from "react";
-import {
-  View,
-  StyleSheet,
-  Image,
-  TouchableOpacity,
-  Dimensions
-} from "react-native";
+import { View, StyleSheet, Image, TouchableOpacity } from "react-native";
 import { ParamListBase, useNavigation } from "@react-navigation/native";
 import NavigatorConstant from "../../../navigation/NavigatorConstant";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 
 interface MovieCardProps {
   item: {
-    id: string;
+    id: number;
     image: string;
   };
 }
-
-const { width } = Dimensions.get("window");
 
 const MovieCard: React.FC<MovieCardProps> = ({ item }) => {
   const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
@@ -41,12 +33,11 @@ const MovieCard: React.FC<MovieCardProps> = ({ item }) => {
 
 const styles = StyleSheet.create({
   movieCard: {
-    width: width * 0.28,
-    marginHorizontal: 10
+    marginHorizontal: 8
   },
   image: {
-    width: "100%",
-    height: 180
+    height: 180,
+    width: 120
   }
 });
 
