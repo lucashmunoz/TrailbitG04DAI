@@ -28,7 +28,7 @@ export const fetchRecentMovies = createAsyncThunk(
     { rejectWithValue }
   ) => {
     try {
-      var genreQuery = genre == "" ? `&genre=${genre}` : "";
+      var genreQuery = genre != "" ? `&genre=${genre}` : "";
       const fetchRecentMoviesUrl = `${endpoints.movies}?dateOrder=desc&page=${page}${genreQuery}`;
       const apiResponse = await api.get<MovieApiResponse[]>(
         fetchRecentMoviesUrl

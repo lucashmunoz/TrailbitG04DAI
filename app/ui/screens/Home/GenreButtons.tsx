@@ -5,8 +5,8 @@ import { FlashList } from "@shopify/flash-list";
 
 interface GenreButtonsProps {
   genres: Genre[];
-  stateGenre: String;
-  setStateGenre: Function;
+  stateGenre: string;
+  setStateGenre: (id: string) => void;
 }
 
 interface Genre {
@@ -19,13 +19,12 @@ const GenreButtons = ({
   stateGenre,
   setStateGenre
 }: GenreButtonsProps): React.JSX.Element => {
-  const Genre = ({ genre }: { genre: Genre }) => {
-    console.log(genre);
+  const Genre = ({ genre }): React.JSX.Element => {
     const handlePress = (genre: Genre) => {
-      if (stateGenre === genre.id) {
+      if (stateGenre === genre.name) {
         setStateGenre("");
       } else {
-        setStateGenre(genre.id);
+        setStateGenre(genre.name);
       }
     };
 
@@ -34,7 +33,7 @@ const GenreButtons = ({
         <TouchableOpacity
           style={[
             styles.button,
-            stateGenre === genre.id ? styles.clicked : styles.unclicked
+            stateGenre === genre.name ? styles.clicked : styles.unclicked
           ]}
           onPress={() => handlePress(genre)}>
           <Text style={styles.buttonText}>{genre.name}</Text>
@@ -43,7 +42,7 @@ const GenreButtons = ({
     );
   };
 
-  const selectedGenre = genres.find(genre => genre.id.toString() == stateGenre);
+  const selectedGenre = genres.find(genre => genre.name == stateGenre);
 
   return (
     <View style={styles.container}>
