@@ -11,6 +11,7 @@ interface MoviesState {
   moviesBySearch: Movie[];
   popularMovies: Movie[];
   favoriteMovies: Movie[];
+  favoriteMoviesLoading: boolean;
   typeOfResponse: "popular" | "input";
   error: string;
 }
@@ -20,6 +21,7 @@ const initialState: MoviesState = {
   moviesBySearch: [],
   popularMovies: [],
   favoriteMovies: [],
+  favoriteMoviesLoading: true,
   typeOfResponse: "popular",
   error: ""
 };
@@ -32,7 +34,8 @@ export const moviesSlice = createSlice({
     selectTypeOfResponse: state => state.typeOfResponse,
     selectMoviesBySearch: state => state.moviesBySearch,
     selectPopularMovies: state => state.popularMovies,
-    selectFavoriteMovies: state => state.favoriteMovies
+    selectFavoriteMovies: state => state.favoriteMovies,
+    selectFavoriteMoviesLoading: state => state.favoriteMoviesLoading
   },
   extraReducers: builder => {
     builder.addCase(fetchPopularMovies.pending, state => {
@@ -74,16 +77,16 @@ export const moviesSlice = createSlice({
       state.error = response.error.message || "error";
     });
     builder.addCase(fetchFavoriteMovies.pending, state => {
-      state.loading = true;
+      state.favoriteMoviesLoading = true;
       state.error = "";
     });
     builder.addCase(fetchFavoriteMovies.fulfilled, (state, response) => {
-      state.loading = false;
+      state.favoriteMoviesLoading = false;
       state.favoriteMovies = response.payload.movies;
       state.error = "";
     });
     builder.addCase(fetchFavoriteMovies.rejected, (state, response) => {
-      state.loading = false;
+      state.favoriteMoviesLoading = false;
       state.error = response.error.message || "error";
     });
   }
@@ -93,7 +96,8 @@ export const {
   selectTypeOfResponse,
   selectMoviesBySearch,
   selectPopularMovies,
-  selectFavoriteMovies
+  selectFavoriteMovies,
+  selectFavoriteMoviesLoading
 } = moviesSlice.selectors;
 
 export default moviesSlice;
