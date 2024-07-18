@@ -14,7 +14,9 @@ const MovieData = ({ movie }: MovieDataProps) => {
 
   const releaseYear = releaseDate?.substring(0, 4);
 
-  const roundedVoteAverage = parseFloat(voteAverage.toString()).toFixed(2);
+  const roundedVoteAverage = (parseFloat(voteAverage.toString()) / 2).toFixed(
+    2
+  );
 
   return (
     <View style={styles.container}>
