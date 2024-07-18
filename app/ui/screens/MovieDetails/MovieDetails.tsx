@@ -191,7 +191,7 @@ const MovieDetails = ({ route }: MovieDetailProps): React.JSX.Element => {
                   <View style={styles.movieExtraData}>
                     <View style={styles.rateCountContainer}>
                       <Text style={styles.voteCount}>
-                        {movieById.vote_average.toFixed(2)}
+                        {(movieById.vote_average / 2).toFixed(2)}
                       </Text>
                       <FontAwesomeIcon
                         icon={faStar}
