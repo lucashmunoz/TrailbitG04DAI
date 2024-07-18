@@ -30,14 +30,16 @@ export const fetchMainMovie = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const moviesBySearchUrl = `${endpoints.movies}?popularMovies=true&size=1`;
-      const apiResponse1 = await api.get<MovieApiResponse[]>(moviesBySearchUrl);
+      const popularMoviesResponse = await api.get<MovieApiResponse[]>(
+        moviesBySearchUrl
+      );
 
-      const movieDetailBySearchUrl = `${endpoints.movieDetail}/${apiResponse1?.data[0].id}`;
-      const apiResponse2 = await api.get<MovieDetailApiResponse>(
+      const movieDetailBySearchUrl = `${endpoints.movieDetail}/${popularMoviesResponse?.data[0].id}`;
+      const mainMovieDetailsResponse = await api.get<MovieDetailApiResponse>(
         movieDetailBySearchUrl
       );
 
-      const movie = apiResponse2?.data;
+      const movie = mainMovieDetailsResponse?.data;
       return { id: movie.id, images: movie.images };
     } catch (error) {
       return rejectWithValue({

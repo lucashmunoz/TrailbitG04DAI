@@ -38,7 +38,6 @@ import { IMAGES } from "../../../assets/images";
 import LoadingIndicator from "../../components/LoadingIndicator";
 import Button from "../../components/Button";
 import CastCard from "../../components/CastCard/CastCard";
-import FavoriteLoading from "../../components/FavoriteLoading";
 import NavigatorConstant from "../../../navigation/NavigatorConstant";
 import ImageCarousel from "../../components/ImageCarousel";
 import ImageCarouselModal from "./ImageCarouselModal";
@@ -131,11 +130,13 @@ const MovieDetails = ({ route }: MovieDetailProps): React.JSX.Element => {
       <TouchableOpacity
         style={styles.backButtonContainer}
         onPress={handleBackButtonClick}>
-        <FontAwesomeIcon
-          icon={faChevronLeft}
-          style={styles.backIcon}
-          size={24}
-        />
+        <View style={styles.iconShadow}>
+          <FontAwesomeIcon
+            icon={faChevronLeft}
+            style={styles.backIcon}
+            size={24}
+          />
+        </View>
       </TouchableOpacity>
       {loading ? (
         <LoadingIndicator color={colors.neutral50} />
@@ -148,28 +149,34 @@ const MovieDetails = ({ route }: MovieDetailProps): React.JSX.Element => {
 
             {bookmarkLoading ? (
               <View style={styles.favoriteLoadingContainer}>
-                <FavoriteLoading />
+                <View style={styles.iconShadow}>
+                  <LoadingIndicator size={20} color={colors.neutral50} />
+                </View>
               </View>
             ) : (
               <TouchableOpacity
                 style={styles.favoriteButton}
                 onPress={handleFavoriteButton}>
-                <FontAwesomeIcon
-                  icon={is_favorite ? faBookmarkSolid : faBookmarkRegular}
-                  style={styles.favoriteIcon}
-                  size={24}
-                />
+                <View style={styles.iconShadow}>
+                  <FontAwesomeIcon
+                    icon={is_favorite ? faBookmarkSolid : faBookmarkRegular}
+                    style={styles.favoriteIcon}
+                    size={24}
+                  />
+                </View>
               </TouchableOpacity>
             )}
 
             <TouchableOpacity
               style={styles.shareButton}
               onPress={handleShareMovie}>
-              <FontAwesomeIcon
-                icon={faShareNodes}
-                style={styles.favoriteIcon}
-                size={24}
-              />
+              <View style={styles.iconShadow}>
+                <FontAwesomeIcon
+                  icon={faShareNodes}
+                  style={styles.favoriteIcon}
+                  size={24}
+                />
+              </View>
             </TouchableOpacity>
 
             <View style={styles.description}>
@@ -361,25 +368,34 @@ const styles = StyleSheet.create({
   },
   favoriteLoadingContainer: {
     position: "absolute",
-    top: 61,
-    right: 27,
+    top: 48,
+    right: 32,
     zIndex: 1
+  },
+  iconShadow: {
+    padding: 3,
+    width: 30,
+    height: 34,
+    borderRadius: 6, // Radio igual a la mitad del ancho/alto para hacer un círculo
+    backgroundColor: "rgba(41, 41, 41, 0.8)", // Fondo blanco semi-transparente
+    justifyContent: "center",
+    alignItems: "center"
   },
   favoriteButton: {
     position: "absolute",
-    top: 64,
+    top: 48,
     right: 32,
     zIndex: 1
   },
   shareButton: {
     position: "absolute",
-    top: 120,
+    top: 104,
     right: 32,
     zIndex: 1
   },
   backButtonContainer: {
     position: "absolute",
-    top: 64,
+    top: 48,
     left: 32,
     zIndex: 1
   },
