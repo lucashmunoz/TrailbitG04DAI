@@ -65,7 +65,7 @@ const ImageCarouselModal = ({
           <View style={styles.containerStateIndicator}>
             {[0, 1, 2, 3].map(index => (
               <View
-                key={index}
+                key={`fullscreen-image-${index}`}
                 style={
                   imageIndexActive === index
                     ? styles.stateIndicatorActive
