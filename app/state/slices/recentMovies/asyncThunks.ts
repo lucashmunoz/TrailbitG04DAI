@@ -18,13 +18,18 @@ interface MovieApiResponse {
 
 interface FetchRecentMoviesPayload {
   page: number;
+  genre: String;
 }
 
 export const fetchRecentMovies = createAsyncThunk(
   "auth/fetchRecentMovies",
-  async ({ page = 1 }: FetchRecentMoviesPayload, { rejectWithValue }) => {
+  async (
+    { page = 1, genre = "" }: FetchRecentMoviesPayload,
+    { rejectWithValue }
+  ) => {
     try {
-      const fetchRecentMoviesUrl = `${endpoints.movies}?dateOrder=desc&page=${page}`;
+      var genreQuery = genre == "" ? `&genre=${genre}` : "";
+      const fetchRecentMoviesUrl = `${endpoints.movies}?dateOrder=desc&page=${page}${genreQuery}`;
       const apiResponse = await api.get<MovieApiResponse[]>(
         fetchRecentMoviesUrl
       );
