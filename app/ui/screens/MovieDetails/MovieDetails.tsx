@@ -56,6 +56,7 @@ const MovieDetails = ({ route }: MovieDetailProps): React.JSX.Element => {
   const rateLoading = useAppSelector(selectRateLoading);
   const bookmarkLoading = useAppSelector(selectBookmarkLoading);
   const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
+  const [movieRetrieved, setMovieRetrieved] = useState(false);
 
   const { id: movieId, is_favorite, user_vote, title: movieTitle } = movieById;
   const [isImagesModalOpen, setIsImagesModalOpen] = useState(false);
@@ -66,6 +67,7 @@ const MovieDetails = ({ route }: MovieDetailProps): React.JSX.Element => {
 
   const handleRateChange = async (vote: number) => {
     dispatch(rateMovie({ movieId, score: vote }));
+    setMovieRetrieved(true);
   };
 
   const handleBackButtonClick = () => {
@@ -89,7 +91,7 @@ const MovieDetails = ({ route }: MovieDetailProps): React.JSX.Element => {
 
   useEffect(() => {
     fetchMovieDetails();
-  }, []);
+  }, [user_vote]);
 
   const movieImage = movieById.poster_path
     ? { uri: movieById.poster_path }
@@ -137,7 +139,7 @@ const MovieDetails = ({ route }: MovieDetailProps): React.JSX.Element => {
           size={24}
         />
       </TouchableOpacity>
-      {loading ? (
+      {loading && !movieRetrieved ? (
         <LoadingIndicator color={colors.neutral50} />
       ) : (
         <ScrollView>

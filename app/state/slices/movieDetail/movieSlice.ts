@@ -61,15 +61,19 @@ export const moviesSlice = createSlice({
   extraReducers: builder => {
     builder.addCase(fetchMovieDetail.pending, state => {
       state.loading = true;
+      state.rateLoading = true;
       state.error = "";
     });
     builder.addCase(fetchMovieDetail.fulfilled, (state, response) => {
       state.loading = false;
       state.movieById = response.payload;
+      state.rateLoading = false;
       state.error = "";
     });
     builder.addCase(fetchMovieDetail.rejected, (state, response) => {
       state.loading = false;
+      state.loading = false;
+      state.rateLoading = false;
       state.error = response.error.message || "error";
     });
     builder.addCase(toggleFavoriteMovie.pending, state => {
