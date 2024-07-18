@@ -10,6 +10,9 @@ import SkeletonPlaceholder from "react-native-skeleton-placeholder";
 import { fetchRecentMovies } from "../../../state/slices/recentMovies/asyncThunks";
 
 const RecentMovies = (): React.JSX.Element => {
+  // const handleScroll = () => {
+  //   console.log("gola");
+  // };
   const dispatch = useAppDispatch();
   const { loading: genresLoading, genres } = useAppSelector(
     state => state.home
@@ -23,8 +26,6 @@ const RecentMovies = (): React.JSX.Element => {
     dispatch(fetchGenres()),
       dispatch(fetchRecentMovies({ page: 1, genre: genreSearch }));
   }, [dispatch, genreSearch]);
-
-  const handleScroll = ({ nativeEvent }) => {};
 
   const mapData = () => {
     return recentMovies.map(movie => ({
@@ -50,6 +51,11 @@ const RecentMovies = (): React.JSX.Element => {
   return (
     <View style={styles.container}>
       <Text style={styles.recentsTitle}>Recientes</Text>
+      <GenreButtons
+        genres={genres}
+        setStateGenre={setGenreSearch}
+        stateGenre={genreSearch}
+      />
       {recentMoviesLoading || genresLoading ? (
         <FlashList
           data={loadingMovies}
@@ -60,22 +66,17 @@ const RecentMovies = (): React.JSX.Element => {
           scrollEventThrottle={50}
         />
       ) : (
-        <>
-          <GenreButtons
-            genres={genres}
-            setStateGenre={setGenreSearch}
-            stateGenre={genreSearch}
-          />
-          <FlashList
-            data={mapData()}
-            renderItem={({ item }) => <MovieCard item={item} />}
-            keyExtractor={item => item.id.toString()}
-            numColumns={3}
-            estimatedItemSize={120}
-            onMomentumScrollEnd={handleScroll}
-            scrollEventThrottle={50}
-          />
-        </>
+        <FlashList
+          data={mapData()}
+          renderItem={({ item }) => <MovieCard item={item} />}
+          keyExtractor={(item, index) => `${item.id} - ${index}`}
+          numColumns={3}
+          onEndReached={() => {
+            console.log("nacho");
+          }}
+          onEndReachedThreshold={0.5}
+          showsVerticalScrollIndicator
+        />
       )}
     </View>
   );
@@ -85,7 +86,10 @@ const styles = StyleSheet.create({
   container: {
     justifyContent: "center",
     backgroundColor: colors.neutral900,
-    gap: 10
+    gap: 10,
+    borderWidth: 1,
+    borderColor: "white",
+    marginBottom: 20
   },
   recentsTitle: {
     fontSize: 18,
