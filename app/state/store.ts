@@ -5,6 +5,7 @@ import userSlice from "./slices/user/userSlice";
 import movieSlice from "./slices/movieDetail/movieSlice";
 import homeSlice from "./slices/home/homeSlice";
 import mainMovieSlice from "./slices/mainMovie/mainMovieSlice";
+import recentMoviesSlice from "./slices/recentMovies/recentsSlice";
 
 const store = configureStore({
   reducer: {
@@ -12,7 +13,8 @@ const store = configureStore({
     user: userSlice.reducer,
     movie: movieSlice.reducer,
     home: homeSlice.reducer,
-    mainMovie: mainMovieSlice.reducer
+    mainMovie: mainMovieSlice.reducer,
+    recentMovies: recentMoviesSlice.reducer
   },
   middleware: getDefaultMiddleware => getDefaultMiddleware()
 });
